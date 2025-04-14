@@ -82,4 +82,3 @@ Goel, Sakshi. “Food Ingredients and Recipes Dataset with Images.” Edited by 
 - The system outputs 5 random recipes.
 - If the user is not satisfied with the results, they can regenerate the search to find 5 more random recipes.
 - The returned search results link to separate pages that contain the full recipe
-
