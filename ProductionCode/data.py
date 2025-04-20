@@ -30,13 +30,12 @@ def get_filepath(filename, folder):
 
 def clean_data(data):
     """
-    Cleans the data by separating the header and cleaning each line.
+    Cleans the data by removing the header and cleaning each line.
     """
 
-    header = [data[0]]
     cleaned_data = [clean_line(line) for line in data[1:]]
 
-    return header + cleaned_data
+    return cleaned_data
 
 def read_file(file_path):
     """
