@@ -3,6 +3,8 @@ Contains tests for the command line interface of the program.
 '''
 
 import unittest
+import sys
+from io import StringIO
 import os
 import ast
 import random
@@ -90,7 +92,50 @@ class TestRecipeSearch(unittest.TestCase):
 
         self.assertEqual(find_recipes(test_recipes, ["Ingredient1", "Ingredient2"], ["Ingredient11"]), expected_recipes, "Should be the same")
         
+class TestCommandLine(unittest.TestCase):
+    '''
+    Tests the command line interface.
+    '''
+    def test_command_line_random(self);
+        sys.argv = ['cl.py', '--random', '3']
+        sys.stdout = StringIO()
+        test_recipes = get_data("test_data.csv", "Data")
 
+        expected_recipe = ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredient10']]
+
+        random.seed(32719)
+
+        produced = #get_random_recipe(test_recipes, 3)
+
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, produced, "Should be the same")
+    
+    def test_command_line_include(self):
+        '''
+        Tests the command line interface.
+        '''
+
+        # Test the command line interface with the --include option
+        sys.argv = ['cl.py', '--include', 'Ingredient1, Ingredient2']
+        sys.stdout = StringIO()
+        test_recipes = get_data("test_data.csv", "Data")
+        produced = #find_recipes(test_recipes, ["Ingredient1", "Ingredient2"], [])
+
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
+
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, produced, "Should be the same")
+
+        # Test the command line interface with the --omit option
+        sys.argv = ['cl.py', '--include', 'Ingredient1', '--omit', 'Ingredient2']
+        sys.stdout = StringIO()
+        test_recipes = get_data("test_data.csv", "Data")
+        produced = #find_recipes(test_recipes, ["Ingredient1"], ["Ingredient2"])
+
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
+
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, produced, "Should be the same")
 
 if __name__ == "__main__":
     unittest.main()
