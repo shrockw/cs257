@@ -1,7 +1,7 @@
 import random
 
-def get_random_recipe(recipes):
+def get_random_recipes(recipes, num_recipes):
     """
     Returns a random recipe from the given list of recipes.
     """
-    return random.choice(recipes)
+    return random.sample(recipes, num_recipes)
