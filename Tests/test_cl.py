@@ -8,7 +8,7 @@ import ast
 import random
 from ProductionCode.data import get_data, get_filepath
 from ProductionCode.recipe_search import find_recipes
-from ProductionCode.random_recipe import get_random_recipe
+from ProductionCode.random_recipe import get_random_recipes
 
 
 class TestData(unittest.TestCase):
@@ -39,13 +39,13 @@ class TestRandomRecipe(unittest.TestCase):
         Tests the random recipe function.
         '''
 
-        expected_recipe = ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredient10']]
+        expected_recipe = [['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
 
         test_recipes = get_data("test_data.csv", "Data")
 
         random.seed(32719)
 
-        self.assertEqual(get_random_recipe(test_recipes), expected_recipe, "Should be the same")
+        self.assertEqual(get_random_recipes(test_recipes, 1), expected_recipe, "Should be the same")
 
 
 
@@ -59,11 +59,13 @@ class TestRecipeSearch(unittest.TestCase):
         Tests the recipe search function.
         '''
 
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]
 
         test_recipes = get_data("test_data.csv", "Data")
 
         self.assertEqual(find_recipes(test_recipes, ["Ingredient1"], []), expected_recipes, "Should be the same")
+
+
 
 
     def test_recipe_search_unwanted(self):
@@ -71,8 +73,7 @@ class TestRecipeSearch(unittest.TestCase):
         Tests the recipe search function.
         '''
 
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredient10']], ['5', 'Title6', 'Instructions for Title6', ['Ingredient11', 'Ingredient12']], ['6', 'Title7', 'Instructions for Title7', ['Ingredient13', 'Ingredient14']]]
-
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']], ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']], ['7','Title8','Instructions for Title8',['Ingredientf', 'Ingredientg', 'Ingredient3']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']], ['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
         test_recipes = get_data("test_data.csv", "Data")
 
         self.assertEqual(find_recipes(test_recipes, [], ["Ingredient5"]), expected_recipes, "Should be the same")
@@ -82,14 +83,12 @@ class TestRecipeSearch(unittest.TestCase):
         Tests the recipe search function.
         '''
 
-        # NEED TO DECIDE ALL OR AT LEAST ONE? PROBABLY ALL
-
         expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
 
         test_recipes = get_data("test_data.csv", "Data")
 
         self.assertEqual(find_recipes(test_recipes, ["Ingredient1", "Ingredient2"], ["Ingredient11"]), expected_recipes, "Should be the same")
-        
+
 
 
 if __name__ == "__main__":
