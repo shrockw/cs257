@@ -116,7 +116,7 @@ class TestCommandLine(unittest.TestCase):
         '''
 
         # Test the command line interface with the --include option
-        sys.argv = ['cl.py', '--include', 'Ingredient1, Ingredient2']
+        sys.argv = ['cl.py', '--search','--include', 'Ingredient1, Ingredient2']
         sys.stdout = StringIO()
         test_recipes = get_data("test_data.csv", "Data")
         produced = #find_recipes(test_recipes, ["Ingredient1", "Ingredient2"], [])
@@ -127,7 +127,7 @@ class TestCommandLine(unittest.TestCase):
         self.assertEqual(output, produced, "Should be the same")
 
         # Test the command line interface with the --omit option
-        sys.argv = ['cl.py', '--include', 'Ingredient1', '--omit', 'Ingredient2']
+        sys.argv = ['cl.py', '--search', '--include', 'Ingredient1', '--omit', 'Ingredient2']
         sys.stdout = StringIO()
         test_recipes = get_data("test_data.csv", "Data")
         produced = #find_recipes(test_recipes, ["Ingredient1"], ["Ingredient2"])
