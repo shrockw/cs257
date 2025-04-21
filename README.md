@@ -9,10 +9,10 @@ Usage Statments:
 Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>
 
 #To get a random recipe by specifying how many to return
-or python cl.py --random <number>
+python cl.py --random <number>
 
 #To get usage information
-or python cl.py --help
+python cl.py --help
 
 Additional info:
 --search or --s: Search for a specific recipe.
