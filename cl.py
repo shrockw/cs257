@@ -45,25 +45,38 @@ def usage_statement():
 def search():
     ''' Search for recipes based on the given ingredients. '''
     recipe_data = get_data("test_data.csv", "Data")
-    include_ingredients = sys.argv[sys.argv.index(
-        "--include_ingredients") + 1].split(", ") if "--include_ingredients" in sys.argv else []
-    omit_ingredients = sys.argv[sys.argv.index(
-        "--omit_ingredients") + 1].split(", ") if "--omit_ingredients" in sys.argv else []
+    include_ingredients = get_included_ingredients()
+    omit_ingredients = get_omitted_ingredients()
     recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
+    print_recipes(recipes)
+    return recipes
+
+def print_recipes(recipes):
     for recipe in recipes:
         print(recipe)
-    return recipes
+
+def get_included_ingredients():
+    ''' Get the included ingredients from the command line arguments. '''
+    if "--include_ingredients" in sys.argv:
+        index = sys.argv.index("--include_ingredients") + 1
+        return sys.argv[index].split(", ")
+    return []
+
+def get_omitted_ingredients():
+    ''' Get the omitted ingredients from the command line arguments. '''
+    if "--omit_ingredients" in sys.argv:
+        index = sys.argv.index("--omit_ingredients") + 1
+        return sys.argv[index].split(", ")
+    return []
 
 
 def random_cl():
-
     ''' Get a random n number of recipes.'''
     recipe_data = get_data("test_data.csv", "Data")
     num = int(sys.argv[2])
     recipe_data = recipe_data[1:]
     random_recipes = get_random_recipes(recipe_data, num)
-    for recipe in random_recipes:
-        print(recipe)
+    print_recipes(random_recipes)
     return random_recipes
 
 
