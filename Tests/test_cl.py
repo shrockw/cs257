@@ -63,11 +63,16 @@ class TestRecipeSearch(unittest.TestCase):
         '''
 
         expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]
-
         test_recipes = get_data("test_data.csv", "Data")
-
         self.assertEqual(find_recipes(test_recipes, ["Ingredient1"], []), expected_recipes, "Should be the same")
 
+        expected_recipes = []
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, ["Ingredient1", "Ingredient3"], []), expected_recipes, "Should be the same")
+
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']], ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']], ['7','Title8','Instructions for Title8',['Ingredientf', 'Ingredientg', 'Ingredient3']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']], ['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, ["Ingredient"], []), expected_recipes, "Should be the same")
 
 
 
@@ -78,8 +83,15 @@ class TestRecipeSearch(unittest.TestCase):
 
         expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']], ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']], ['7','Title8','Instructions for Title8',['Ingredientf', 'Ingredientg', 'Ingredient3']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']], ['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
         test_recipes = get_data("test_data.csv", "Data")
-
         self.assertEqual(find_recipes(test_recipes, [], ["Ingredient5"]), expected_recipes, "Should be the same")
+
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']], ['7','Title8','Instructions for Title8',['Ingredientf', 'Ingredientg', 'Ingredient3']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, [], ["Ingrediente", "Ingredient9"]), expected_recipes, "Should be the same")
+
+        expected_recipes = []
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, [], ["Ingredient"]), expected_recipes, "Should be the same")
 
     def test_recipe_search_both(self):
         '''
@@ -92,51 +104,71 @@ class TestRecipeSearch(unittest.TestCase):
 
         self.assertEqual(find_recipes(test_recipes, ["Ingredient1", "Ingredient2"], ["Ingredient11"]), expected_recipes, "Should be the same")
 
+
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']], ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']], ['7','Title8','Instructions for Title8',['Ingredientf', 'Ingredientg', 'Ingredient3']], ['8','Title9','Instructions for Title9',['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']], ['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, [], []), expected_recipes, "Should be the same")
+
+        expected_recipes = []
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, ["Ingredient"], ["Ingredient"]), expected_recipes, "Should be the same")
+
+        expected_recipes = []
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(find_recipes(test_recipes, ["Ingredient4"], ["Ingredient4"]), expected_recipes, "Should be the same")
         
+
 class TestCommandLine(unittest.TestCase):
     '''
     Tests the command line interface.
     '''
     def test_command_line_random(self):
-        sys.argv = ['cl.py', '--random', '3']
+      
+        sys.argv = ['cl.py', '--random', '1']
         sys.stdout = StringIO()
-        test_recipes = get_data("test_data.csv", "Data")
+        # test_recipes = get_data("test_data.csv", "Data")
 
-        expected_recipe = ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredient10']]
+        expected_recipe = "[['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]]"
 
         random.seed(32719)
 
-        produced = random_cl()
+
+        random_cl()
+
 
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, produced, "Should be the same")
+        self.assertEqual(output, expected_recipe, "Should be the same")
     
-    def test_command_line_include(self):
+    def test_command_line_search(self):
         '''
         Tests the command line interface.
         '''
 
         # Test the command line interface with the --include option
-        sys.argv = ['cl.py', '--search','--include', 'Ingredient1, Ingredient2']
+        sys.argv = ['cl.py', '--search','--include_ingredients', 'Ingredient1, Ingredient2']
         sys.stdout = StringIO()
-        test_recipes = get_data("test_data.csv", "Data")
-        produced = search()
 
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
+        # test_recipes = get_data("test_data.csv", "Data")
+        search()
+
+
+        expected_recipes = "[['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]"
 
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, produced, "Should be the same")
+        self.assertEqual(output, expected_recipes, "Should be the same")
 
         # Test the command line interface with the --omit option
-        sys.argv = ['cl.py', '--search', '--include', 'Ingredient1', '--omit', 'Ingredient2']
+        sys.argv = ['cl.py', '--search', '--include_ingredients', 'Ingredient1', '--omit_ingredients', 'Ingredient2']
         sys.stdout = StringIO()
-        test_recipes = get_data("test_data.csv", "Data")
-        produced = search()
 
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
+        # test_recipes = get_data("test_data.csv", "Data")
+        search()
+
+
+        expected_recipes = "[['8', 'Title9', 'Instructions for Title9', ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]"
 
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, produced, "Should be the same")
+        self.assertEqual(output, expected_recipes, "Should be the same")
 
 if __name__ == "__main__":
     unittest.main()
