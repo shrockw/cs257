@@ -6,6 +6,7 @@ from ProductionCode.random_recipe import get_random_recipes
 from ProductionCode.data import get_data
 import sys
 
+
 def main():
     ''' Main function to handle command line arguments and execute the appropriate function. '''
     if len(sys.argv) < 2:
@@ -29,20 +30,25 @@ def main():
     else:
         print("Invalid command. Use --help for usage information.")
 
+
 def usage_statement():
     ''' Display the usage statement for the command line interface. '''
     print("Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>")
     print("or python cl.py --random <number>")
     print("or python cl.py --help")
 
+
 def search():
     ''' Search for recipes based on the given ingredients. '''
     recipe_data = get_data("test_data.csv", "Data")
-    include_ingredients = sys.argv[sys.argv.index("--include_ingredients") + 1].split(", ") if "--include_ingredients" in sys.argv else []
-    omit_ingredients = sys.argv[sys.argv.index("--omit_ingredients") + 1].split(",") if "--omit_ingredients" in sys.argv else []
+    include_ingredients = sys.argv[sys.argv.index(
+        "--include_ingredients") + 1].split(", ") if "--include_ingredients" in sys.argv else []
+    omit_ingredients = sys.argv[sys.argv.index(
+        "--omit_ingredients") + 1].split(",") if "--omit_ingredients" in sys.argv else []
     recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
     print(recipes)
     return recipes
+
 
 def random():
     ''' Get a random n number of recipes.'''
@@ -53,14 +59,16 @@ def random():
     print(random_recipes)
     return random_recipes
 
+
 def help():
     ''' Display the help information for the command line interface. '''
-    print("Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>") 
+    print("Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>")
     print("or python cl.py --random <number>")
-    print("or python cl.py --help")    
+    print("or python cl.py --help")
     print("--search: Search for a specific recipe.")
     print("--random: Get a random recipe.")
     print("--help: Display this help message.")
-    
+
+
 if __name__ == "__main__":
     main()
