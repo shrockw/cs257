@@ -11,24 +11,25 @@ def main():
     ''' Main function to handle command line arguments and execute the appropriate function. '''
     if len(sys.argv) < 2:
         usage_statement()
-    if len(sys.argv) > 6:
+    elif len(sys.argv) > 6:
         usage_statement()
-    command = sys.argv[1]
-
-    if command == "--search" or command == "--s":
-        print("Searching for recipes...")
-        search()
-    elif command == "--random" or command == "--r":
-        print("Getting random recipe...")
-        if len(sys.argv) != 3:
-            print("Invalid number of arguments for --random.")
-            usage_statement()
-        random_cl()
-    elif command == "--help" or command == "--h":
-        print("Displaying help...")
-        help_cl()
     else:
-        print("Invalid command. Use --help for usage information.")
+        command = sys.argv[1]
+
+        if command == "--search" or command == "--s":
+            print("Searching for recipes...")
+            search()
+        elif command == "--random" or command == "--r":
+            print("Getting random recipe...")
+            if len(sys.argv) != 3:
+                print("Invalid number of arguments for --random.")
+                usage_statement()
+            random_cl()
+        elif command == "--help" or command == "--h":
+            print("Displaying help...")
+            help_cl()
+        else:
+            print("Invalid command. Use --help for usage information.")
 
 
 def usage_statement():
