@@ -33,7 +33,8 @@ def main():
 
 def usage_statement():
     ''' Display the usage statements for the command line interface. '''
-    print("Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>")
+    print("Usage: python cl.py --search --include_ingredients\
+    <ingredients> --omit_ingredients <ingredients>")
     print("<ingredients> should be a comma-separated list\
            of ingredients enclosed in quotes.")
     print("or python cl.py --random <number>")
