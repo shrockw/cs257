@@ -37,22 +37,40 @@ class TestRandomRecipe(unittest.TestCase):
     Tests the random recipe function.
     '''
 
+    def setUp(self):
+        random.seed(931254)
+
 
     def test_random_recipe(self):
         '''
         Tests the random recipe function.
         '''
 
-        # self.maxDiff = None
-        random.seed(32719)
+        self.maxDiff = None
 
         expected_recipes = [['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
         test_recipes = get_data("test_data.csv", "Data")
         self.assertEqual(get_random_recipes(test_recipes, 1), expected_recipes, "Should be the same")
 
-        expected_recipes = [['9', 'Title10', 'Instructions for Title10', ['Ingredient4', 'Ingredient8', 'Ingrediente']], ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']]]
+        expected_recipes = [['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['7','Title8','Instructions for Title8',['Ingredientf', 'Ingredientg', 'Ingredient3']]]
         test_recipes = get_data("test_data.csv", "Data")
         self.assertEqual(get_random_recipes(test_recipes, 3), expected_recipes, "Should be the same")
+
+        expected_recipes = []
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(get_random_recipes(test_recipes, 0), expected_recipes, "Should be the same")
+
+    def test_random_recipe_invalid(self):
+        '''
+        Tests the random recipe function with invalid input.
+        '''
+
+        test_recipes = get_data("test_data.csv", "Data")
+        with self.assertRaises(ValueError):
+            get_random_recipes(test_recipes, -1)
+
+        with self.assertRaises(ValueError):
+            get_random_recipes(test_recipes, 100)
 
         
 
@@ -133,7 +151,7 @@ class TestCommandLine(unittest.TestCase):
         sys.stdout = StringIO()
         # test_recipes = get_data("test_data.csv", "Data")
 
-        expected_recipe = "[['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]]"
+        expected_recipe = "['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]"
 
         random.seed(32719)
 
