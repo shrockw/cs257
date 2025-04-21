@@ -133,7 +133,7 @@ class TestCommandLine(unittest.TestCase):
         sys.argv = ['cl.py', '--random', '1']
         sys.stdout = StringIO()
 
-        expected_recipe = "[['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]]"
+        expected_recipe = "['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]"
 
         random.seed(32719)
 
@@ -155,7 +155,7 @@ class TestCommandLine(unittest.TestCase):
 
         search()
 
-        expected_recipes = "[['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]"
+        expected_recipes = "['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]"
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_recipes, "Should be the same")
@@ -166,7 +166,7 @@ class TestCommandLine(unittest.TestCase):
 
         search()
 
-        expected_recipes = "[['8', 'Title9', 'Instructions for Title9', ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]"
+        expected_recipes = "['8', 'Title9', 'Instructions for Title9', ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]"
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_recipes, "Should be the same")
@@ -177,14 +177,14 @@ class TestCommandLine(unittest.TestCase):
 
         search()
 
-        expected_recipes = "[['1','Title2', 'Instructions for Title2','['Ingredient3', 'Ingredient4']\n" \
-        "['2','Title3','Instructions for Title3','['Ingredient5', 'Ingredient6']]\n" \
-        "[3,'Title4','Instructions for Title4','['Ingredient7', 'Ingredient8']]\n" \
-        "[4,'Title5','Instructions for Title5','['Ingredient9', 'Ingredienta']]\n" \
-        "[5,'Title6','Instructions for Title6','['Ingredientb', 'Ingredientc']]\n" \
-        "[6,'Title7','Instructions for Title7','['Ingredientd', 'Ingrediente']]\n" \
-        "[7,'Title8','Instructions for Title8','['Ingredientf', 'Ingredientg', 'Ingredient3']]\n" \
-        "[9,'Title10','Instructions for Title10','['Ingredient4', 'Ingredient8', 'Ingrediente']]"
+        expected_recipes = "['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]\n" \
+        "['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']]\n" \
+        "['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']]\n" \
+        "['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']]\n" \
+        "['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']]\n" \
+        "['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']]\n" \
+        "['7', 'Title8', 'Instructions for Title8', ['Ingredientf', 'Ingredientg', 'Ingredient3']]\n" \
+        "['9', 'Title10', 'Instructions for Title10', ['Ingredient4', 'Ingredient8', 'Ingrediente']]"
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_recipes, "Should be the same")
 
