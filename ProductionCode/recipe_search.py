@@ -25,7 +25,7 @@ def valid_recipe(recipe_ingredients, wanted_ingredients, unwanted_ingredients):
 def contains_wanted_ingredient(wanted_ingredient, recipe_ingredients):
     '''Check if a wanted ingredient is in the recipe.'''
     for ingredient in recipe_ingredients:
-        if wanted_ingredient == ingredient:
+        if wanted_ingredient in ingredient:
             return True
     return False
 
