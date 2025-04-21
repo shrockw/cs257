@@ -22,10 +22,10 @@ def main():
         if len(sys.argv) != 3:
             print("Invalid number of arguments for --random.")
             usage_statement()
-        random()
+        random_cl()
     elif command == "--help":
         print("Displaying help...")
-        help()
+        help_cl()
     else:
         print("Invalid command. Use --help for usage information.")
 
@@ -44,7 +44,7 @@ def search():
     print(recipes)
     return recipes
 
-def random():
+def random_cl():
     ''' Get a random n number of recipes.'''
     recipe_data = get_data("test_data.csv", "Data")
     num = int(sys.argv[2])
@@ -53,7 +53,7 @@ def random():
     print(random_recipes)
     return random_recipes
 
-def help():
+def help_cl():
     ''' Display the help information for the command line interface. '''
     print("Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>") 
     print("or python cl.py --random <number>")
