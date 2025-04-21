@@ -15,16 +15,16 @@ def main():
         usage_statement()
     command = sys.argv[1]
 
-    if command == "--search":
+    if command == "--search" or command == "--s":
         print("Searching for recipes...")
         search()
-    elif command == "--random":
+    elif command == "--random" or command == "--r":
         print("Getting random recipe...")
         if len(sys.argv) != 3:
             print("Invalid number of arguments for --random.")
             usage_statement()
         random_cl()
-    elif command == "--help":
+    elif command == "--help" or command == "--h":
         print("Displaying help...")
         help_cl()
     else:
@@ -64,11 +64,12 @@ def random_cl():
 def help_cl():
     ''' Display the help information for the command line interface. '''
     print("Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>")
+    print("<ingredients> should be a comma-separated list of ingredients enclosed in quotes.")
     print("or python cl.py --random <number>")
     print("or python cl.py --help")
-    print("--search: Search for a specific recipe.")
-    print("--random: Get a random recipe.")
-    print("--help: Display this help message.")
+    print("--search or --s: Search for a specific recipe.")
+    print("--random or --r: Get a random recipe.")
+    print("--help or --h: Display this help message.")
 
 
 if __name__ == "__main__":
