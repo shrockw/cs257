@@ -97,7 +97,7 @@ class TestCommandLine(unittest.TestCase):
     '''
     Tests the command line interface.
     '''
-    def test_command_line_random(self);
+    def test_command_line_random(self):
         sys.argv = ['cl.py', '--random', '3']
         sys.stdout = StringIO()
         test_recipes = get_data("test_data.csv", "Data")
@@ -106,7 +106,7 @@ class TestCommandLine(unittest.TestCase):
 
         random.seed(32719)
 
-        produced = random_cl(test_recipes, 3)
+        produced = random_cl()
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, produced, "Should be the same")
@@ -120,7 +120,7 @@ class TestCommandLine(unittest.TestCase):
         sys.argv = ['cl.py', '--search','--include', 'Ingredient1, Ingredient2']
         sys.stdout = StringIO()
         test_recipes = get_data("test_data.csv", "Data")
-        produced = search(test_recipes, ["Ingredient1", "Ingredient2"], [])
+        produced = search()
 
         expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
 
@@ -131,7 +131,7 @@ class TestCommandLine(unittest.TestCase):
         sys.argv = ['cl.py', '--search', '--include', 'Ingredient1', '--omit', 'Ingredient2']
         sys.stdout = StringIO()
         test_recipes = get_data("test_data.csv", "Data")
-        produced = search(test_recipes, ["Ingredient1"], ["Ingredient2"])
+        produced = search()
 
         expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
 
