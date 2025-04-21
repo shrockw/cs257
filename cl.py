@@ -46,7 +46,8 @@ def search():
     omit_ingredients = sys.argv[sys.argv.index(
         "--omit_ingredients") + 1].split(", ") if "--omit_ingredients" in sys.argv else []
     recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
-    print(recipes)
+    for recipe in recipes:
+        print(recipe)
     return recipes
 
 
@@ -57,7 +58,8 @@ def random_cl():
     num = int(sys.argv[2])
     recipe_data = recipe_data[1:]
     random_recipes = get_random_recipes(recipe_data, num)
-    print(random_recipes)
+    for recipe in random_recipes:
+        print(recipe)
     return random_recipes
 
 

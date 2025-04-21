@@ -37,18 +37,24 @@ class TestRandomRecipe(unittest.TestCase):
     Tests the random recipe function.
     '''
 
+
     def test_random_recipe(self):
         '''
         Tests the random recipe function.
         '''
 
-        expected_recipe = [['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
-
-        test_recipes = get_data("test_data.csv", "Data")
-
+        # self.maxDiff = None
         random.seed(32719)
 
-        self.assertEqual(get_random_recipes(test_recipes, 1), expected_recipe, "Should be the same")
+        expected_recipes = [['9','Title10','Instructions for Title10',['Ingredient4', 'Ingredient8', 'Ingrediente']]]
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(get_random_recipes(test_recipes, 1), expected_recipes, "Should be the same")
+
+        expected_recipes = [['9', 'Title10', 'Instructions for Title10', ['Ingredient4', 'Ingredient8', 'Ingrediente']], ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']]]
+        test_recipes = get_data("test_data.csv", "Data")
+        self.assertEqual(get_random_recipes(test_recipes, 3), expected_recipes, "Should be the same")
+
+        
 
 
 
