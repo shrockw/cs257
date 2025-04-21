@@ -4,9 +4,9 @@ Team E: Marc, Willan, Allison, Anika
 
 Usage Statments:
 
-#To search for a recipe using include/omit filters
-#<ingredients> should be a comma-separated list of ingredients enclosed in quotes 
-Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>
+#To search for a recipe using include/omit filters \n
+#<ingredients> should be a comma-separated list of ingredients enclosed in quotes \n
+Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients> \n
 
 #To get a random recipe by specifying how many to return
 python cl.py --random <number>
