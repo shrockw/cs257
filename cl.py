@@ -44,7 +44,7 @@ def search():
     include_ingredients = sys.argv[sys.argv.index(
         "--include_ingredients") + 1].split(", ") if "--include_ingredients" in sys.argv else []
     omit_ingredients = sys.argv[sys.argv.index(
-        "--omit_ingredients") + 1].split(",") if "--omit_ingredients" in sys.argv else []
+        "--omit_ingredients") + 1].split(", ") if "--omit_ingredients" in sys.argv else []
     recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
     print(recipes)
     return recipes
