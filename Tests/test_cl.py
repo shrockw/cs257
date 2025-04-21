@@ -231,7 +231,7 @@ class TestMainFunction(unittest.TestCase):
         sys.argv = ['cl.py', '--random', '1']
         sys.stdout = StringIO()
 
-        expected_recipe = "['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]"
+        expected_recipe = "Getting random recipe...\n['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]"
 
         random.seed(32719)
 
@@ -252,7 +252,7 @@ class TestMainFunction(unittest.TestCase):
 
         main()
 
-        expected_recipes = "['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]"
+        expected_recipes = "Searching for recipes...\n['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]"
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_recipes, "Should be the same")
@@ -263,7 +263,7 @@ class TestMainFunction(unittest.TestCase):
 
         main()
 
-        expected_recipes = "['8', 'Title9', 'Instructions for Title9', ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]"
+        expected_recipes = "Searching for recipes...\n['8', 'Title9', 'Instructions for Title9', ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]"
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_recipes, "Should be the same")
@@ -274,7 +274,7 @@ class TestMainFunction(unittest.TestCase):
 
         main()
 
-        expected_recipes = "['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]\n" \
+        expected_recipes = "Searching for recipes...\n['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]\n" \
         "['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']]\n" \
         "['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']]\n" \
         "['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']]\n" \
@@ -296,7 +296,7 @@ class TestMainFunction(unittest.TestCase):
 
         main()
 
-        expected_output = "Usage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>\n""<ingredients> should be a comma-separated list of ingredients enclosed in quotes.\n""or python cl.py --random <number>\n""or python cl.py --help\n""--search or --s: Search for a specific recipe.\n""--random or --r: Get a random recipe.\n""--help or --h: Display this help message."
+        expected_output = "Displaying help...\nUsage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>\n""<ingredients> should be a comma-separated list of ingredients enclosed in quotes.\n""or python cl.py --random <number>\n""or python cl.py --help\n""--search or --s: Search for a specific recipe.\n""--random or --r: Get a random recipe.\n""--help or --h: Display this help message."
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_output, "Should be the same")
