@@ -3,6 +3,7 @@ Contains tests for the command line interface of the program.
 '''
 
 import unittest
+import unittest.mock
 import sys
 from io import StringIO
 import ast
@@ -228,6 +229,34 @@ class TestCommandLine(unittest.TestCase):
     '''
     Tests the command line interface.
     '''
+    def setUp(self):
+        '''
+        Sets up the test environment by mocking the get_data function.
+        '''
+        self.patcher = unittest.mock.patch('cl.get_data')
+        self.mock_get_data = self.patcher.start()
+        self.mock_get_data.return_value = [
+            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']],
+            ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']],
+            ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']],
+            ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']],
+            ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']],
+            ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']],
+            ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']],
+            ['7', 'Title8', 'Instructions for Title8',
+             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
+            ['8', 'Title9', 'Instructions for Title9',
+             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
+            ['9', 'Title10', 'Instructions for Title10',
+             ['Ingredient4', 'Ingredient8', 'Ingrediente']]
+        ]
+
+    def tearDown(self):
+        '''
+        Stops the patcher after the test.
+        '''
+        self.patcher.stop()
+
 
     def test_command_line_random(self):
         '''Tests the command line interface for getting random recipes'''
@@ -358,6 +387,33 @@ class TestMainFunction(unittest.TestCase):
     '''
     Tests the main interface.
     '''
+    def setUp(self):
+        '''
+        Sets up the test environment by mocking the get_data function.
+        '''
+        self.patcher = unittest.mock.patch('cl.get_data')
+        self.mock_get_data = self.patcher.start()
+        self.mock_get_data.return_value = [
+            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']],
+            ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']],
+            ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']],
+            ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']],
+            ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']],
+            ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']],
+            ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']],
+            ['7', 'Title8', 'Instructions for Title8',
+             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
+            ['8', 'Title9', 'Instructions for Title9',
+             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
+            ['9', 'Title10', 'Instructions for Title10',
+             ['Ingredient4', 'Ingredient8', 'Ingrediente']]
+        ]
+
+    def tearDown(self):
+        '''
+        Stops the patcher after the test.
+        '''
+        self.patcher.stop()
 
     def test_main_random(self):
         '''Tests the main function for getting random recipes'''
