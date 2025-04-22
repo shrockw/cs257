@@ -17,4 +17,9 @@ python cl.py --help
 Additional info:  
 --search or --s: Search for a specific recipe.  
 --random or --r: Get a random recipe.  
--help or --h: Display this help message.  
+-help or --h: Display this help message. 
+
+Example usage:
+python cl.py --search --include_ingredients "chicken, rice" --omit_ingredients "onion, garlic"
+python cl.py --random 5
+python cl.py --help
