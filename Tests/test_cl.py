@@ -143,8 +143,26 @@ class TestRecipeSearch(unittest.TestCase):
         self.assertEqual(find_recipes(test_recipes, ["Ingredient1", "Ingredient2"], [
                          "Ingredient11"]), expected_recipes, "Should be the same")
 
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']], ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']], ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']], ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']], ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']], [
-            '5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']], ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']], ['7', 'Title8', 'Instructions for Title8', ['Ingredientf', 'Ingredientg', 'Ingredient3']], ['8', 'Title9', 'Instructions for Title9', ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']], ['9', 'Title10', 'Instructions for Title10', ['Ingredient4', 'Ingredient8', 'Ingrediente']]]
+        expected_recipes = [['0', 'Title1', 'Instructions for Title1',
+                             ['Ingredient1', 'Ingredient2']], 
+                            ['1', 'Title2', 'Instructions for Title2', 
+                             ['Ingredient3', 'Ingredient4']], 
+                            ['2', 'Title3', 'Instructions for Title3', 
+                             ['Ingredient5', 'Ingredient6']], 
+                            ['3', 'Title4', 'Instructions for Title4', 
+                             ['Ingredient7', 'Ingredient8']], 
+                            ['4', 'Title5', 'Instructions for Title5', 
+                             ['Ingredient9', 'Ingredienta']], 
+                            ['5', 'Title6', 'Instructions for Title6', 
+                             ['Ingredientb', 'Ingredientc']], 
+                            ['6', 'Title7', 'Instructions for Title7', 
+                             ['Ingredientd', 'Ingrediente']], 
+                            ['7', 'Title8', 'Instructions for Title8', 
+                             ['Ingredientf', 'Ingredientg', 'Ingredient3']], 
+                            ['8', 'Title9', 'Instructions for Title9', 
+                             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']], 
+                             ['9', 'Title10', 'Instructions for Title10', 
+                              ['Ingredient4', 'Ingredient8', 'Ingrediente']]]
         test_recipes = get_data("test_data.csv", "Data")
         self.assertEqual(find_recipes(test_recipes, [], []),
                          expected_recipes, "Should be the same")
@@ -172,7 +190,7 @@ class TestCommandLine(unittest.TestCase):
         sys.stdout = StringIO()
 
         expected_recipe = "['1', 'Title2', 'Instructions for Title2', "\
-        "['Ingredient3', 'Ingredient4']]"
+            "['Ingredient3', 'Ingredient4']]"
 
         random.seed(32719)
 
@@ -219,14 +237,14 @@ class TestCommandLine(unittest.TestCase):
         search()
 
         expected_recipes = "['1', 'Title2', 'Instructions for Title2', "\
-                "['Ingredient3', 'Ingredient4']]\n" \
+            "['Ingredient3', 'Ingredient4']]\n" \
             "['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']]\n" \
             "['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']]\n" \
             "['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']]\n" \
             "['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']]\n" \
             "['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']]\n" \
             "['7', 'Title8', 'Instructions for Title8', "\
-                "['Ingredientf', 'Ingredientg', 'Ingredient3']]\n" \
+            "['Ingredientf', 'Ingredientg', 'Ingredient3']]\n" \
             "['9', 'Title10', 'Instructions for Title10', " \
             "['Ingredient4', 'Ingredient8', 'Ingrediente']]"
         output = sys.stdout.getvalue().strip()
@@ -375,7 +393,12 @@ class TestMainFunction(unittest.TestCase):
 
         main()
 
-        expected_output = "Displaying help...\nUsage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>\n<ingredients> should be a comma-separated list of ingredients enclosed in quotes.\nor python cl.py --random <number>\nor python cl.py --help\n--search or --s: Search for a specific recipe.\n--random or --r: Get a random recipe.\n--help or --h: Display this help message."
+        expected_output = "Displaying help...\nUsage: python cl.py --search " \
+        "--include_ingredients <ingredients> --omit_ingredients <ingredients>\n" \
+        "<ingredients> should be a comma-separated list of ingredients enclosed " \
+        "in quotes.\nor python cl.py --random <number>\nor python cl.py --help\n" \
+        "--search or --s: Search for a specific recipe.\n--random or --r: Get a " \
+        "random recipe.\n--help or --h: Display this help message."
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_output, "Should be the same")
