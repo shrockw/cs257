@@ -375,11 +375,7 @@ class TestMainFunction(unittest.TestCase):
 
         main()
 
-        expected_output = "Displaying help...\nUsage: python cl.py --search --include_ingredients " \
-            "<ingredients> --omit_ingredients <ingredients>\n""<ingredients> should be a comma-separated " \
-            "list of ingredients enclosed in quotes.\n""or python cl.py --random <number>\n""or python cl.py " \
-            "--help\n""--search or --s: Search for a specific recipe.\n""--random or --r: Get a random recipe.\n""" \
-            "--help or --h: Display this help message."
+        expected_output = "Displaying help...\nUsage: python cl.py --search --include_ingredients <ingredients> --omit_ingredients <ingredients>\n<ingredients> should be a comma-separated list of ingredients enclosed in quotes.\nor python cl.py --random <number>\nor python cl.py --help\n--search or --s: Search for a specific recipe.\n--random or --r: Get a random recipe.\n--help or --h: Display this help message."
 
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, expected_output, "Should be the same")

@@ -34,10 +34,11 @@ def main():
 
 def usage_statement():
     ''' Display the usage statements for the command line interface. '''
-    print("Usage: python cl.py --search --include_ingredients\
-    <ingredients> --omit_ingredients <ingredients>")
-    print("<ingredients> should be a comma-separated list\
-           of ingredients enclosed in quotes.")
+
+    print("Usage: python cl.py --search --include_ingredients " \
+    "<ingredients> --omit_ingredients <ingredients>")
+    print("<ingredients> should be a comma-separated list " \
+           "of ingredients enclosed in quotes.")
     print("or python cl.py --random <number>")
     print("or python cl.py --help")
     print("--search or --s: Search for a specific recipe.")
@@ -86,8 +87,8 @@ def random_cl():
 
 def help_cl():
     ''' Display the help information for the command line interface. '''
-    print("Usage: python cl.py --search --include_ingredients \
-          <ingredients> --omit_ingredients <ingredients>")
+    print("Usage: python cl.py --search --include_ingredients "\
+          "<ingredients> --omit_ingredients <ingredients>")
     print("<ingredients> should be a comma-separated list of ingredients enclosed in quotes.")
     print("or python cl.py --random <number>")
     print("or python cl.py --help")
