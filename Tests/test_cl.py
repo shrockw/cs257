@@ -190,7 +190,7 @@ class TestRecipeSearch(unittest.TestCase):
                              ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
                             ['9', 'Title10', 'Instructions for Title10',
                              ['Ingredient4', 'Ingredient8', 'Ingrediente']]]
-        
+
         self.assertEqual(find_recipes(self.test_recipes, [], [
                          "Ingredient5"]), expected_recipes, "Should be the same")
 
