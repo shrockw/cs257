@@ -15,7 +15,6 @@ def main():
         usage_statement()
     else:
         command = sys.argv[1]
-
         if command in ("--search", "--s"):
             print("Searching for recipes...")
             search()
@@ -48,7 +47,7 @@ def usage_statement():
 
 def search():
     ''' Search for recipes based on the given ingredients. '''
-    recipe_data = get_data("recipe_data.csv", "Data")
+    recipe_data = get_data()
     include_ingredients = get_included_ingredients()
     omit_ingredients = get_omitted_ingredients()
     recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
@@ -77,7 +76,7 @@ def get_omitted_ingredients():
 
 def random_cl():
     ''' Get a random n number of recipes.'''
-    recipe_data = get_data("recipe_data.csv", "Data")
+    recipe_data = get_data()
     num = int(sys.argv[2])
     recipe_data = recipe_data[1:]
     random_recipes = get_random_recipes(recipe_data, num)

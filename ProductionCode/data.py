@@ -6,12 +6,12 @@ import os
 import csv
 import ast
 
-def get_data(filename, folder):
+def get_data():
     """
     Returns the cleaned data from the given csv.
     """
 
-    file_path = get_filepath(filename, folder)
+    file_path = get_filepath()
 
     data = read_file(file_path)
 
@@ -19,12 +19,12 @@ def get_data(filename, folder):
 
     return cleaned_data
 
-def get_filepath(filename, folder):
+def get_filepath():
     """
     Returns the file path of the given filename in the given folder.
     """
-    data_folder = os.path.join(os.path.dirname(__file__), f'../{folder}')
-    file_path = os.path.join(data_folder, filename)
+    data_folder = os.path.join(os.path.dirname(__file__), '../Data')
+    file_path = os.path.join(data_folder, "recipe_data.csv")
 
     return file_path
 
