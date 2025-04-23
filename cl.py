@@ -14,7 +14,6 @@ def main():
     elif len(sys.argv) > 6:
         usage_statement()
     else:
-        
         command = sys.argv[1]
         if command in ("--search", "--s"):
             print("Searching for recipes...")
