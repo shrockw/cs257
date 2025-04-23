@@ -18,7 +18,6 @@ class TestData(unittest.TestCase):
     Extends the unittest.TestCase class to test the get_data function.
     '''
 
-    # HOW DO YOU TEST THE GET DATA FUNCTION???
     def test_data(self):
         '''
         Tests for the data.
