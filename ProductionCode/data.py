@@ -6,6 +6,7 @@ import os
 import csv
 import ast
 
+
 def get_data():
     """
     Returns the cleaned data from the given csv.
