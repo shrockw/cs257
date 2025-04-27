@@ -29,7 +29,6 @@ def random_recipes(num_recipes):
         return "Please enter a number between 1 and 10."
     # Call the function to get random recipes here
     recipe_data = get_data()
-    recipe_data = recipe_data[1:]
     randrecipes = get_random_recipes(recipe_data, num_recipes)
     output = ""
     for recipe in randrecipes:
@@ -41,7 +40,6 @@ def random_recipes(num_recipes):
 def search_include(ingredients):
     '''This function searches for recipes that include the specified ingredients.'''
     recipe_data = get_data()
-    recipe_data = recipe_data[1:]
     include_ingredients = ingredients.split(",")
     recipes = find_recipes(recipe_data, include_ingredients, [])
     output = ""
@@ -53,7 +51,6 @@ def search_include(ingredients):
 def search_omit(ingredients):
     '''This function searches for recipes that omit the specified ingredients.'''
     recipe_data = get_data()
-    recipe_data = recipe_data[1:]
     omit_ingredients = ingredients.split(",")
     recipes = find_recipes(recipe_data, [], omit_ingredients)
     output = ""
@@ -65,7 +62,6 @@ def search_omit(ingredients):
 def search_include_omit(include_ingredients, omit_ingredients):
     '''This function searches for recipes that include and omit the specified ingredients.'''
     recipe_data = get_data()
-    recipe_data = recipe_data[1:]
     include_ingredients = include_ingredients.split(",")
     omit_ingredients = omit_ingredients.split(",")
     recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
