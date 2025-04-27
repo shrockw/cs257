@@ -87,8 +87,7 @@ def parse_ingredients(ingredients_str):
     """
     if ingredients_str:
         return [item.strip() for item in ingredients_str.split(',') if item.strip()]
-    else:
-        return []
+    return []
 
 def random_cl(num_recipes):
     ''' Get a random n number of recipes.'''
