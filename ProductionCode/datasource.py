@@ -54,3 +54,11 @@ class DataSource:
         cursor.execute(query, values)
         recipes = cursor.fetchall()
         return [recipe[0] for recipe in recipes]
+
+    def get_random_recipes(self, number):
+        ''' This function retrieves random recipes from the database. '''
+        query = "SELECT * FROM recipes ORDER BY RANDOM() LIMIT %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, (number,))
+        records = cursor.fetchall()
+        return [recipe[0] for recipe in recipes]
