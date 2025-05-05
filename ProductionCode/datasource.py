@@ -2,7 +2,7 @@
 
 import sys
 import psycopg2
-import ProductionCode.psqlConfig as config
+import ProductionCode.psqlconfig as config
 
 class DataSource:
     '''This class handles the connection to the PostgreSQL database 
@@ -17,8 +17,8 @@ class DataSource:
         Returns the connection object.'''
 
         try:
-            connection = psycopg2.connect(database=config.database, user=config.user,
-                password=config.password, host="localhost")
+            connection = psycopg2.connect(database=config.DATABASE, user=config.USER,
+                password=config.PASSWORD, host="localhost")
         except psycopg2.Error as e:
             print("Connection error: ", e)
             sys.exit(1)
@@ -36,29 +36,31 @@ class DataSource:
         records = cursor.fetchall()
 
         print(records)
+        return records
 
-    def get_recipe_with(self, included_ingredients):
-        '''Returns a list of recipes that contain all specified ingredients'''
+    def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
+        '''Fetches recipes that include certain ingredients and exclude others. 
+        Returns a list of tuples containing the data.'''
+
         cursor = self.connection.cursor()
-
         query = "SELECT * FROM recipe WHERE "
-        conditions = []
-        values = []
-
-        for ingredient in included_ingredients:
-            conditions.append("ingredients LIKE %s")
-            values.append(f"%{ingredient}%")
-
-        query += " AND ".join(conditions)
-
-        cursor.execute(query, values)
-        recipes = cursor.fetchall()
-        return [recipe[0] for recipe in recipes]
+        if include_ingredients:
+            query += " AND ".join(
+                [f"ingredients ILIKE '%{ingredient}%'" for ingredient in include_ingredients])
+            if exclude_ingredients:
+                query += f" AND "
+        query += " AND ".join(
+            [f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
+        print(query)
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
 
     def get_random_recipes(self, number):
         ''' This function retrieves random recipes from the database. '''
-        query = "SELECT * FROM recipes ORDER BY RANDOM() LIMIT %s"
+        query = "SELECT * FROM recipe ORDER BY RANDOM() LIMIT %s"
         cursor = self.connection.cursor()
         cursor.execute(query, (number,))
         records = cursor.fetchall()
-        return [recipe[0] for recipe in recipes]
+        return records
