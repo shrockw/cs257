@@ -68,7 +68,7 @@ def main():
 
 def search_cl(include_ingredients, omit_ingredients):
     ''' Search for recipes based on the given ingredients. '''
-    recipes = get_recipe_with(include_ingredients, omit_ingredients)
+    recipes = get_recipe_by_ingredients(include_ingredients, omit_ingredients)
     print_recipes(recipes)
     return recipes
 
