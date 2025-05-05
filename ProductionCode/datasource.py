@@ -2,7 +2,7 @@
 
 import sys
 import psycopg2
-import ProductionCode.psqlConfig as config
+import ProductionCode.psqlconfig as config
 
 class DataSource:
     '''This class handles the connection to the PostgreSQL database 

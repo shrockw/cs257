@@ -3,9 +3,7 @@ This file is the command line interface for the project.
 '''
 import sys
 import argparse
-from ProductionCode.recipe_search import find_recipes
-from ProductionCode.random_recipe import get_random_recipes
-from ProductionCode.data import get_data
+from ProductionCode.datasource import DataSource
 
 
 def main():
@@ -70,8 +68,7 @@ def main():
 
 def search_cl(include_ingredients, omit_ingredients):
     ''' Search for recipes based on the given ingredients. '''
-    recipe_data = get_data()
-    recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
+    recipes = get_recipe_with(include_ingredients, omit_ingredients)
     print_recipes(recipes)
     return recipes
 
@@ -91,8 +88,7 @@ def parse_ingredients(ingredients_str):
 
 def random_cl(num_recipes):
     ''' Get a random n number of recipes.'''
-    recipe_data = get_data()
-    random_recipes = get_random_recipes(recipe_data, num_recipes)
+    random_recipes = get_random_recipes(num_recipes)
     print_recipes(random_recipes)
     return random_recipes
 
