@@ -22,7 +22,7 @@ class TestFlaskRoutes(unittest.TestCase):
         random.seed(32719)
         response = self.app.get('/random/1')
         self.assertIn(
-        b"Sweet Ricotta Pastries",
+        b"Chocolate Cookies",
         response.data, "Should match")
 
     def test_random_route_invalid(self):

@@ -3,9 +3,7 @@ The eventual location for the Flask app interface for the project.
 '''
 
 from flask import Flask
-from ProductionCode.random_recipe import get_random_recipes
-from ProductionCode.data import get_data
-from ProductionCode.recipe_search import find_recipes
+from ProductionCode.datasource import DataSource
 
 app = Flask(__name__)
 
@@ -27,21 +25,20 @@ def random_recipes(num_recipes):
     '''This function returns a random recipe from the dataset.'''
     if num_recipes < 1 or num_recipes > 10:
         return "Please enter a number between 1 and 10."
-    # Call the function to get random recipes here
-    recipe_data = get_data()
-    randrecipes = get_random_recipes(recipe_data, num_recipes)
+
+    recipe_data = DataSource()
+    random_recipes = recipe_data.get_random_recipes(num_recipes)
     output = ""
-    for recipe in randrecipes:
+    for recipe in random_recipes:
         output += f"{recipe[1]}: {recipe[2]}<br><br>"
-    # return str(recipes)
     return f"Returning {num_recipes} random recipes...<br><br> {output}"
 
 @app.route('/search/include/<string:ingredients>')
 def search_include(ingredients):
     '''This function searches for recipes that include the specified ingredients.'''
-    recipe_data = get_data()
+    recipe_data = DataSource()
     include_ingredients = ingredients.split(",")
-    recipes = find_recipes(recipe_data, include_ingredients, [])
+    recipes = recipe_data.get_recipe_by_ingredients(include_ingredients, [])
     output = ""
     for recipe in recipes:
         output += f"{recipe[1]}: {recipe[2]}<br><br>"
@@ -50,9 +47,9 @@ def search_include(ingredients):
 @app.route('/search/omit/<string:ingredients>')
 def search_omit(ingredients):
     '''This function searches for recipes that omit the specified ingredients.'''
-    recipe_data = get_data()
+    recipe_data = DataSource()
     omit_ingredients = ingredients.split(",")
-    recipes = find_recipes(recipe_data, [], omit_ingredients)
+    recipes = recipe_data.get_recipe_by_ingredients([], omit_ingredients)
     output = ""
     for recipe in recipes:
         output += f"{recipe[1]}: {recipe[2]}<br><br>"
@@ -61,10 +58,10 @@ def search_omit(ingredients):
 @app.route('/search/include/<string:include_ingredients>/omit/<string:omit_ingredients>')
 def search_include_omit(include_ingredients, omit_ingredients):
     '''This function searches for recipes that include and omit the specified ingredients.'''
-    recipe_data = get_data()
+    recipe_data = DataSource()
     include_ingredients = include_ingredients.split(",")
     omit_ingredients = omit_ingredients.split(",")
-    recipes = find_recipes(recipe_data, include_ingredients, omit_ingredients)
+    recipes = recipe_data.get_recipe_by_ingredients(include_ingredients, omit_ingredients)
     output = ""
     for recipe in recipes:
         output += f"{recipe[1]}: {recipe[2]}<br><br>"
