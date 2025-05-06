@@ -47,8 +47,8 @@ class TestFlaskRoutes(unittest.TestCase):
 
     def test_random_route_invalid(self):
         '''Test the random route with an invalid number.'''
-        response = self.app.get('/random/11')
-        self.assertIn(b"Please enter a number between 1 and 10.", response.data, "Should match")
+        response = self.app.get('/random/32543')
+        self.assertIn(b"Please enter a valid number between 1 and 13501.", response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_include_route(self, mock_connect):

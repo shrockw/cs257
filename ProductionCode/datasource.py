@@ -37,6 +37,14 @@ class DataSource:
         Returns a list of tuples containing the data.'''
 
         cursor = self.connection.cursor()
+        query = self.create_recipe_by_ingredients_query(include_ingredients, exclude_ingredients)
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+    
+    def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
+        '''Creates a SQL query to fetch recipes based on included and excluded ingredients.'''
         query = "SELECT * FROM recipe WHERE "
         if include_ingredients:
             query += " AND ".join(
@@ -45,10 +53,7 @@ class DataSource:
                 query += f" AND "
         query += " AND ".join(
             [f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
-        cursor.execute(query)
-        data = cursor.fetchall()
-        cursor.close()
-        return data
+        return query
 
     def get_random_recipes(self, number):
         ''' This function retrieves random recipes from the database. '''
