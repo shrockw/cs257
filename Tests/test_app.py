@@ -26,35 +26,78 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_random_route(self, mock_connect):
         '''Test the random route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(11286, 
-                                                   'Chocolate and Peppermint Candy Ice Cream Sandwiches', 
-                                                   'Stir together ice cream (reserve pint container), '
-                                                   'extract, and 1/2 cup crushed candy in a bowl until '
-                                                   'combined.\nTransfer mixture to pint container and '
-                                                   'freeze until just firm enough to scoop, about 1 hour.\n'
-                                                   'Working very quickly, scoop ice cream onto flat sides of '
-                                                   '8 wafers (1 scoop per wafer), then top with remaining 8 '
-                                                   'wafers, flat sides down. Wrap each sandwich individually '
-                                                   'with plastic wrap and freeze until firm, about 1 hour. '
-                                                   'Unwrap sandwiches and roll edges in remaining 1/2 cup '
-                                                   'crushed candy. Rewrap and freeze until firm, about 1 hour.', 
-                                                   "['1 pint superpremium vanilla ice cream, softened slightly', "
-                                                   "'1/4 teaspoon pure peppermint extract', '1 cup finely crushed "
-                                                   "peppermint hard candies (1/4 lb)', '16 chocolate wafers such "
-                                                   "as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
-        self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches", 
+        self.mock_cursor.fetchall.return_value = [(11286,'Chocolate and Peppermint '
+        'Candy Ice Cream Sandwiches', 'Stir together ice cream (reserve pint container), '
+        'extract, and 1/2 cup crushed candy in a bowl until combined.\nTransfer mixture '
+        'to pint container and freeze until just firm enough to scoop, about 1 hour.\n '
+        'Working very quickly, scoop ice cream onto flat sides of 8 wafers (1 scoop per '
+        'wafer), then top with remaining 8 wafers, flat sides down. Wrap each sandwich '
+        'individually with plastic wrap and freeze until firm, about 1 hour. Unwrap '
+        'sandwiches and roll edges in remaining 1/2 cup crushed candy. Rewrap and freeze '
+        'until firm, about 1 hour.', "['1 pint superpremium vanilla ice cream, softened "
+        "slightly', '1/4 teaspoon pure peppermint extract', '1 cup finely crushed peppermint "
+        "hard candies (1/4 lb)', '16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup "
+        "ice cream scoop']")]
+        self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       self.app.get('/random/1').data, "Should match")
 
     def test_random_route_invalid(self):
         '''Test the random route with an invalid number.'''
         response = self.app.get('/random/32543')
-        self.assertIn(b"Please enter a valid number between 1 and 13501.", response.data, "Should match")
+        self.assertIn(b"Please enter a valid number between 1 and 13501.", 
+                      response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_include_route(self, mock_connect):
         '''Test the search include route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(789, 'Cavatappi with Broccolini, Brown Butter, and Sage', 'Bring a large pot of water to a boil. Fill a large bowl with water and ice and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the boiling water and cook until crisp-tender, 2 to 3 minutes. Using a spider or slotted spoon, transfer the Broccolini to the ice water to stop the cooking and let cool. Keep the pot of water boiling for the pasta. Drain the broccolini in a colander, cut the stalks in half crosswise, and set aside.\nIn a large nonstick skillet over medium heat, heat the olive oil until shimmering. Add the garlic and red pepper flakes and cook, stirring frequently, for 1 minute. Add the blanched broccolini, 1/2 teaspoon salt, and 1/4 teaspoon black pepper and sauté until tender, 3 to 5 minutes. Transfer the broccolini to a medium bowl and set aside.\nAdd the pasta to the boiling water and cook until al dente, about 2 minutes less than the directions on the package. Reserve 1/2 cup of the pasta water and drain the pasta in a colander.\nMeanwhile, wipe out the skillet, return it to medium-low heat, and add the butter. When the butter has melted, add the sage leaves and cook until the butter turns amber brown and the sage shrivels, 4 to 6 minutes. Add 1/4 teaspoon salt and black pepper. Stir in the cooked pasta until incorporated, then fold in the broccolini and 2 to 3 tablespoons of the reserved pasta water.\nStir in the Parmesan cheese, adding more pasta water until you achieve desired creaminess. Season with salt and pepper and serve hot.', "['Kosher salt', '2 bunches Broccolini (about 1 pound), ends trimmed, split lengthwise into halves or thirds depending on the thickness (or substitute broccoli rabe or broccoli)', '2 tablespoons extra-virgin olive oil', '2 large cloves garlic, minced', '1/4 teaspoon crushed red pepper flakes', 'Freshly ground black pepper', '1 pound cavatappi pasta (or your favorite ribbed pasta)', '6 tablespoons unsalted butter, cubed', '15 fresh sage leaves, torn', '1/2 cup freshly grated Parmesan cheese']"), (944, 'Charred Steak and Broccolini with Cheese Sauce', 'Preheat oven to 450°F. Season steaks all over with pepper and 1 1/2 tsp. kosher salt. Let sit 10 minutes.\nMeanwhile, toss broccolini, oil, and 1/2 tsp. kosher salt on a rimmed baking sheet to combine. Spread out in a single layer and set aside.\nUsing tongs if needed, hold both steaks together fat cap side down in a large ovenproof skillet, then set over high heat. Cook until pan is coated in fat, about 4 minutes. Lay steaks flat and continue to sear until deeply browned, about 3 minutes per side. Transfer skillet to oven and roast steaks until an instant-read thermometer inserted into the thickest part registers 120°F for medium-rare, 6–8 minutes. Transfer to a cutting board and let rest 10 minutes before slicing.\nWhile steaks are resting, roast reserved broccolini until crisp-tender and lightly charred, about 10 minutes.\nHeat cheese, cream cheese, milk, nutmeg, cayenne, and remaining 1/4 tsp. kosher salt in a medium saucepan over medium, whisking constantly, until a smooth sauce forms, about 5 minutes.\nDivide sauce among plates. Top with broccolini and steaks; sprinkle with sea salt.', '[\'2 (1 1/2"–2" thick) boneless New York strip steaks\', \'1 tsp. freshly ground black pepper\', \'2 1/4 tsp. kosher salt, divided\', \'2 bunches broccolini (about 1 lb. total), trimmed, halved lengthwise\', \'1 Tbsp. extra-virgin olive oil\', \'3 oz. coarsely grated Gruyère (about 1½ cups)\', \'3 oz. cream cheese, cut into pieces\', \'3/4 cup whole milk\', \'1/4 tsp. freshly grated or ground nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']')]
+        self.mock_cursor.fetchall.return_value = [
+            (789, 'Cavatappi with Broccolini, Brown Butter, and Sage', 
+             'Bring a large pot of water to a boil. Fill a large bowl with water and ice and set '
+             'aside.\nAdd 1 tablespoon kosher salt and the broccolini to the boiling water and cook '
+             'until crisp-tender, 2 to 3 minutes. Using a spider or slotted spoon, transfer the '
+             'Broccolini to the ice water to stop the cooking and let cool. Keep the pot of water '
+             'boiling for the pasta. Drain the broccolini in a colander, cut the stalks in half '
+             'crosswise, and set aside.\nIn a large nonstick skillet over medium heat, heat the '
+             'olive oil until shimmering. Add the garlic and red pepper flakes and cook, stirring '
+             'frequently, for 1 minute. Add the blanched broccolini, 1/2 teaspoon salt, and 1/4 '
+             'teaspoon black pepper and sauté until tender, 3 to 5 minutes. Transfer the broccolini '
+             'to a medium bowl and set aside.\nAdd the pasta to the boiling water and cook until al '
+             'dente, about 2 minutes less than the directions on the package. Reserve 1/2 cup of the '
+             'pasta water and drain the pasta in a colander.\nMeanwhile, wipe out the skillet, '
+             'return it to medium-low heat, and add the butter. When the butter has melted, '
+             'add the sage leaves and cook until the butter turns amber brown and the sage shrivels, '
+             '4 to 6 minutes. Add 1/4 teaspoon salt and black pepper. Stir in the cooked pasta until '
+             'incorporated, then fold in the broccolini and 2 to 3 tablespoons of the reserved pasta '
+             'water.\nStir in the Parmesan cheese, adding more pasta water until you achieve desired '
+             'creaminess. Season with salt and pepper and serve hot.', 
+             "['Kosher salt', '2 bunches Broccolini (about 1 pound), ends trimmed, split lengthwise "
+             "into halves or thirds depending on the thickness (or substitute broccoli rabe or broccoli)', "
+             "'2 tablespoons extra-virgin olive oil', '2 large cloves garlic, minced', '1/4 teaspoon "
+             "crushed red pepper flakes', 'Freshly ground black pepper', '1 pound cavatappi pasta "
+             "(or your favorite ribbed pasta)', '6 tablespoons unsalted butter, cubed', '15 fresh "
+             "sage leaves, torn', '1/2 cup freshly grated Parmesan cheese']"), 
+             (944, 'Charred Steak and Broccolini with Cheese Sauce', 
+              'Preheat oven to 450°F. Season steaks all over with pepper and 1 1/2 tsp. kosher salt. '
+              'Let sit 10 minutes.\nMeanwhile, toss broccolini, oil, and 1/2 tsp. kosher salt on a '
+              'rimmed baking sheet to combine. Spread out in a single layer and set aside.\nUsing '
+              'tongs if needed, hold both steaks together fat cap side down in a large ovenproof '
+              'skillet, then set over high heat. Cook until pan is coated in fat, about 4 minutes. '
+              'Lay steaks flat and continue to sear until deeply browned, about 3 minutes per side. '
+              'Transfer skillet to oven and roast steaks until an instant-read thermometer inserted '
+              'into the thickest part registers 120°F for medium-rare, 6–8 minutes. Transfer to a '
+              'cutting board and let rest 10 minutes before slicing.\nWhile steaks are resting, '
+              'roast reserved broccolini until crisp-tender and lightly charred, about 10 '
+              'minutes.\nHeat cheese, cream cheese, milk, nutmeg, cayenne, and remaining 1/4 tsp. '
+              'kosher salt in a medium saucepan over medium, whisking constantly, until a smooth '
+              'sauce forms, about 5 minutes.\nDivide sauce among plates. Top with broccolini and steaks; '
+              'sprinkle with sea salt.', 
+              '[\'2 (1 1/2"–2" thick) boneless New York strip steaks\', \'1 tsp. freshly ground black '
+              'pepper\', \'2 1/4 tsp. kosher salt, divided\', \'2 bunches broccolini (about 1 lb. total), '
+              'trimmed, halved lengthwise\', \'1 Tbsp. extra-virgin olive oil\', \'3 oz. coarsely grated '
+              'Gruyère (about 1½ cups)\', \'3 oz. cream cheese, cut into pieces\', \'3/4 cup whole milk\', '
+              '\'1/4 tsp. freshly grated or ground nutmeg\', \'Large pinch of cayenne pepper\', '
+              '\'Flaky sea salt\']')]
         response = self.app.get('/search/include/cheese,broccoli')
         self.assertIn(
         b"Cavatappi with Broccolini, Brown Butter, and Sage",
