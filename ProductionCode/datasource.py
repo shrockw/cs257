@@ -43,7 +43,7 @@ class DataSource:
         print(data)
         cursor.close()
         return data
-    
+
     def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
         '''Creates a SQL query to fetch recipes based on included and excluded ingredients.'''
         query = "SELECT * FROM recipe WHERE "
@@ -51,7 +51,7 @@ class DataSource:
             query += " AND ".join(
                 [f"ingredients ILIKE '%{ingredient}%'" for ingredient in include_ingredients])
             if exclude_ingredients:
-                query += f" AND "
+                query += " AND "
         query += " AND ".join(
             [f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
         return query
@@ -64,4 +64,3 @@ class DataSource:
         records = cursor.fetchall()
         cursor.close()
         return records
-

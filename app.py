@@ -1,5 +1,6 @@
 '''
-The eventual location for the Flask app interface for the project.
+This is the main file for the Flask web application.
+It handles the routing and serves the web pages.
 '''
 
 from flask import Flask
@@ -14,7 +15,7 @@ def homepage():
     '''This function returns the homepage.'''
     return "In the url after the /, \
         enter the word random, then a /, \
-        then a number between 1 and 10. \
+        then a number between 1 and 13501. \
         This will return that many random recipes from the dataset. \
         For example: /random/3 will return 3 random recipes. <br><br> \
         Or to search for recipes with specific ingredients, \
@@ -24,7 +25,9 @@ def homepage():
 
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):
-    '''This function returns a random recipe from the dataset.'''
+    '''This function takes in n number of recipes (num_recipes)
+      between 1 and 13501 and returns n random recipes from the
+        dataset separated by line breaks.'''
     if num_recipes < 1 or num_recipes > TOTAL_NUM_RECIPES:
         return "Please enter a valid number between 1 and 13501."
 
@@ -34,7 +37,7 @@ def random_recipes(num_recipes):
     return f"Returning {num_recipes} random recipes...<br><br> {output}"
 
 def build_output_string(recipes):
-    '''This function builds the output string for the recipes.'''
+    '''This function builds the output string for the given recipes.'''
     output = ""
     for recipe in recipes:
         output += f"{recipe[1]}: {recipe[2]}<br><br>"
@@ -45,7 +48,8 @@ def build_output_string(recipes):
 @app.route('/search/omit/<string:omit_ingredients>', defaults={'include_ingredients': None})
 @app.route('/search/include/<string:include_ingredients>/omit/<string:omit_ingredients>')
 def search_include_omit(include_ingredients, omit_ingredients):
-    '''This function searches for recipes that include and omit the specified ingredients.'''
+    '''This function searches for recipes that include and omit the specified ingredients
+    and returns the recipes that satisfy these parameters in specified format.'''
     recipe_data = DataSource()
     if include_ingredients:
         parsed_include_ingredients = parse_ingredients(include_ingredients)
@@ -55,13 +59,14 @@ def search_include_omit(include_ingredients, omit_ingredients):
         parsed_omit_ingredients = parse_ingredients(omit_ingredients)
     else:
         parsed_omit_ingredients = []
-    recipes = recipe_data.get_recipe_by_ingredients(parsed_include_ingredients, parsed_omit_ingredients)
+    recipes = recipe_data.get_recipe_by_ingredients(parsed_include_ingredients,\
+                                                     parsed_omit_ingredients)
     output = build_output_string(recipes)
     return f"Recipes including {include_ingredients} and omitting {omit_ingredients}: \
         <br><br> {output}"
 
 def parse_ingredients(ingredients):
-    '''This function parses the ingredients from the URL.'''
+    '''This function parses the ingredients from the URL into a list of ingredients.'''
     return ingredients.split(",")
 
 @app.errorhandler(404)
