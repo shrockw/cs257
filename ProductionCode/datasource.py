@@ -40,6 +40,7 @@ class DataSource:
         query = self.create_recipe_by_ingredients_query(include_ingredients, exclude_ingredients)
         cursor.execute(query)
         data = cursor.fetchall()
+        print(data)
         cursor.close()
         return data
     

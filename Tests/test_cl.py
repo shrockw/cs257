@@ -3,261 +3,12 @@ Contains tests for the command line interface of the program.
 '''
 
 import unittest
-import unittest.mock
+from unittest.mock import MagicMock, patch
 import sys
 from io import StringIO
 import random
-from ProductionCode.data import get_data
-from ProductionCode.recipe_search import find_recipes
-from ProductionCode.random_recipe import get_random_recipes
+from ProductionCode.datasource import DataSource
 from cl import main
-
-
-class TestData(unittest.TestCase):
-    '''
-    Extends the unittest.TestCase class to test the get_data function.
-    '''
-
-    def test_data(self):
-        '''
-        Tests for the data.
-        '''
-
-        recipe = ['10', 'Hot Pimento Cheese Dip', 'Put the chipotle peppers and adobo sauce in '
-        'a small food processor or blender and blend until the mixture turns into a smooth purée. '
-        'Set aside. The chipotle purée can be made in advance, stored in an airtight container, '
-        'and refrigerated for up to 2 months.\nOn a cutting board, sprinkle the garlic with a '
-        'large pinch of salt and gather it into a small mound. Holding the blunt side of the knife '
-        'with both hands, press and scrape the knife’s sharp end, holding it at a slight angle, '
-        'across the garlic mound to flatten it. Repeat, dragging it across the garlic, until you '
-        'have a smooth paste. Set aside.\nIn a small bowl, mix the cornstarch and 1½ tsp. of the '
-        'evaporated milk into a slurry. Pour the rest of the evaporated milk into a medium '
-        'saucepan and stir in the slurry. Bring to a boil over medium-high heat, whisking '
-        'constantly. Turn the heat to low and add the Cheddar gradually by the handful, stirring '
-        'until the Cheddar is melted and the mixture is smooth. Add the cream cheese and whisk '
-        'until it melts. Stir in the mayonnaise, pimento peppers, 1½ tsp. of the chipotle purée, '
-        'and the garlic paste. Season with salt. Transfer to a serving bowl or keep it warm '
-        'in a slow cooker and serve immediately.\nTo reheat the sauce, microwave it, stirring '
-        'every 30 seconds, until fully melted.', 
-        ['1 (7 oz./200 g) can chipotle in adobo sauce', '½ garlic clove, minced', 'Kosher salt',
-         '1½ tsp. cornstarch', '1 (5 fl oz./150 ml) can evaporated milk (about ½ cup plus 2 Tbsp)', 
-         '8 oz. (230 g) sharp or extra-sharp Cheddar cheese, coarsely grated (about 2 cups)', 
-         '2 oz. (55 g) cream cheese, roughly diced, at room temperature', '¼ cup (60 g) mayonnaise', 
-         '1 (4 oz./115 g) jar diced pimento peppers, drained', '1½ tsp. Chipotle Pepper Purée']]
-        self.assertIn(recipe, get_data(), "Should be the same")
-
-
-class TestRandomRecipe(unittest.TestCase):
-    '''
-    Tests the random recipe function.
-    '''
-
-    def setUp(self):
-        random.seed(931254)
-        self.test_recipes = [
-            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']],
-            ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']],
-            ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']],
-            ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']],
-            ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']],
-            ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']],
-            ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']],
-            ['7', 'Title8', 'Instructions for Title8',
-             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-            ['8', 'Title9', 'Instructions for Title9',
-             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-            ['9', 'Title10', 'Instructions for Title10',
-             ['Ingredient4', 'Ingredient8', 'Ingrediente']]
-        ]
-
-    def test_random_recipe(self):
-        '''
-        Tests the random recipe function.
-        '''
-
-        expected_recipes = [['9', 'Title10', 'Instructions for Title10', [
-            'Ingredient4', 'Ingredient8', 'Ingrediente']]]
-        self.assertEqual(get_random_recipes(self.test_recipes, 1),
-                         expected_recipes, "Should be the same")
-
-        expected_recipes = [['6', 'Title7', 'Instructions for Title7',
-                             ['Ingredientd', 'Ingrediente']],
-                            ['3', 'Title4', 'Instructions for Title4',
-                             ['Ingredient7', 'Ingredient8']],
-                            ['7', 'Title8', 'Instructions for Title8',
-                             ['Ingredientf', 'Ingredientg', 'Ingredient3']]]
-
-        self.assertEqual(get_random_recipes(self.test_recipes, 3),
-                         expected_recipes, "Should be the same")
-
-        expected_recipes = []
-        self.assertEqual(get_random_recipes(self.test_recipes, 0),
-                         expected_recipes, "Should be the same")
-
-    def test_random_recipe_invalid(self):
-        '''
-        Tests the random recipe function with invalid input.
-        '''
-
-        with self.assertRaises(ValueError):
-            get_random_recipes(self.test_recipes, -1)
-
-        with self.assertRaises(ValueError):
-            get_random_recipes(self.test_recipes, 100)
-
-
-class TestRecipeSearch(unittest.TestCase):
-    '''
-    Tests the recipe search function.
-    '''
-
-    def setUp(self):
-        self.test_recipes = [
-            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']],
-            ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']],
-            ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']],
-            ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']],
-            ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']],
-            ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']],
-            ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']],
-            ['7', 'Title8', 'Instructions for Title8',
-             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-            ['8', 'Title9', 'Instructions for Title9',
-             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-            ['9', 'Title10', 'Instructions for Title10',
-             ['Ingredient4', 'Ingredient8', 'Ingrediente']]
-        ]
-
-    def test_recipe_search_wanted(self):
-        '''
-        Tests the recipe search function.
-        '''
-
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1',
-                             ['Ingredient1', 'Ingredient2']],
-                            ['8', 'Title9', 'Instructions for Title9',
-                             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]
-        self.assertEqual(find_recipes(self.test_recipes, ["Ingredient1"], [
-        ]), expected_recipes, "Should be the same")
-
-        expected_recipes = []
-        self.assertEqual(find_recipes(self.test_recipes, ["Ingredient1", "Ingredient3"], [
-        ]), expected_recipes, "Should be the same")
-
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1',
-                             ['Ingredient1', 'Ingredient2']],
-                            ['1', 'Title2', 'Instructions for Title2',
-                             ['Ingredient3', 'Ingredient4']],
-                            ['2', 'Title3', 'Instructions for Title3',
-                             ['Ingredient5', 'Ingredient6']],
-                            ['3', 'Title4', 'Instructions for Title4',
-                             ['Ingredient7', 'Ingredient8']],
-                            ['4', 'Title5', 'Instructions for Title5',
-                             ['Ingredient9', 'Ingredienta']],
-                            ['5', 'Title6', 'Instructions for Title6',
-                             ['Ingredientb', 'Ingredientc']],
-                            ['6', 'Title7', 'Instructions for Title7',
-                             ['Ingredientd', 'Ingrediente']],
-                            ['7', 'Title8', 'Instructions for Title8',
-                             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-                            ['8', 'Title9', 'Instructions for Title9',
-                             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-                            ['9', 'Title10', 'Instructions for Title10',
-                             ['Ingredient4', 'Ingredient8', 'Ingrediente']]]
-        self.assertEqual(find_recipes(self.test_recipes, ["Ingredient"], [
-        ]), expected_recipes, "Should be the same")
-
-    def test_recipe_search_unwanted(self):
-        '''
-        Tests the recipe search function.
-        '''
-
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1',
-                             ['Ingredient1', 'Ingredient2']],
-                            ['1', 'Title2', 'Instructions for Title2',
-                             ['Ingredient3', 'Ingredient4']],
-                            ['3', 'Title4', 'Instructions for Title4',
-                             ['Ingredient7', 'Ingredient8']],
-                            ['4', 'Title5', 'Instructions for Title5',
-                             ['Ingredient9', 'Ingredienta']],
-                            ['5', 'Title6', 'Instructions for Title6',
-                             ['Ingredientb', 'Ingredientc']],
-                            ['6', 'Title7', 'Instructions for Title7',
-                             ['Ingredientd', 'Ingrediente']],
-                            ['7', 'Title8', 'Instructions for Title8',
-                             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-                            ['8', 'Title9', 'Instructions for Title9',
-                             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-                            ['9', 'Title10', 'Instructions for Title10',
-                             ['Ingredient4', 'Ingredient8', 'Ingrediente']]]
-
-        self.assertEqual(find_recipes(self.test_recipes, [], [
-                         "Ingredient5"]), expected_recipes, "Should be the same")
-
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1',
-                             ['Ingredient1', 'Ingredient2']],
-                            ['1', 'Title2', 'Instructions for Title2',
-                             ['Ingredient3', 'Ingredient4']],
-                            ['2', 'Title3', 'Instructions for Title3',
-                             ['Ingredient5', 'Ingredient6']],
-                            ['3', 'Title4', 'Instructions for Title4',
-                             ['Ingredient7', 'Ingredient8']],
-                            ['5', 'Title6', 'Instructions for Title6',
-                             ['Ingredientb', 'Ingredientc']],
-                            ['7', 'Title8', 'Instructions for Title8',
-                             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-                            ['8', 'Title9', 'Instructions for Title9',
-                             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]]
-        self.assertEqual(find_recipes(self.test_recipes, [], [
-                         "Ingrediente", "Ingredient9"]), expected_recipes, "Should be the same")
-
-        expected_recipes = []
-        self.assertEqual(find_recipes(self.test_recipes, [], [
-                         "Ingredient"]), expected_recipes, "Should be the same")
-
-    def test_recipe_search_both(self):
-        '''
-        Tests the recipe search function.
-        '''
-
-        expected_recipes = [
-            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']]]
-
-
-        self.assertEqual(find_recipes(self.test_recipes, ["Ingredient1", "Ingredient2"], [
-                         "Ingredient11"]), expected_recipes, "Should be the same")
-
-        expected_recipes = [['0', 'Title1', 'Instructions for Title1',
-                             ['Ingredient1', 'Ingredient2']],
-                            ['1', 'Title2', 'Instructions for Title2',
-                             ['Ingredient3', 'Ingredient4']],
-                            ['2', 'Title3', 'Instructions for Title3',
-                             ['Ingredient5', 'Ingredient6']],
-                            ['3', 'Title4', 'Instructions for Title4',
-                             ['Ingredient7', 'Ingredient8']],
-                            ['4', 'Title5', 'Instructions for Title5',
-                             ['Ingredient9', 'Ingredienta']],
-                            ['5', 'Title6', 'Instructions for Title6',
-                             ['Ingredientb', 'Ingredientc']],
-                            ['6', 'Title7', 'Instructions for Title7',
-                             ['Ingredientd', 'Ingrediente']],
-                            ['7', 'Title8', 'Instructions for Title8',
-                             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-                            ['8', 'Title9', 'Instructions for Title9',
-                             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-                             ['9', 'Title10', 'Instructions for Title10',
-                              ['Ingredient4', 'Ingredient8', 'Ingrediente']]]
-
-        self.assertEqual(find_recipes(self.test_recipes, [], []),
-                         expected_recipes, "Should be the same")
-
-        expected_recipes = []
-        self.assertEqual(find_recipes(self.test_recipes, ["Ingredient"], [
-                         "Ingredient"]), expected_recipes, "Should be the same")
-
-        expected_recipes = []
-        self.assertEqual(find_recipes(self.test_recipes, ["Ingredient4"], [
-                         "Ingredient4"]), expected_recipes, "Should be the same")
 
 
 class TestCommandLine(unittest.TestCase):
@@ -268,29 +19,9 @@ class TestCommandLine(unittest.TestCase):
         '''
         Sets up the test environment by mocking the get_data function.
         '''
-        self.patcher = unittest.mock.patch('cl.get_data')
-        self.mock_get_data = self.patcher.start()
-        self.mock_get_data.return_value = [
-            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']],
-            ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']],
-            ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']],
-            ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']],
-            ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']],
-            ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']],
-            ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']],
-            ['7', 'Title8', 'Instructions for Title8',
-             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-            ['8', 'Title9', 'Instructions for Title9',
-             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-            ['9', 'Title10', 'Instructions for Title10',
-             ['Ingredient4', 'Ingredient8', 'Ingrediente']]
-        ]
-
-    def tearDown(self):
-        '''
-        Stops the patcher after the test.
-        '''
-        self.patcher.stop()
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+        
 
 class TestMainFunction(unittest.TestCase):
     '''
@@ -300,96 +31,75 @@ class TestMainFunction(unittest.TestCase):
         '''
         Sets up the test environment by mocking the get_data function.
         '''
-        self.patcher = unittest.mock.patch('cl.get_data')
-        self.mock_get_data = self.patcher.start()
-        self.mock_get_data.return_value = [
-            ['0', 'Title1', 'Instructions for Title1', ['Ingredient1', 'Ingredient2']],
-            ['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']],
-            ['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']],
-            ['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']],
-            ['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']],
-            ['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']],
-            ['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']],
-            ['7', 'Title8', 'Instructions for Title8',
-             ['Ingredientf', 'Ingredientg', 'Ingredient3']],
-            ['8', 'Title9', 'Instructions for Title9',
-             ['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']],
-            ['9', 'Title10', 'Instructions for Title10',
-             ['Ingredient4', 'Ingredient8', 'Ingrediente']]
-        ]
+        self.mock_cursor = MagicMock()
+        self.mock_conn = MagicMock()
+        self.mock_conn.cursor.return_value = self.mock_cursor
 
-    def tearDown(self):
-        '''
-        Stops the patcher after the test.
-        '''
-        self.patcher.stop()
-
-    def test_main_random(self):
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def test_main_random(self, mock_connect):
         '''Tests the main function for getting random recipes'''
+        mock_connect.return_value = self.mock_conn
+
+        # Set return value of fetchall on the mock cursor
+        self.mock_cursor.fetchall.return_value = [(
+            11286,
+            'Chocolate and Peppermint Candy Ice Cream Sandwiches',
+            'Stir together ice cream...',
+            "['1 pint superpremium vanilla ice cream...']"
+        )]
 
         sys.argv = ['cl.py', '--random', '1']
         sys.stdout = StringIO()
-
-        expected_recipe = "Getting random recipes...\n['9', 'Title10', " \
-        "'Instructions for Title10', ['Ingredient4', 'Ingredient8', 'Ingrediente']]"
-
-        random.seed(32719)
-
+    
         main()
 
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, expected_recipe, "Should be the same")
+        self.assertIn('Chocolate and Peppermint Candy Ice Cream Sandwiches', output)
 
-    def test_command_line_search(self):
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def test_command_line_search(self, mock_connect):
         '''
         Tests the command line interface.
         '''
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.fetchall.return_value = [(13401, 'Thai-Style Chicken and Rice Soup', 'Combine stock, water, curry paste, garlic, ginger, coriander seeds, and whole cilantro leaves in a 3- to 4-quart saucepan, then simmer, uncovered, until ginger is softened, about 15 minutes. Pour through a paper-towel-lined sieve into a 5- to 6-quart heavy pot and discard solids. Stir rice into soup and simmer, uncovered, stirring occasionally, until tender, about 15 minutes.\nAdd chicken or shrimp and poach at a bare simmer, uncovered, until just cooked through, about 3 minutes. Stir in coconut milk, snow peas, and fish sauce and simmer, uncovered, until peas are crisp-tender, about 2 minutes. Remove from heat and stir in lime juice, salt, and chopped cilantro.\n*Available at Asian markets, some specialty foods shops, and some supermarkets.', "['8 cups chicken stock or low-sodium chicken broth (64 fl oz)', '4 cups water', '1 tablespoon Thai green curry paste*', '4 garlic cloves, coarsely chopped', '1 (2-inch) piece peeled fresh ginger, coarsely chopped', '1 teaspoon coriander seeds, crushed', '2 cups loosely packed whole fresh cilantro leaves plus 1/2 cup chopped (from 2 large bunches)', '1 cup jasmine rice', '3/4 lb boneless skinless chicken breast, thinly sliced crosswise, then slices cut lengthwise into thin strips, or 3/4 lb medium shrimp in shell (31 to 35 per lb), peeled and deveined', '1 (13- to 14-oz) can unsweetened coconut milk, stirred well', '1/4 lb snow peas, trimmed and cut diagonally into 1/4-inch strips', '2 tablespoons Asian fish sauce', '2 tablespoons fresh lime juice', '1 1/2 teaspoons salt, or to taste', 'Accompaniment: lime wedges']")]
 
         # Test the command line interface with the --include option
         sys.argv = ['cl.py', '--search',
-                    '--include_ingredients', 'Ingredient1, Ingredient2']
+                    '--include_ingredients', 'chicken, rice']
         sys.stdout = StringIO()
 
         main()
 
-        expected_recipes = "Searching for recipes...\n['0', 'Title1', 'Instructions for Title1', " \
-            "['Ingredient1', 'Ingredient2']]"
-
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, expected_recipes, "Should be the same")
+        self.assertIn('Thai-Style Chicken and Rice Soup', output, "Should be the same")
+
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.fetchall.return_value = [(13483, 'White Chicken Chili', 'In a large kettle soak beans in cold water to cover by 2 inches overnight. Drain beans in a colander and return to kettle with cold water to cover by 2 inches. Cook beans at a bare simmer until tender, about 1 hour, and drain in colander.\nIn a skillet cook onion in 2 tablespoons butter over moderate heat until softened.\nIn a 6- to 8-quart heavy kettle melt remaining 6 tablespoons butter over moderately low heat and whisk in flour. Cook roux, whisking constantly, 3 minutes. Stir in onion and gradually add broth and half-and-half, whisking constantly. Bring mixture to a boil and simmer, stirring occasionally, 5 minutes, or until thickened. Stir in Tabasco, chili powder, cumin, salt, and white pepper. Add beans, chilies, chicken, and Monterey Jack and cook mixture over moderately low heat, stirring, 20 minutes. Stir sour cream into chili.\nGarnish chili with coriander and serve with salsa.', "['1/2 pound dried navy beans, picked over', '1 large onion, chopped', '1 stick (1/2 cup) unsalted butter', '1/4 cup all-purpose flour', '3/4 cup chicken broth', '2 cups half-and-half', '1 teaspoon Tabasco, or to taste', '1 1/2 teaspoons chili powder', '1 teaspoon ground cumin', '1/2 teaspoon salt, or to taste', '1/2 teaspoon white pepper, or to taste', 'two 4-ounce cans whole mild green chilies, drained and chopped', '5 boneless skinless chicken breast halves (about 2 pounds), cooked and cut into 1/2-inch pieces', '1 1/2 cups grated Monterey Jack (about 6 ounces)', '1/2 cup sour cream', 'Garnish: fresh coriander sprigs', 'Accompaniment: tomato salsa']")]
 
         # Test the command line interface with both --incluce and --omit option
         sys.argv = ['cl.py', '--search', '--include_ingredients',
-                    'Ingredient1', '--omit_ingredients', 'Ingredient2']
+                    'chicken', '--omit_ingredients', 'kale']
         sys.stdout = StringIO()
 
         main()
 
-        expected_recipes = "Searching for recipes...\n['8', 'Title9', 'Instructions for Title9', " \
-            "['Ingredienth', 'Ingredienti', 'Ingredient7', 'Ingredient1']]"
-
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, expected_recipes, "Should be the same")
+        self.assertIn('White Chicken Chili', output, "Should be the same")
+
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def test_command_line_omit(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.fetchall.return_value = [(13499, 'Spanakopita', 'Melt 1 tablespoon butter in a 12-inch heavy skillet over moderate heat, then cook spinach, stirring, until wilted and tender, about 4 minutes. Remove from heat and cool, about 10 minutes. Squeeze handfuls of spinach to remove as much liquid as possible, then coarsely chop. Transfer to a bowl and stir in feta, nutmeg, 1/2 teaspoon salt, and 1/2 teaspoon pepper.\nPreheat oven to 375°F.\nMelt remaining 1 stick butter in a small saucepan, then cool.\nCover phyllo stack with 2 overlapping sheets of plastic wrap and then a dampened kitchen towel.\nTake 1 phyllo sheet from stack and arrange on a work surface with a long side nearest you (keeping remaining sheets covered) and brush with some butter. Top with another phyllo sheet and brush with more butter. Cut buttered phyllo stack crosswise into 6 (roughly 12- by 2 3/4-inch) strips.\nPut a heaping teaspoon of filling near 1 corner of a strip on end nearest you, then fold corner of phyllo over to enclose filling and form a triangle. Continue folding strip (like a flag), maintaining triangle shape. Put triangle, seam side down, on a large baking sheet and brush top with butter. Make more triangles in same manner, using all of phyllo.\nBake triangles in middle of oven until golden brown, 20 to 25 minutes, then transfer to a rack to cool slightly.', "['1 stick (1/2 cup) plus 1 tablespoon unsalted butter', '1 lb baby spinach', '1/2 lb feta, crumbled (scant 2 cups)', '1/2 teaspoon freshly grated nutmeg', '10 (17- by 12-inch) phyllo sheets', 'thawed if frozen']")]
 
         # Test the command line interface with --omit option
-        sys.argv = ['cl.py', '--search', '--omit_ingredients', 'Ingredient1']
+        sys.argv = ['cl.py', '--search', '--omit_ingredients', 'chicken']
         sys.stdout = StringIO()
 
         main()
 
-        expected_recipes = "Searching for recipes...\n" \
-            "['1', 'Title2', 'Instructions for Title2', ['Ingredient3', 'Ingredient4']]\n" \
-            "['2', 'Title3', 'Instructions for Title3', ['Ingredient5', 'Ingredient6']]\n" \
-            "['3', 'Title4', 'Instructions for Title4', ['Ingredient7', 'Ingredient8']]\n" \
-            "['4', 'Title5', 'Instructions for Title5', ['Ingredient9', 'Ingredienta']]\n" \
-            "['5', 'Title6', 'Instructions for Title6', ['Ingredientb', 'Ingredientc']]\n" \
-            "['6', 'Title7', 'Instructions for Title7', ['Ingredientd', 'Ingrediente']]\n" \
-            "['7', 'Title8', 'Instructions for Title8', "\
-            "['Ingredientf', 'Ingredientg', 'Ingredient3']]\n" \
-            "['9', 'Title10', 'Instructions for Title10', " \
-            "['Ingredient4', 'Ingredient8', 'Ingrediente']]"
         output = sys.stdout.getvalue().strip()
-        self.assertEqual(output, expected_recipes, "Should be the same")
+        self.assertIn('Spanakopita', output, "Should be the same")
 
     def test_command_line_help(self):
         '''
