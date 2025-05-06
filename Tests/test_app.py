@@ -1,12 +1,17 @@
 '''Tests for Flask application routes.'''
 import unittest
-import random
+from unittest.mock import MagicMock, patch
 from app import app
+from ProductionCode.datasource import DataSource
 
 class TestFlaskRoutes(unittest.TestCase):
     '''Test case for Flask application routes.'''
     def setUp(self):
         self.app = app.test_client()
+        #create a mock connection and cursor
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+
 
     def test_homepage(self):
         '''Test the homepage route.'''
@@ -17,13 +22,15 @@ class TestFlaskRoutes(unittest.TestCase):
         This will return that many random recipes from the dataset. \
         For example: /random/3 will return 3 random recipes.", response.data, "Should match")
 
-    def test_random_route(self):
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def test_random_route(self, mock_connect):
         '''Test the random route.'''
-        random.seed(32719)
-        response = self.app.get('/random/1')
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.fetchall.return_value = "Fennel-Potato Soup with Smoked Salmon: Melt butter in heavy large pot over medium-high heat. Add fennel, leek, and fennel seeds and cook until vegetables begin to soften, stirring often, about 8 minutes. Add potatoes and 5 1/2 cups broth. Bring to boil; reduce heat to medium. Cover with lid slightly ajar and simmer until potatoes are tender, about 12 minutes. Working in batches, puree soup in blender. Return soup to pot and rewarm over medium heat, stirring often and thinning with more broth by 1/4 cupfuls for desired consistency. Season soup with salt and pepper. Divide soup among bowls. Garnish with smoked salmon and reserved chopped fennel fronds."
+        data = DataSource()
         self.assertIn(
-        b"Chocolate Cookies",
-        response.data, "Should match")
+        "Fennel-Potato Soup",
+        data.get_random_recipes(1), "Should match")
 
     def test_random_route_invalid(self):
         '''Test the random route with an invalid number.'''

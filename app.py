@@ -70,12 +70,31 @@ def search_include_omit(include_ingredients, omit_ingredients):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    '''This function handles 404 errors, which are page not found errors.'''
-    return f"Sorry, wrong format. Do this instead: the_url/random/number_of_recipes or <br><br> \
-        the_url/search/include/[ingredients separated by commas] or <br><br> \
-        the_url/search/omit/[ingredients separated by commas] or <br><br> \
-        the_url/search/[ingredients separated by commas]/omit/[ingredients separated by commas] \
-            {str(e)}"
+    '''This function handles 404 errors with helpful usage suggestions.'''
+    return f"""
+    <h1>Oops! Page not found</h1>
+    <p>Sorry, the URL you requested could not be found.</p>
+    <p>Here are some ways you can use this application:</p>
+    <ul>
+        <li><strong>Get a random number recipes:</strong><br> 
+            the_url/random/number_of_recipes<br>
+            Example: <code>the_url/random/3</code>
+        </li><br>
+        <li><strong>Search for recipes by included ingredients:</strong><br>
+            the_url/search/include/[ingredients separated by commas]<br>
+            Example: <code>the_url/search/include/chicken,rice</code>
+        </li><br>
+        <li><strong>Search for recipes omitting certain ingredients:</strong><br>
+            the_url/search/omit/[ingredients separated by commas]<br>
+            Example: <code>the_url/search/omit/onion,garlic</code>
+        </li><br>
+        <li><strong>Search by included and omitted ingredients:</strong><br>
+            the_url/search/include/[included ingredients]/omit/[omitted ingredients]<br>
+            Example: <code>the_url/search/include/chicken,rice/omit/onion,garlic</code>
+        </li>
+    </ul>
+    <p>{str(e)}</p>
+    """
 
 @app.errorhandler(500)
 def python_bug(e):
