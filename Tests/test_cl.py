@@ -6,8 +6,6 @@ import unittest
 from unittest.mock import MagicMock, patch
 import sys
 from io import StringIO
-import random
-from ProductionCode.datasource import DataSource
 from cl import main
 
 
@@ -21,7 +19,7 @@ class TestCommandLine(unittest.TestCase):
         '''
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
-        
+
 
 class TestMainFunction(unittest.TestCase):
     '''
@@ -49,7 +47,7 @@ class TestMainFunction(unittest.TestCase):
 
         sys.argv = ['cl.py', '--random', '1']
         sys.stdout = StringIO()
-    
+
         main()
 
         output = sys.stdout.getvalue().strip()
@@ -61,7 +59,7 @@ class TestMainFunction(unittest.TestCase):
         Tests the command line interface.
         '''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(13401, 'Thai-Style Chicken and Rice Soup', 
+        self.mock_cursor.fetchall.return_value = [(13401, 'Thai-Style Chicken and Rice Soup',
         'Combine stock, water, curry paste, garlic, ginger, ...',
         "['8 cups chicken stock or low-sodium chicken broth (64 fl oz)...']")]
 
@@ -76,7 +74,7 @@ class TestMainFunction(unittest.TestCase):
         self.assertIn('Thai-Style Chicken and Rice Soup', output, "Should be the same")
 
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(13483, 'White Chicken Chili', 
+        self.mock_cursor.fetchall.return_value = [(13483, 'White Chicken Chili',
         'In a large kettle soak beans in cold water to cover...',
         "['1/2 pound dried navy beans, picked over...'")]
 
@@ -92,8 +90,11 @@ class TestMainFunction(unittest.TestCase):
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_command_line_omit(self, mock_connect):
+        '''
+        Tests the command line interface with omitted ingredients.
+        '''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(13499, 'Spanakopita', 
+        self.mock_cursor.fetchall.return_value = [(13499, 'Spanakopita',
         'Melt 1 tablespoon butter in a 12-inch heavy skillet...',
         "['1 stick (1/2 cup) plus 1 tablespoon unsalted butter...'")]
 
@@ -108,7 +109,7 @@ class TestMainFunction(unittest.TestCase):
 
     def test_command_line_help(self):
         '''
-        Tests the command line interface.
+        Tests the command line interface with help option.
         '''
 
         # Test the command line interface with the --help option
