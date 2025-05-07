@@ -32,8 +32,8 @@ def random_recipes(num_recipes):
         return "Please enter a valid number between 1 and 13501."
 
     recipe_data = DataSource()
-    random_recipes = recipe_data.get_random_recipes(num_recipes)
-    output = build_output_string(random_recipes)
+    recipes = recipe_data.get_random_recipes(num_recipes)
+    output = build_output_string(recipes)
     return f"Returning {num_recipes} random recipes...<br><br> {output}"
 
 def build_output_string(recipes):
