@@ -72,7 +72,7 @@ class TestFlaskRoutes(unittest.TestCase):
              '(about 1 lb. total), trimmed, halved lengthwise\', \'1 Tbsp. extra-virgin olive '
              'oil\', \'3 oz. coarsely grated Gruyère (about 1½ cups)\', \'3 oz. cream cheese, '
              'cut into pieces\', \'3/4 cup whole milk\', \'1/4 tsp. freshly grated or ground '
-             'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']')
+             'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']'),
             (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches', 'Stir together ice cream '
              '(reserve pint container), '
              'extract, and 1/2 cup crushed candy in a bowl until combined.\nTransfer mixture '
@@ -87,7 +87,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "hard candies (1/4 lb)', '16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup "
              "ice cream scoop']")]
         response = self.app.get('/all_recipes')
-        self.assertIn(b"Chocolate Chip Cookies", response.data, "Should match")
+        self.assertIn(b"Charred Steak and Broccolini", response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_random_route(self, mock_connect):
