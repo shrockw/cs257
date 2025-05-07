@@ -20,6 +20,14 @@ def homepage():
     "/search/omit/ingredient1,ingredient2,ingredient3. <br><br> You can also use " \
     "/search/include/ingredient1,ingredient2/omit/ingredient3. "
 
+@app.route('/all_recipes')
+def all_recipes():
+    '''This function returns all recipes in the dataset.'''
+    recipe_data = DataSource()
+    recipes = recipe_data.get_all_recipes()
+    output = build_output_string(recipes)
+    return f"Returning all recipes...<br><br> {output}"
+
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):
     '''Fetches n random recipes from the dataset separated by line breaks.
