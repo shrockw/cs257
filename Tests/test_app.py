@@ -95,14 +95,15 @@ class TestFlaskRoutes(unittest.TestCase):
         '''Test the random route.'''
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchall.return_value = [
-            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches', 
+            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
              'until just firm enough to scoop, about 1 hour.\n Working very quickly, scoop '
              'ice cream onto flat sides of 8 wafers (1 scoop per wafer), then top with '
              'remaining 8 wafers, flat sides down. Wrap each sandwich individually with '
              'plastic wrap and freeze until firm, about 1 hour. Unwrap sandwiches and roll '
-             'edges in remaining 1/2 cup crushed candy. Rewrap and freeze until firm, about 1 hour.', 
+             'edges in remaining 1/2 cup crushed candy. Rewrap and freeze until firm, about 1 '
+             'hour.', 
              "['1 pint superpremium vanilla ice cream, softened slightly', '1/4 teaspoon pure "
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
