@@ -31,9 +31,8 @@ class TestMainFunction(unittest.TestCase):
         '''
         Sets up the test environment by mocking the get_data function.
         '''
-        self.mock_cursor = MagicMock()
         self.mock_conn = MagicMock()
-        self.mock_conn.cursor.return_value = self.mock_cursor
+        self.mock_cursor = self.mock_conn.cursor.return_value
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_main_random(self, mock_connect):

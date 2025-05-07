@@ -5,7 +5,6 @@ import sys
 import argparse
 from ProductionCode.datasource import DataSource
 
-ds = DataSource()
 
 def main():
     ''' Main function to handle command line arguments and execute the appropriate function. '''
@@ -69,6 +68,7 @@ def main():
 
 def search_cl(include_ingredients, omit_ingredients):
     ''' Search for recipes based on the given ingredients. '''
+    ds = DataSource()
     recipes = ds.get_recipe_by_ingredients(include_ingredients, omit_ingredients)
     print_recipes(recipes)
     return recipes
@@ -89,6 +89,7 @@ def parse_ingredients(ingredients_str):
 
 def random_cl(num_recipes):
     ''' Get a random n number of recipes.'''
+    ds = DataSource()
     random_recipes = ds.get_random_recipes(num_recipes)
     print_recipes(random_recipes)
     return random_recipes
