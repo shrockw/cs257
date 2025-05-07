@@ -34,7 +34,11 @@ class DataSource:
 
     def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
         '''Fetches recipes that include certain ingredients and exclude others. 
-        Returns a list of tuples containing the data.'''
+        Args:
+        include_ingredients: list of ingredients to include
+        exclude_ingredients: list of ingredients to exclude
+        Returns a list of tuples containing the data.
+        '''
 
         cursor = self.connection.cursor()
         query = self.create_recipe_by_ingredients_query(include_ingredients, exclude_ingredients)
@@ -45,7 +49,13 @@ class DataSource:
         return data
 
     def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
-        '''Creates a SQL query to fetch recipes based on included and excluded ingredients.'''
+        '''Creates a SQL query to fetch recipes based on included and excluded ingredients.
+        Args:
+        include_ingredients: list of ingredients to include
+        exclude_ingredients: list of ingredients to exclude
+        Returns a SQL query string.
+        '''
+
         query = "SELECT * FROM recipe WHERE "
         if include_ingredients:
             query += " AND ".join(
@@ -57,7 +67,11 @@ class DataSource:
         return query
 
     def get_random_recipes(self, number):
-        ''' This function retrieves random recipes from the database. '''
+        ''' This function retrieves random recipes from the database.
+        Args:
+        number: number of random recipes to retrieve
+        Returns a list of tuples containing the data.
+        '''
         query = "SELECT * FROM recipe ORDER BY RANDOM() LIMIT %s"
         cursor = self.connection.cursor()
         cursor.execute(query, (number,))

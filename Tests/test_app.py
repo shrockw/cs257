@@ -16,11 +16,8 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_homepage(self):
         '''Test the homepage route.'''
         response = self.app.get('/')
-        self.assertIn(b"In the url after the /, \
-        enter the word random, then a /, \
-        then a number between 1 and 10. \
-        This will return that many random recipes from the dataset. \
-        For example: /random/3 will return 3 random recipes.", response.data, "Should match")
+        self.assertIn(b"In the url after the /, enter the word random, then a /, then a number between 1 and 13501.", 
+                      response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_random_route(self, mock_connect):
@@ -245,11 +242,9 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_invalid_input(self):
         '''Test the random recipes route with invalid input.'''
         response = self.app.get('/random/abc', follow_redirects=True)
-        # self.assertEqual(response.status_code, 404)
         self.assertIn(b"Here are some ways you can use this application:",
                       response.data)
 
         response = self.app.get('/random/-1', follow_redirects=True)
-        # self.assertEqual(response.status_code, 404)
         self.assertIn(b"Here are some ways you can use this application:",
                       response.data)

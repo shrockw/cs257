@@ -13,21 +13,21 @@ TOTAL_NUM_RECIPES = 13501
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
-    return "In the url after the /, \
-        enter the word random, then a /, \
-        then a number between 1 and 13501. \
-        This will return that many random recipes from the dataset. \
-        For example: /random/3 will return 3 random recipes. <br><br> \
-        Or to search for recipes with specific ingredients, \
-        use /search/include/ingredient1,ingredient2,ingredient3. \
-        To omit ingredients, use /search/omit/ingredient1,ingredient2,ingredient3. <br><br> \
-        You can also use /search/include/ingredient1,ingredient2/omit/ingredient3. "
+    return "In the url after the /, enter the word random, then a /, then a number between 1 and 13501. " \
+    "This will return that many random recipes from the dataset. For example: /random/3 will return 3 " \
+    "random recipes. <br><br> Or to search for recipes with specific ingredients, use " \
+    "/search/include/ingredient1,ingredient2,ingredient3. To omit ingredients, use " \
+    "/search/omit/ingredient1,ingredient2,ingredient3. <br><br> You can also use " \
+    "/search/include/ingredient1,ingredient2/omit/ingredient3. "
 
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):
-    '''This function takes in n number of recipes (num_recipes)
-      between 1 and 13501 and returns n random recipes from the
-        dataset separated by line breaks.'''
+    '''Fetches n random recipes from the dataset separated by line breaks.
+    Args:
+        num_recipes: number of recipes to return (must be between 1 and 13501)
+    Returns:
+        A string contain the recipes separated by line breaks
+    '''
     if num_recipes < 1 or num_recipes > TOTAL_NUM_RECIPES:
         return "Please enter a valid number between 1 and 13501."
 
@@ -37,7 +37,12 @@ def random_recipes(num_recipes):
     return f"Returning {num_recipes} random recipes...<br><br> {output}"
 
 def build_output_string(recipes):
-    '''This function builds the output string for the given recipes.'''
+    '''Helper function to build the output string from the list of recipes.
+    Args:
+        recipes: list of tuples containing the recipe data
+    Returns:
+        A string containing the recipe names and their descriptions
+    '''
     output = ""
     for recipe in recipes:
         output += f"{recipe[1]}: {recipe[2]}<br><br>"
@@ -49,7 +54,13 @@ def build_output_string(recipes):
 @app.route('/search/include/<string:include_ingredients>/omit/<string:omit_ingredients>')
 def search_include_omit(include_ingredients, omit_ingredients):
     '''This function searches for recipes that include and omit the specified ingredients
-    and returns the recipes that satisfy these parameters in specified format.'''
+    and returns the recipes that satisfy these parameters in specified format.
+    Args:
+        include_ingredients: list of ingredients to include (optional)
+        omit_ingredients: list of ingredients to omit (optional)
+    Returns:
+        A string containing the recipes that satisfy the parameters
+    '''
     recipe_data = DataSource()
     if include_ingredients:
         parsed_include_ingredients = parse_ingredients(include_ingredients)
@@ -66,7 +77,12 @@ def search_include_omit(include_ingredients, omit_ingredients):
         <br><br> {output}"
 
 def parse_ingredients(ingredients):
-    '''This function parses the ingredients from the URL into a list of ingredients.'''
+    '''This function parses the ingredients from the URL into a list of ingredients.
+    Args:
+        ingredients: string of ingredients separated by commas
+    Returns:
+        A list of ingredients
+    '''
     return ingredients.split(",")
 
 @app.errorhandler(404)
