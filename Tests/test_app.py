@@ -17,7 +17,7 @@ class TestFlaskRoutes(unittest.TestCase):
         '''Test the homepage route.'''
         response = self.app.get('/')
         self.assertIn(b"In the url after the /, enter the word random, then a /, " \
-        "then a number between 1 and 13501.",
+        b"then a number between 1 and 13501.",
                       response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
