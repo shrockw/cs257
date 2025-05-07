@@ -16,9 +16,10 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_homepage(self):
         '''Test the homepage route.'''
         response = self.app.get('/')
-        self.assertIn(b"In the url after the /, enter the word random, then a /, then a number between 1 and 13501.", 
+        self.assertIn(b"In the url after the /, enter the word random, then a /, " \
+        "then a number between 1 and 13501.",
                       response.data, "Should match")
-        
+
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_all_recipes(self, mock_connect):
         '''Test the all recipes route.'''
@@ -73,8 +74,8 @@ class TestFlaskRoutes(unittest.TestCase):
              'oil\', \'3 oz. coarsely grated Gruyère (about 1½ cups)\', \'3 oz. cream cheese, '
              'cut into pieces\', \'3/4 cup whole milk\', \'1/4 tsp. freshly grated or ground '
              'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']'),
-            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches', 'Stir together ice cream '
-             '(reserve pint container), '
+            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches', 'Stir together '
+            'ice cream (reserve pint container), '
              'extract, and 1/2 cup crushed candy in a bowl until combined.\nTransfer mixture '
              'to pint container and freeze until just firm enough to scoop, about 1 hour.\n '
              'Working very quickly, scoop ice cream onto flat sides of 8 wafers (1 scoop per '
@@ -93,18 +94,18 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_random_route(self, mock_connect):
         '''Test the random route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(11286, 'Chocolate and Peppermint '
-                                                   'Candy Ice Cream Sandwiches', 'Stir together ice cream (reserve pint container), '
-                                                   'extract, and 1/2 cup crushed candy in a bowl until combined.\nTransfer mixture '
-                                                   'to pint container and freeze until just firm enough to scoop, about 1 hour.\n '
-                                                   'Working very quickly, scoop ice cream onto flat sides of 8 wafers (1 scoop per '
-                                                   'wafer), then top with remaining 8 wafers, flat sides down. Wrap each sandwich '
-                                                   'individually with plastic wrap and freeze until firm, about 1 hour. Unwrap '
-                                                   'sandwiches and roll edges in remaining 1/2 cup crushed candy. Rewrap and freeze '
-                                                   'until firm, about 1 hour.', "['1 pint superpremium vanilla ice cream, softened "
-                                                   "slightly', '1/4 teaspoon pure peppermint extract', '1 cup finely crushed peppermint "
-                                                   "hard candies (1/4 lb)', '16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup "
-                                                   "ice cream scoop']")]
+        self.mock_cursor.fetchall.return_value = [
+            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches', 
+             'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
+             'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
+             'until just firm enough to scoop, about 1 hour.\n Working very quickly, scoop '
+             'ice cream onto flat sides of 8 wafers (1 scoop per wafer), then top with '
+             'remaining 8 wafers, flat sides down. Wrap each sandwich individually with '
+             'plastic wrap and freeze until firm, about 1 hour. Unwrap sandwiches and roll '
+             'edges in remaining 1/2 cup crushed candy. Rewrap and freeze until firm, about 1 hour.', 
+             "['1 pint superpremium vanilla ice cream, softened slightly', '1/4 teaspoon pure "
+             "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
+             "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       self.app.get('/random/1').data, "Should match")
 
