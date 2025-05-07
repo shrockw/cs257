@@ -159,4 +159,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-/ProductionCode/psqlconfig.py
+/ProductionCode/psql_config.py
