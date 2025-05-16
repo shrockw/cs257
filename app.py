@@ -3,7 +3,7 @@ This is the main file for the Flask web application.
 It handles the routing and serves the web pages.
 '''
 
-from flask import Flask
+from flask import Flask, render_template
 from ProductionCode.datasource import DataSource
 
 app = Flask(__name__)
@@ -13,12 +13,7 @@ TOTAL_NUM_RECIPES = 13501
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
-    return "In the url after the /, enter the word random, then a /, then a number " \
-    "between 1 and 13501. This will return that many random recipes from the dataset. " \
-    "For example: /random/3 will return 3 random recipes. <br><br> Or to search for " \
-    "recipes with specific ingredients, use /search/include/ingredient1,ingredient2,ingredient3. " \
-    "To omit ingredients, use /search/omit/ingredient1,ingredient2,ingredient3. " \
-    "<br><br> You can also use /search/include/ingredient1,ingredient2/omit/ingredient3. "
+    return render_template('homepage.html')
 
 @app.route('/all_recipes')
 def all_recipes():
