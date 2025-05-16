@@ -23,6 +23,16 @@ def all_recipes():
     output = build_output_string(recipes)
     return f"Returning all recipes...<br><br> {output}"
 
+@app.route('/random')
+def random():
+    '''Render the random recipes page.'''
+    if request.method == 'POST':
+        recipe_data = DataSource()
+        num = int(request.form.get('num_recipes', 1))
+        recipes = recipe_data.get_random_recipes(num_recipes)
+        return render_template('display_recipe.html', recipes=recipes)
+    return render_template('random.html')
+
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):
     '''Fetches n random recipes from the dataset separated by line breaks.
