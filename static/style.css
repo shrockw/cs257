@@ -1,0 +1,145 @@
+body {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+h1, h2 {
+    font-family: Verdana, Geneva, sans-serif; 
+ }
+ 
+ p {
+     font-family: Verdana, Geneva, sans-serif;
+     /* This next line gives us some extra spacing within a paragraph*/
+     line-height: 1.4;
+ }
+ 
+ li {
+     font-family: Verdana, Geneva, sans-serif;
+     line-height: 1.4;
+ }
+ 
+ nav li {
+     float: left;
+     font-size: 1.1em;
+     font-weight: bold;
+ }
+
+ div.fav_recipe {
+    display: inline-block;
+    width: 23%;
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    vertical-align: top;
+}
+
+div.fav_recipe:last-child {
+    margin-right: 0;
+}
+
+
+div.all_fav_recipes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribute items evenly */
+    align-items: flex-start;
+}
+
+
+h1 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: green;
+    color: white;
+    text-align: center;
+}
+
+nav ul {
+    border: 2px solid green;
+    list-style-type: none;
+    overflow: hidden;
+}
+
+/* Navigation bar list items should render starting at the left margin. */
+nav li {
+    float: left;
+}
+
+/* Navigation bar items should link to elements on the page, or to other pages.
+     This is the "a" tag. So this says "apply this style to links within the nav bar".
+*/
+nav li a {
+    display: block;
+    color: green;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+/* TODO: For each page we want the page you are on to be highlighted in the NavBar */
+nav li a:hover {
+    color: white;
+    background-color: green;
+}
+
+nav li a.highlight {
+    color: white;
+    background-color: green;
+}
+
+
+form {
+    margin-top: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+form input[type="submit"] {
+    background-color: green;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+form input[type="submit"]:hover {
+    background-color: darkgreen;
+}
+
+form p {
+    color: red;
+    line-height: 1;
+    margin-top: 0px;
+}
+
+form ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+form p.suggestion-item {
+    color: green;
+    text-decoration: underline;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
