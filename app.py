@@ -3,8 +3,8 @@ This is the main file for the Flask web application.
 It handles the routing and serves the web pages.
 '''
 
-from flask import Flask, render_template
-from ProductionCode.datasource import DataSource
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from ProductionCode.datasource import DataSource, Recipe
 
 app = Flask(__name__)
 
@@ -87,6 +87,69 @@ def parse_ingredients(ingredients):
         A list of ingredients
     '''
     return ingredients.split(",")
+
+@app.route('/search_by_title')
+def search_by_title(last_search=None):
+    '''Route to display the search by title page from search_by_title.html
+    Arguments: 
+        last_search: The last searched recipe title which is None unless the last search did not 
+        exist in the database.
+    Returns:
+        Renders the search by title template.
+    '''
+    return render_template('search_by_title.html', last_search=last_search)
+
+@app.route('/find_recipe_by_title', methods=['POST'])
+def find_recipe_by_title():
+    '''Route to handle the search by title form submission.
+    Arguments:
+        None
+    Returns:
+        Redirects to the display_recipe route if the recipe is found, otherwise redirects to the 
+        search_by_title route with the last search.
+    '''
+    searched_title = request.form.get('recipe_title')
+    recipe_data = DataSource()
+    recipe = recipe_data.get_recipe_by_title(searched_title)
+    if recipe:
+        return redirect(url_for('display_recipe', recipe_id=recipe.get_id()))
+    return search_by_title(last_search=searched_title)
+
+@app.route('/display_recipe/<recipe_id>')
+def display_recipe(recipe_id):
+    '''Route to display the recipe details using display_recipe.html
+    Arguments:
+        recipe_id: The ID of the recipe to be displayed.
+    Returns:
+        Renders the display recipe template with the recipe details.
+    '''
+    recipe_data = DataSource()
+    recipe = recipe_data.get_recipe_by_id(recipe_id)
+    if recipe:
+        return render_template('display_recipe.html',
+                               recipe_title=recipe.get_title(),
+                               recipe_ingredients=recipe.get_ingredients(),
+                               recipe_instructions=recipe.get_instructions())
+
+    return render_template('recipe_not_found_error.html')
+
+@app.route('/autocomplete')
+def autocomplete():
+    '''Route to handle the autocomplete functionality for recipe titles.
+    Arguments:
+        None
+    Returns:
+        Returns a JSON response with the list of suggestions based on the query parameter.
+    '''
+    query = request.args.get('cur_search')
+    recipe_data = DataSource()
+    autocomplete_data = recipe_data.get_all_recipe_titles()
+    print([a for a in autocomplete_data if a == None])
+    # print(autocomplete_data)
+    if query:
+        suggestions = [item for item in autocomplete_data if query.lower() in item.lower()]
+        return jsonify(suggestions)
+    return jsonify([])
 
 @app.errorhandler(404)
 def page_not_found(e):
