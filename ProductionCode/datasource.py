@@ -29,8 +29,8 @@ class DataSource:
         '''Returns all recipes from the database'''
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM recipe")
-        records = cursor.fetchall()
-
+        records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+        
         return records
 
     def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):

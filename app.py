@@ -4,6 +4,7 @@ It handles the routing and serves the web pages.
 '''
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+import string
 from ProductionCode.datasource import DataSource, Recipe
 
 
@@ -18,26 +19,11 @@ def homepage():
     '''This function returns the homepage.'''
     return render_template('homepage.html')
 
-@app.route('/all_recipes')
-def all_recipes():
-    '''This function returns all recipes in the dataset.'''
-    recipe_data = DataSource()
-    recipes = recipe_data.get_all_recipes()
-    output = build_output_string(recipes)
-    return f"Returning all recipes...<br><br> {output}"
-
-@app.route('/random', methods=['GET', 'POST'])
 @app.route('/random', methods=['GET', 'POST'])
 def random():
     if request.method == 'POST':
         recipe_data = DataSource()
         num = int(request.form.get('num_recipes', 1))
-        recipes = recipe_data.get_random_recipes(num)
-
-        session['random_recipes'] = [(r[0], r[1]) for r in recipes]
-
-        return redirect(url_for('recipelist'))
-
         recipes = recipe_data.get_random_recipes(num)
 
         session['random_recipes'] = [(r[0], r[1]) for r in recipes]
@@ -50,8 +36,32 @@ def random():
 def recipelist():
     recipes = session.get('random_recipes')
     if not recipes:
-        return redirect(url_for('random'))
+        return redirect(url_for('/'))
     return render_template('recipelist.html', recipes=recipes)
+
+
+@app.route('/all_recipes')
+def all_recipes():
+    recipe_data = DataSource()
+    recipes = recipe_data.get_all_recipes()
+    sorted_recipes = sort_recipes_alphabetically(recipes)
+    print(sorted_recipes)
+    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, letters = string.ascii_uppercase)
+
+def sort_recipes_alphabetically(recipes):
+    sorted_recipes = []
+    for letter in string.ascii_lowercase:
+        current_letter = (letter.upper(), [])
+        for recipe in recipes:
+            title = recipe.get_title()
+            if title.lower().startswith(letter):
+                current_letter[1].append(recipe)
+
+        sorted_recipes.append(current_letter)
+
+    return sorted_recipes
+
+        
 
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):
