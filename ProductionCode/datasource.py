@@ -88,7 +88,7 @@ class DataSource:
         query = "SELECT * FROM recipe ORDER BY RANDOM() LIMIT %s"
         cursor = self.connection.cursor()
         cursor.execute(query, (number,))
-        records = cursor.fetchall()
+        records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
         cursor.close()
         return records
 
