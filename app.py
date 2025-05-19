@@ -3,14 +3,12 @@ This is the main file for the Flask web application.
 It handles the routing and serves the web pages.
 '''
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
-import string
+
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from ProductionCode.datasource import DataSource, Recipe
 
 
 app = Flask(__name__)
-
-app.secret_key = 'super'
 
 TOTAL_NUM_RECIPES = 13501
 
@@ -19,6 +17,15 @@ def homepage():
     '''This function returns the homepage.'''
     return render_template('homepage.html')
 
+
+@app.route('/all_recipes')
+def all_recipes():
+    '''This function returns all recipes in the dataset.'''
+    recipe_data = DataSource()
+    recipes = recipe_data.get_all_recipes()
+    output = build_output_string(recipes)
+    return f"Returning all recipes...<br><br> {output}"
+
 @app.route('/random', methods=['GET', 'POST'])
 def random():
     if request.method == 'POST':
@@ -26,18 +33,13 @@ def random():
         num = int(request.form.get('num_recipes', 1))
         recipes = recipe_data.get_random_recipes(num)
 
-        session['random_recipes'] = [(r[0], r[1]) for r in recipes]
 
-        return redirect(url_for('recipelist'))
+        # Directly pass recipes to the template
+        simplified_recipes = [(r[0], r[1]) for r in recipes]  # (id, title)
+        return render_template('recipelist.html', recipes=simplified_recipes)
 
     return render_template('random.html')
 
-@app.route('/recipelist')
-def recipelist():
-    recipes = session.get('random_recipes')
-    if not recipes:
-        return redirect(url_for('/'))
-    return render_template('recipelist.html', recipes=recipes)
 
 
 @app.route('/all_recipes')
@@ -225,4 +227,4 @@ def python_bug(e):
     return f"A bug! {str(e)}"
 
 if __name__ == '__main__':
-    app.run(port = 5001)
+    app.run(port = 5002)

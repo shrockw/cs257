@@ -17,20 +17,22 @@
             <li><a href="#faq">FAQ</a></li>
         </ul>
     </nav>
-        <h2>Here are your recipes:</h2>
-    {% if recipes %}
-    <ul>
-        {% for recipe in recipes %}
-        <li>
-            <a href="{{ url_for('display_recipe', recipe_id=recipe[0]) }}">
-                {{ recipe[1] }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No recipes to show. Try generating some first.</p>
-    {% endif %}
+
+        <h2>Your Random Recipes</h2>
+        
+            {% if recipes %}
+            <ul>
+                {% for recipe in recipes %}
+                <li>
+                    <a href="{{ url_for('display_recipe', recipe_id=recipe[0]) }}">
+                        {{ recipe[1] }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No recipes to show. Try generating some first.</p>
+            {% endif %}
 
     <a href="{{ url_for('random') }}" class="button">Generate More</a>
 
