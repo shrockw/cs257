@@ -56,9 +56,9 @@ def custom_search():
         exclude = [e.strip().lower() for e in exclude if e.strip()]
         
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
-        
-        simplified_recipes = [(r[0], r[1]) for r in recipes]
-        return render_template('found_recipes.html', recipes=simplified_recipes)
+        sorted_recipes = sort_recipes_alphabetically(recipes)
+        # simplified_recipes = [(r[0], r[1]) for r in recipes]
+        return render_template('all_recipes.html', sorted_recipes=sorted_recipes, letters = string.ascii_uppercase)
     
     return render_template('custom.html')
 
@@ -246,4 +246,4 @@ def python_bug(e):
     return f"A bug! {str(e)}"
 
 if __name__ == '__main__':
-    app.run(port = 5002)
+    app.run(port = 5100)
