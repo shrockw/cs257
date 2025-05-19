@@ -242,3 +242,28 @@ div.recipes_div h3 {
     font-weight: bold;
 }
 
+.error-container {
+    text-align: center;
+    margin-top: 100px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+.error-container h1 {
+    font-size: 4em;
+    color: darkred;
+}
+.error-container p {
+    font-size: 1.2em;
+    margin: 20px;
+}
+.error-container a.button {
+    display: inline-block;
+    background-color: green;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.error-container a.button:hover {
+    background-color: darkgreen;
+}
