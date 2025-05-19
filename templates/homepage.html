@@ -8,14 +8,14 @@
     <header>
         <h1>Flavor Finder</h1>
          <nav>
-             <ul>
-                 <li><a class="highlight" href="\">Home</a></li>
-                 <li><a href="\search_by_title">Search by Recipe Title</a></li>
-                 <li><a href="#">Search by Ingredients</a></li>
-                 <li><a href="/random">Random Recipes</a></li>
-                 <li><a href="#">All Recipes</a></li>
-                 <li><a href="#">FAQ</a></li>
-             </ul>
+            <ul>
+                <li><a class="highlight" href="\">Home</a></li>
+                <li><a href="\search_by_title">Search by Recipe Title</a></li>
+                <li><a href="\custom">Search by Ingredients</a></li>
+                <li><a href="/random">Random Recipes</a></li>
+                <li><a href="/all_recipes">All Recipes</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
          </nav>
      </header>
 
@@ -27,7 +27,7 @@
     <div class="highlight">
         <h2>Featured Recipe</h2>
         <p>Here is the featured recipe for today!</p>
-        <a>Recipe</a>
+        <a href="">NEED TO FIX</a>
     </div>
 
     <div>
@@ -35,19 +35,19 @@
         <div class="all_fav_recipes">
             <div class="fav_recipe">
                 <h3>Marc</h3>
-                <a>Description of Recipe 1.</a>
+                <a href="/display_recipe/{{marc_recipe.get_id()}}">{{marc_recipe.get_title()}}</a>
             </div>
             <div class="fav_recipe">
                 <h3>Willan</h3>
-                <a>Description of Recipe 2.</a>
+                <a href="/display_recipe/{{willan_recipe.get_id()}}">{{willan_recipe.get_title()}}</a>
             </div>
             <div class="fav_recipe">
                 <h3>Anika</h3>
-                <a>Description of Recipe 3.</a>
+                <a href="/display_recipe/{{anika_recipe.get_id()}}">{{anika_recipe.get_title()}}</a>
             </div>
             <div class="fav_recipe">
                 <h3>Allison</h3>
-                <a>Description of Recipe 4.</a>
+                <a href="/display_recipe/{{allison_recipe.get_id()}}">{{allison_recipe.get_title()}}</a>
             </div>
         </div>
     </div>

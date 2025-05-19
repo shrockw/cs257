@@ -3,7 +3,9 @@ This is the main file for the Flask web application.
 It handles the routing and serves the web pages.
 '''
 
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+import string
 from ProductionCode.datasource import DataSource, Recipe
 
 
@@ -14,15 +16,18 @@ TOTAL_NUM_RECIPES = 13501
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
-    return render_template('homepage.html')
-
-@app.route('/all_recipes')
-def all_recipes():
-    '''This function returns all recipes in the dataset.'''
     recipe_data = DataSource()
-    recipes = recipe_data.get_all_recipes()
-    output = build_output_string(recipes)
-    return f"Returning all recipes...<br><br> {output}"
+    featured_recipe = recipe_data.get_random_recipes(1)
+    marc_recipe = recipe_data.get_recipe_by_id(9877)
+    willan_recipe = recipe_data.get_recipe_by_id(2)
+    anika_recipe = recipe_data.get_recipe_by_id(3)
+    allison_recipe = recipe_data.get_recipe_by_id(4)
+    return render_template('homepage.html', featured_recipe=featured_recipe[0], 
+                           marc_recipe=marc_recipe,
+                           willan_recipe=willan_recipe, 
+                           anika_recipe=anika_recipe,
+                           allison_recipe=allison_recipe)
+
 
 @app.route('/random', methods=['GET', 'POST'])
 def random():
@@ -31,12 +36,53 @@ def random():
         num = int(request.form.get('num_recipes', 1))
         recipes = recipe_data.get_random_recipes(num)
 
+
         # Directly pass recipes to the template
         simplified_recipes = [(r[0], r[1]) for r in recipes]  # (id, title)
         return render_template('recipelist.html', recipes=simplified_recipes)
 
     return render_template('random.html')
 
+@app.route('/custom', methods=['GET', 'POST'])
+def custom_search():
+    """Handle ingredient search form submission"""
+    if request.method == 'POST':
+        recipe_data = DataSource()
+        
+        include = request.form.get('include_ingredients', '').split(',')
+        exclude = request.form.get('exclude_ingredients', '').split(',')
+        
+        include = [i.strip().lower() for i in include if i.strip()]
+        exclude = [e.strip().lower() for e in exclude if e.strip()]
+        
+        recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
+        
+        simplified_recipes = [(r[0], r[1]) for r in recipes]
+        return render_template('found_recipes.html', recipes=simplified_recipes)
+    
+    return render_template('custom.html')
+
+@app.route('/all_recipes')
+def all_recipes():
+    recipe_data = DataSource()
+    recipes = recipe_data.get_all_recipes()
+    sorted_recipes = sort_recipes_alphabetically(recipes)
+    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, letters = string.ascii_uppercase)
+
+def sort_recipes_alphabetically(recipes):
+    sorted_recipes = []
+    for letter in string.ascii_lowercase:
+        current_letter = (letter.upper(), [])
+        for recipe in recipes:
+            title = recipe.get_title()
+            if title.lower().startswith(letter):
+                current_letter[1].append((recipe.get_id(), title))
+
+        sorted_recipes.append(current_letter)
+
+    return sorted_recipes
+
+        
 
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):

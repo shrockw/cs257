@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ingredient Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Flavor Finder</h1>
+    <nav>
+        <ul>
+            <li><a class="highlight" href="\">Home</a></li>
+            <li><a href="\search_by_title">Search by Recipe Title</a></li>
+            <li><a href="\custom">Search by Ingredients</a></li>
+            <li><a href="/random">Random Recipes</a></li>
+            <li><a href="/all_recipes">All Recipes</a></li>
+            <li><a href="#">FAQ</a></li>
+        </ul>
+    </nav>
+    <form id="search-form" method="POST" action="{{ url_for('custom_search') }}">
+        <!-- Hidden inputs will be populated by JavaScript -->
+        <input type="hidden" name="include_ingredients" id="include-hidden" value="">
+        <input type="hidden" name="exclude_ingredients" id="exclude-hidden" value="">
+        
+        <!-- Include Ingredients Section -->
+        <div class="search-section">
+            <h2>Include Ingredients</h2>
+            <input type="text" 
+                   id="include-input"
+                   class="ingredient-input"
+                   placeholder="Type ingredients to include (press Enter)"
+                   autocomplete="off">
+            <div class="ingredient-container" id="include-container"></div>
+        </div>
+        
+        <!-- Exclude Ingredients Section -->
+        <div class="search-section">
+            <h2>Exclude Ingredients</h2>
+            <input type="text"
+                   id="exclude-input"
+                   class="ingredient-input"
+                   placeholder="Type ingredients to exclude (press Enter)"
+                   autocomplete="off">
+            <div class="ingredient-container" id="exclude-container"></div>
+        </div>
+        
+        <button type="submit" id="submit-btn">Search Recipes</button>
+    </form>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

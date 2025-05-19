@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Recipes</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+    <header>
+        <h1>Flavor Finder</h1>
+         <nav>
+            <ul>
+                <li><a class="highlight" href="\">Home</a></li>
+                <li><a href="\search_by_title">Search by Recipe Title</a></li>
+                <li><a href="\custom">Search by Ingredients</a></li>
+                <li><a href="/random">Random Recipes</a></li>
+                <li><a href="/all_recipes">All Recipes</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+         </nav>
+     </header>
+
+     <div class="alphabet_links">
+        <a href = '#'>Top</a>
+        {% for letter in letters %}
+            <a href = '#{{ letter }}'>{{ letter }}</a>
+        {% endfor %}
+     </div>
+
+
+        <h2>Here are your recipes:</h2>
+
+
+
+    {% if sorted_recipes %}
+    <div class="recipes_div">
+    <ul>
+        {% for letter in sorted_recipes %}
+        <h3 id="{{ letter[0] }}">{{ letter[0] }}</h3>
+            {% for recipe in letter[1] %}
+                <li>
+                    <a href="{{ url_for('display_recipe', recipe_id=recipe[0]) }}">
+                        {{ recipe[1] }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    </div>
+    {% else %}
+    <p>No recipes to show. Try generating some first.</p>
+    {% endif %}
+
+    <a href="{{ url_for('random') }}" class="button">Generate More</a>
+
+</body>
+</html>

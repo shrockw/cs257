@@ -12,6 +12,10 @@ h1, h2 {
      /* This next line gives us some extra spacing within a paragraph*/
      line-height: 1.4;
  }
+
+ a {
+    color: green;
+ }
  
  li {
      font-family: Verdana, Geneva, sans-serif;
@@ -38,6 +42,7 @@ h1, h2 {
 div.fav_recipe:last-child {
     margin-right: 0;
 }
+
 
 
 div.all_fav_recipes {
@@ -161,3 +166,96 @@ a.button {
     background-color: darkgreen;
   }
   
+div.alphabet_links {
+    position: sticky;
+    top: 0;
+    background-color: white; /* Provide a background color */
+    padding: 10px 0; /* Add some padding for better visual appearance */
+    border: 2px solid green;
+    text-align: center;
+}
+
+div.alphabet_links a {
+    font-size: 24px;
+    margin-right: 5px;
+    margin-left: 5px;
+    align-items: center;
+}
+
+div.recipes_div h3 {
+    scroll-margin-top: 70px; /* Increased to 80px */
+  position: relative;
+}
+
+
+/* === Custom Search === */
+.search-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ingredient-input {
+    width: 35%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ingredient-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+}
+
+.ingredient-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.include-tag {
+    background-color: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: black;
+}
+
+.exclude-tag {
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: black;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    color: inherit;
+    font-weight: bold;
+}
+
+.search-button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+}
+
+#submit-btn {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    margin-bottom: 10px; 
+}

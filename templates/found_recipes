@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Random Recipes</title>
+    <title>Your Matching Recipes</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
 </head>
 <body>
     <h1>Flavor Finder</h1>
     <nav>
         <ul>
-            <li><a href="{{ url_for('homepage') }}">Home</a></li>
-            <li><a href="{{ url_for('search_by_title') }}">Search by Recipe Title</a></li>
+            <li><a class="highlight" href="\">Home</a></li>
+            <li><a href="\search_by_title">Search by Recipe Title</a></li>
             <li><a href="\custom">Search by Ingredients</a></li>
-            <li><a href="{{ url_for('random') }}">Random Recipes</a></li>
-            <li><a href="#all">All Recipes</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="/random">Random Recipes</a></li>
+            <li><a href="/all_recipes">All Recipes</a></li>
+            <li><a href="#">FAQ</a></li>
         </ul>
     </nav>
 
-        <h2>Your Random Recipes</h2>
+        <h2>Your Matching Recipes</h2>
         
             {% if recipes %}
             <ul>
@@ -33,8 +33,6 @@
             {% else %}
             <p>No recipes to show. Try generating some first.</p>
             {% endif %}
-
-    <a href="{{ url_for('random') }}" class="button">Generate More</a>
 
 </body>
 </html>
