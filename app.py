@@ -6,6 +6,7 @@ It handles the routing and serves the web pages.
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from ProductionCode.datasource import DataSource, Recipe
 
+
 app = Flask(__name__)
 
 app.secret_key = 'super'
@@ -26,10 +27,17 @@ def all_recipes():
     return f"Returning all recipes...<br><br> {output}"
 
 @app.route('/random', methods=['GET', 'POST'])
+@app.route('/random', methods=['GET', 'POST'])
 def random():
     if request.method == 'POST':
         recipe_data = DataSource()
         num = int(request.form.get('num_recipes', 1))
+        recipes = recipe_data.get_random_recipes(num)
+
+        session['random_recipes'] = [(r[0], r[1]) for r in recipes]
+
+        return redirect(url_for('recipelist'))
+
         recipes = recipe_data.get_random_recipes(num)
 
         session['random_recipes'] = [(r[0], r[1]) for r in recipes]
