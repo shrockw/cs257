@@ -31,9 +31,7 @@ _Get a random recipe by specifying how many to return_
 Usage: URL/random/\<int:number>  
 Example: URL/random/3  
 
-The main form of navigation is a nav bar that you can use to go to the random page where the user can input a 
-number of random recipes that they want and then click generate which will take the user to the display 
-page where x amount of random recipes with be displayed.
+The main form of navigation is a nav bar that you can use to go to the different pages where the user can interact with different inputs to search by title, ingredient, randomly or look at all of the recipes
 
 ## Scanability
 - There is a large title the is consistent for each page and then a smaller header for each page
