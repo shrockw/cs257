@@ -1,0 +1,26 @@
+<html> 
+<head>
+<title>Error: Recipe Not Found</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>Flavor Finder</h1>
+         <nav>
+            <ul>
+                <li><a class="highlight" href="\">Home</a></li>
+                <li><a href="\search_by_title">Search by Recipe Title</a></li>
+                <li><a href="\custom">Search by Ingredients</a></li>
+                <li><a href="/random">Random Recipes</a></li>
+                <li><a href="/all_recipes">All Recipes</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+         </nav>
+     </header>
+
+    <div>
+        <h2>No Recipes Found That Match Your Search Criteria</h2>
+        <a href="\custom" class="button">Try Again</a>
+    </div>
+</body>

@@ -56,10 +56,12 @@ def custom_search():
         exclude = [e.strip().lower() for e in exclude if e.strip()]
         
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
-        sorted_recipes = sort_recipes_alphabetically(recipes)
-        # simplified_recipes = [(r[0], r[1]) for r in recipes]
-        return render_template('all_recipes.html', sorted_recipes=sorted_recipes, letters = string.ascii_uppercase)
+        if recipes:
+            sorted_recipes = sort_recipes_alphabetically(recipes)
+            return render_template('all_recipes.html', sorted_recipes=sorted_recipes, letters = string.ascii_uppercase)
     
+        else:
+            return render_template('no_recipes_found.html')
     return render_template('custom.html')
 
 @app.route('/all_recipes')

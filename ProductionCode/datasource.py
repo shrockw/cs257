@@ -40,6 +40,7 @@ class DataSource:
         query = "SELECT * FROM recipe WHERE "
         conditions = []
         params = []
+
         
         if include_ingredients:
             for ingredient in include_ingredients:
@@ -54,8 +55,9 @@ class DataSource:
         if conditions:
             query += " AND ".join(conditions)
         else:
-            query = "SELECT * FROM recipe LIMIT 50"
+            return []
         
+
         cursor.execute(query, params)
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
         cursor.close()
