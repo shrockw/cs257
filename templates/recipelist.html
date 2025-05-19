@@ -23,14 +23,14 @@
             <ul>
                 {% for recipe in recipes %}
                 <li>
-                    <a href="/display_recipe/{{recipe.get_id()}}">
-                        {{ recipe.get_title() }}
+                    <a href="/display_recipe/{{recipe[0]}}">
+                        {{ recipe[1] }}
                     </a>
                 </li>
                 {% endfor %}
             </ul>
             {% else %}
-            <p>No recipes to show. Try generating more recipes.</p>
+            <p>You entered an invalid number of recipes. Try a number between 1 and 13493. Click below to generate more recipes.</p>
             {% endif %}
 
     <a href="\random" class="button">Generate Random Recipes</a>
