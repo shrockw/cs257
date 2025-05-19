@@ -57,9 +57,9 @@ class DataSource:
             query = "SELECT * FROM recipe LIMIT 50"
         
         cursor.execute(query, params)
-        recipes = cursor.fetchall()
+        records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
         cursor.close()
-        return recipes
+        return records
 
     def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
         '''Creates a SQL query to fetch recipes based on included and excluded ingredients.
