@@ -1,3 +1,4 @@
+// This file was written by generative AI (5/16/25) for the interactive HTML search ingredients form
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('search-form');
     const includeInput = document.getElementById('include-input');
