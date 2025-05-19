@@ -18,7 +18,7 @@
         </ul>
     </nav>
 
-        <h2>Your Random Recipes</h2>
+        <h2>Your Recipes</h2>
         
             {% if recipes %}
             <ul>
@@ -31,10 +31,11 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p>No recipes to show. Try generating some first.</p>
+            <p>No recipes to show. Try changing your search or generating random recipes.</p>
             {% endif %}
 
-    <a href="{{ url_for('random') }}" class="button">Generate More</a>
+    <a href="\random" class="button">Generate Random Recipes</a>
+    <a href="\custom" class="button">Search Recipes</a>
 
 </body>
 </html>
