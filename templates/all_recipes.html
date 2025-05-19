@@ -39,8 +39,8 @@
         <h3 id="{{ letter[0] }}">{{ letter[0] }}</h3>
             {% for recipe in letter[1] %}
                 <li>
-                    <a href="{{ url_for('display_recipe', recipe_id=recipe.get_id()) }}">
-                        {{ recipe.get_title() }}
+                    <a href="{{ url_for('display_recipe', recipe_id=recipe[0]) }}">
+                        {{ recipe[1] }}
                     </a>
                 </li>
             {% endfor %}
