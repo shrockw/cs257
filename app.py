@@ -11,7 +11,7 @@ from ProductionCode.datasource import DataSource, Recipe
 
 app = Flask(__name__)
 
-TOTAL_NUM_RECIPES = 13501
+TOTAL_NUM_RECIPES = 13493
 
 @app.route('/')
 def homepage():
@@ -34,8 +34,12 @@ def random():
     if request.method == 'POST':
         recipe_data = DataSource()
         num = int(request.form.get('num_recipes', 1))
-        recipes = recipe_data.get_random_recipes(num)
 
+        print(num)
+        if num < 1 or num > TOTAL_NUM_RECIPES:
+            return render_template('recipelist.html', recipes=None)
+
+        recipes = recipe_data.get_random_recipes(num)
 
         # Directly pass recipes to the template
         simplified_recipes = [(r.get_id(), r.get_title()) for r in recipes]  # (id, title)
