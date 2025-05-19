@@ -19,9 +19,9 @@ def homepage():
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
     marc_recipe = recipe_data.get_recipe_by_id(9877)
-    willan_recipe = recipe_data.get_recipe_by_id(2)
-    anika_recipe = recipe_data.get_recipe_by_id(3)
-    allison_recipe = recipe_data.get_recipe_by_id(4)
+    willan_recipe = recipe_data.get_recipe_by_id(3606)
+    anika_recipe = recipe_data.get_recipe_by_id(5895)
+    allison_recipe = recipe_data.get_recipe_by_id(1260)
     return render_template('homepage.html', featured_recipe=featured_recipe[0], 
                            marc_recipe=marc_recipe,
                            willan_recipe=willan_recipe, 
