@@ -7,16 +7,15 @@
 <body>
     <header>
         <h1>Flavor Finder</h1>
-         <nav>
+        <nav>
             <ul>
                 <li><a class="highlight" href="\">Home</a></li>
                 <li><a href="\search_by_title">Search by Recipe Title</a></li>
                 <li><a href="\custom">Search by Ingredients</a></li>
-                <li><a href="/random">Random Recipes</a></li>
-                <li><a href="/all_recipes">All Recipes</a></li>
-                <li><a href="#">FAQ</a></li>
+                <li><a href="\random">Random Recipes</a></li>
+                <li><a href="\all_recipes">All Recipes</a></li>
             </ul>
-         </nav>
+        </nav>
      </header>
 
     <div>
@@ -27,7 +26,7 @@
     <div class="highlight">
         <h2>Featured Recipe</h2>
         <p>Here is the featured recipe for today!</p>
-        <a href="">NEED TO FIX</a>
+        <a href="/display_recipe/{{featured_recipe.get_id()}}">{{featured_recipe.get_title()}}</a>
     </div>
 
     <div>
