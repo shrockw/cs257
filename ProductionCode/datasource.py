@@ -114,7 +114,6 @@ class DataSource:
         query = "SELECT * FROM recipe WHERE id = %s"
         cursor.execute(query, (recipe_id,))
         recipe = self.convert_recipe_to_object(cursor.fetchone())
-        print(recipe)
         cursor.close()
         return recipe
     
