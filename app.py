@@ -38,7 +38,7 @@ def random():
 
 
         # Directly pass recipes to the template
-        simplified_recipes = [(r[0], r[1]) for r in recipes]  # (id, title)
+        simplified_recipes = [(r.get_id(), r.get_title()) for r in recipes]  # (id, title)
         return render_template('recipelist.html', recipes=simplified_recipes)
 
     return render_template('random.html')
