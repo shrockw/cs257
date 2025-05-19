@@ -3,6 +3,7 @@ This is the main file for the Flask web application.
 It handles the routing and serves the web pages.
 '''
 
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from ProductionCode.datasource import DataSource, Recipe
 
@@ -15,6 +16,7 @@ TOTAL_NUM_RECIPES = 13501
 def homepage():
     '''This function returns the homepage.'''
     return render_template('homepage.html')
+
 
 @app.route('/all_recipes')
 def all_recipes():
@@ -31,12 +33,37 @@ def random():
         num = int(request.form.get('num_recipes', 1))
         recipes = recipe_data.get_random_recipes(num)
 
+
         # Directly pass recipes to the template
         simplified_recipes = [(r[0], r[1]) for r in recipes]  # (id, title)
         return render_template('recipelist.html', recipes=simplified_recipes)
 
     return render_template('random.html')
 
+
+
+@app.route('/all_recipes')
+def all_recipes():
+    recipe_data = DataSource()
+    recipes = recipe_data.get_all_recipes()
+    sorted_recipes = sort_recipes_alphabetically(recipes)
+    print(sorted_recipes)
+    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, letters = string.ascii_uppercase)
+
+def sort_recipes_alphabetically(recipes):
+    sorted_recipes = []
+    for letter in string.ascii_lowercase:
+        current_letter = (letter.upper(), [])
+        for recipe in recipes:
+            title = recipe.get_title()
+            if title.lower().startswith(letter):
+                current_letter[1].append(recipe)
+
+        sorted_recipes.append(current_letter)
+
+    return sorted_recipes
+
+        
 
 @app.route('/random/<int:num_recipes>')
 def random_recipes(num_recipes):

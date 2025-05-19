@@ -12,6 +12,10 @@ h1, h2 {
      /* This next line gives us some extra spacing within a paragraph*/
      line-height: 1.4;
  }
+
+ a {
+    color: green;
+ }
  
  li {
      font-family: Verdana, Geneva, sans-serif;
@@ -38,6 +42,7 @@ h1, h2 {
 div.fav_recipe:last-child {
     margin-right: 0;
 }
+
 
 
 div.all_fav_recipes {
@@ -161,3 +166,24 @@ a.button {
     background-color: darkgreen;
   }
   
+div.alphabet_links {
+    position: sticky;
+    top: 0;
+    background-color: white; /* Provide a background color */
+    padding: 10px 0; /* Add some padding for better visual appearance */
+    border: 2px solid green;
+    text-align: center;
+}
+
+div.alphabet_links a {
+    font-size: 24px;
+    margin-right: 5px;
+    margin-left: 5px;
+    align-items: center;
+}
+
+div.recipes_div h3 {
+    scroll-margin-top: 70px; /* Increased to 80px */
+  position: relative;
+}
+
