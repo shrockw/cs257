@@ -187,3 +187,75 @@ div.recipes_div h3 {
   position: relative;
 }
 
+
+/* === Custom Search === */
+.search-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ingredient-input {
+    width: 35%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ingredient-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+}
+
+.ingredient-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.include-tag {
+    background-color: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: black;
+}
+
+.exclude-tag {
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: black;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    color: inherit;
+    font-weight: bold;
+}
+
+.search-button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+}
+
+#submit-btn {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    margin-bottom: 10px; 
+}

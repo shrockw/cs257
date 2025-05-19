@@ -43,7 +43,24 @@ def random():
 
     return render_template('random.html')
 
-
+@app.route('/custom', methods=['GET', 'POST'])
+def custom_search():
+    """Handle ingredient search form submission"""
+    if request.method == 'POST':
+        recipe_data = DataSource()
+        
+        include = request.form.get('include_ingredients', '').split(',')
+        exclude = request.form.get('exclude_ingredients', '').split(',')
+        
+        include = [i.strip().lower() for i in include if i.strip()]
+        exclude = [e.strip().lower() for e in exclude if e.strip()]
+        
+        recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
+        
+        simplified_recipes = [(r[0], r[1]) for r in recipes]
+        return render_template('found_recipes.html', recipes=simplified_recipes)
+    
+    return render_template('custom.html')
 
 @app.route('/all_recipes')
 def all_recipes():

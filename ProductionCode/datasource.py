@@ -34,20 +34,32 @@ class DataSource:
         return records
 
     def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
-        '''Fetches recipes that include certain ingredients and exclude others. 
-        Args:
-        include_ingredients: list of ingredients to include
-        exclude_ingredients: list of ingredients to exclude
-        Returns a list of tuples containing the data.
-        '''
-
+        '''Fetches recipes that include certain ingredients and exclude others'''
         cursor = self.connection.cursor()
-        query = self.create_recipe_by_ingredients_query(include_ingredients, exclude_ingredients)
-        cursor.execute(query)
-        data = cursor.fetchall()
-        print(data)
+        
+        query = "SELECT * FROM recipe WHERE "
+        conditions = []
+        params = []
+        
+        if include_ingredients:
+            for ingredient in include_ingredients:
+                conditions.append("ingredients ILIKE %s")
+                params.append(f"%{ingredient}%")
+        
+        if exclude_ingredients:
+            for ingredient in exclude_ingredients:
+                conditions.append("ingredients NOT ILIKE %s")
+                params.append(f"%{ingredient}%")
+        
+        if conditions:
+            query += " AND ".join(conditions)
+        else:
+            query = "SELECT * FROM recipe LIMIT 50"
+        
+        cursor.execute(query, params)
+        recipes = cursor.fetchall()
         cursor.close()
-        return data
+        return recipes
 
     def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
         '''Creates a SQL query to fetch recipes based on included and excluded ingredients.
@@ -114,7 +126,6 @@ class DataSource:
         query = "SELECT * FROM recipe WHERE id = %s"
         cursor.execute(query, (recipe_id,))
         recipe = self.convert_recipe_to_object(cursor.fetchone())
-        print(recipe)
         cursor.close()
         return recipe
     
@@ -156,5 +167,3 @@ class Recipe():
     def get_ingredients(self):
         '''Returns the ingredients of the recipe.'''
         return self.ingredients
-
-    
