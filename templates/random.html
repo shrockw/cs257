@@ -1,16 +1,31 @@
-<!DOCTYPE html>
+
 <html>
 <head>
-  <title>Random Search</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>Random Search</title>
+<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
 </head>
 <body>
-  <h1>Flavor Finder</h1>
+<h1>Flavor Finder</h1>
 
-  <form action="{{ url_for('random') }}" method="POST">
+<nav>
+    <ul>
+    <li><a href="/homepage">Home</a></li>
+    <li><a href="#search">Search</a></li>
+    <li><a href="/random">Random</a></li>
+    <li><a href="#all">All</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    </ul>
+    </nav>
+
+<div>
+<h2>Random Search</h2>
+
+<p>Enter a number of recipes and click the button below to find a random flavor!</p>
+<form action="/random" method="POST">
     <label for="num_recipes">How many recipes?</label>
-    <input type="number" name="num_recipes" min="1" max="10" required>
+    <input type="text" id="ingredients" name="num_recipes" placeholder="Enter a number" required>
     <button type="submit">Generate</button>
   </form>
+  
 </body>
 </html>
