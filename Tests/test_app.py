@@ -227,7 +227,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")
         # Mock the form submission for the random route
         response = self.app.post('/find_recipe_by_title',
-                                 data={'recipe_title': 
+                                 data={'recipe_title':
                                        "Chocolate and Peppermint Candy Ice Cream Sandwiches"},
                                  follow_redirects=True)
 
