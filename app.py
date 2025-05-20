@@ -68,7 +68,7 @@ def custom_search():
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
         if recipes:
             sorted_recipes = sort_recipes_alphabetically(recipes)
-            return render_template('all_recipes.html', sorted_recipes=sorted_recipes, 
+            return render_template('all_recipes.html', sorted_recipes=sorted_recipes,
                                    letters = string.ascii_uppercase, highlight = None)
 
         return render_template('no_recipes_found.html')
@@ -85,7 +85,7 @@ def all_recipes():
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
-    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, 
+    return render_template('all_recipes.html', sorted_recipes = sorted_recipes,
                            letters = string.ascii_uppercase, highlight = "highlight")
 
 def sort_recipes_alphabetically(recipes):

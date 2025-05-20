@@ -17,7 +17,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_homepage(self, mock_connect):
         '''Test the homepage route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (789, 
+        self.mock_cursor.fetchone.return_value = (789,
             'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
@@ -212,7 +212,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_search_by_title_route(self, mock_connect):
         '''Test the random route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (11286, 
+        self.mock_cursor.fetchone.return_value = (11286,
             'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
@@ -226,8 +226,9 @@ class TestFlaskRoutes(unittest.TestCase):
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")
         # Mock the form submission for the random route
-        response = self.app.post('/find_recipe_by_title', 
-                                 data={'recipe_title': "Chocolate and Peppermint Candy Ice Cream Sandwiches"}, 
+        response = self.app.post('/find_recipe_by_title',
+                                 data={'recipe_title': 
+                                       "Chocolate and Peppermint Candy Ice Cream Sandwiches"},
                                  follow_redirects=True)
 
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
@@ -318,7 +319,7 @@ class TestFlaskRoutes(unittest.TestCase):
              'oil\', \'3 oz. coarsely grated Gruyère (about 1½ cups)\', \'3 oz. cream cheese, '
              'cut into pieces\', \'3/4 cup whole milk\', \'1/4 tsp. freshly grated or ground '
              'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']')]
-        response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli", 
+        response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli",
                                                   'exclude_ingredients': ""})
 
         self.assertIn(b"Cavatappi with Broccolini, Brown Butter, and Sage",
@@ -396,7 +397,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "grated Parmigiano-Reggiano (1 cup)', '2 large eggs', '6 tablespoons vegetable "
              "oil', '10 oz arugula (5 cups), leaves torn if large', '1 cup loosely packed "
              "fresh basil leaves', 'torn into bite-size pieces']")]
-        response = self.app.post('/custom', data={'include_ingredients': "", 
+        response = self.app.post('/custom', data={'include_ingredients': "",
                                                   'exclude_ingredients': "cheese,broccoli"})
 
         self.assertIn(b"Salmon with Soy-Honey and Wasabi Sauces",
@@ -459,7 +460,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "flour', '2/3 cup whole milk', '2/3 cup freshly grated Parmesan cheese']")]
 
 
-        response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli", 
+        response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli",
                                                   'exclude_ingredients': "garlic"})
 
         self.assertIn(
