@@ -212,8 +212,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_search_by_title_route(self, mock_connect):
         '''Test the random route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
-            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
+        self.mock_cursor.fetchone.return_value = (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
              'until just firm enough to scoop, about 1 hour.\n Working very quickly, scoop '
@@ -224,7 +223,7 @@ class TestFlaskRoutes(unittest.TestCase):
              'hour.', 
              "['1 pint superpremium vanilla ice cream, softened slightly', '1/4 teaspoon pure "
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
-             "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
+             "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")
         # Mock the form submission for the random route
         response = self.app.post('/find_recipe_by_title', data={'recipe_title': "Chocolate and Peppermint Candy Ice Cream Sandwiches"})
        
