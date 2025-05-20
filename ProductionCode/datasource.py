@@ -1,8 +1,8 @@
 '''This module contains the DataSource class that handles database connections and queries.'''
 
 import sys
-import psycopg2
 import ast
+import psycopg2
 import ProductionCode.psql_config as config
 
 class DataSource:
@@ -30,56 +30,38 @@ class DataSource:
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM recipe")
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
-        
+
         return records
 
     def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
         '''Fetches recipes that include certain ingredients and exclude others'''
         cursor = self.connection.cursor()
-        
+
         query = "SELECT * FROM recipe WHERE "
         conditions = []
         params = []
 
-        
+
         if include_ingredients:
             for ingredient in include_ingredients:
                 conditions.append("ingredients ILIKE %s")
                 params.append(f"%{ingredient}%")
-        
+
         if exclude_ingredients:
             for ingredient in exclude_ingredients:
                 conditions.append("ingredients NOT ILIKE %s")
                 params.append(f"%{ingredient}%")
-        
+
         if conditions:
             query += " AND ".join(conditions)
         else:
             return []
-        
+
 
         cursor.execute(query, params)
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
         cursor.close()
         return records
-
-    def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
-        '''Creates a SQL query to fetch recipes based on included and excluded ingredients.
-        Args:
-        include_ingredients: list of ingredients to include
-        exclude_ingredients: list of ingredients to exclude
-        Returns a SQL query string.
-        '''
-
-        query = "SELECT * FROM recipe WHERE "
-        if include_ingredients:
-            query += " AND ".join(
-                [f"ingredients ILIKE '%{ingredient}%'" for ingredient in include_ingredients])
-            if exclude_ingredients:
-                query += " AND "
-        query += " AND ".join(
-            [f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
-        return query
 
     def get_random_recipes(self, number):
         ''' This function retrieves random recipes from the database.
@@ -106,7 +88,7 @@ class DataSource:
         recipe = self.convert_recipe_to_object(cursor.fetchone())
         cursor.close()
         return recipe if recipe else None
-    
+
     def convert_recipe_to_object(self, recipe):
         '''This function converts the recipe data into a Recipe object.
         Args:
@@ -130,7 +112,7 @@ class DataSource:
         recipe = self.convert_recipe_to_object(cursor.fetchone())
         cursor.close()
         return recipe
-    
+
     def get_all_recipe_titles(self):
         '''This function retrieves all recipe titles from the database.
         Returns a list of recipe titles.
@@ -141,11 +123,12 @@ class DataSource:
         titles = cursor.fetchall()
         cursor.close()
         return [title[0] for title in titles]
-    
-    
+
+
 
 class Recipe():
-    '''This class represents a recipe object. It contains methods to get the title, ingredients, and instructions of the recipe.'''
+    '''This class represents a recipe object. It contains methods to get the title, 
+    ingredients, and instructions of the recipe.'''
 
     def __init__(self, recipe_id, recipe_title, recipe_instructions, recipe_ingredients):
         '''Constructor that initializes the recipe object with the given recipe data.'''

@@ -76,7 +76,10 @@ def search_cl(include_ingredients, omit_ingredients):
 def print_recipes(recipes):
     ''' Print the recipes found line by line. '''
     for recipe in recipes:
-        print(recipe)
+        print("Recipe Title:", recipe.get_title())
+        print("Recipe Instructions:", recipe.get_instructions())
+        print("Recipe Ingredients:", recipe.get_ingredients())
+        print("-" * 40)
 
 def parse_ingredients(ingredients_str):
     """

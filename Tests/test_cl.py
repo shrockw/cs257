@@ -7,7 +7,6 @@ from unittest.mock import MagicMock, patch
 import sys
 from io import StringIO
 from cl import main
-from ProductionCode.datasource import Recipe
 
 
 class TestCommandLine(unittest.TestCase):
@@ -39,12 +38,11 @@ class TestMainFunction(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
 
         # Set return value of fetchall on the mock cursor
-        test_recipe = Recipe(11286, 
+
+        self.mock_cursor.fetchall.return_value = [(11286,
                              'Chocolate and Peppermint Candy Ice Cream Sandwiches',
                              'Stir together ice cream...',
-                             "['1 pint superpremium vanilla ice cream...']")
-
-        self.mock_cursor.fetchall.return_value = [test_recipe]
+                             "['1 pint superpremium vanilla ice cream...']")]
 
         sys.argv = ['cl.py', '--random', '1']
         sys.stdout = StringIO()
@@ -60,11 +58,9 @@ class TestMainFunction(unittest.TestCase):
         Tests the command line interface.
         '''
         mock_connect.return_value = self.mock_conn
-        test_recipe = Recipe(13401,
-                             'Thai-Style Chicken and Rice Soup',
-                             'Combine stock, water, curry paste, garlic, ginger, ...',
-                             "['8 cups chicken stock or low-sodium chicken broth (64 fl oz)...']")
-        self.mock_cursor.fetchall.return_value = [test_recipe]
+        self.mock_cursor.fetchall.return_value = [(13401, 'Thai-Style Chicken and Rice Soup',
+        'Combine stock, water, curry paste, garlic, ginger, ...',
+        "['8 cups chicken stock or low-sodium chicken broth (64 fl oz)...']")]
 
         # Test the command line interface with the --include option
         sys.argv = ['cl.py', '--search',
@@ -77,12 +73,9 @@ class TestMainFunction(unittest.TestCase):
         self.assertIn('Thai-Style Chicken and Rice Soup', output, "Should be the same")
 
         mock_connect.return_value = self.mock_conn
-        test_recipe = Recipe(13483,
-                             'White Chicken Chili',
-                             'In a large kettle soak beans in cold water to cover...',
-                             "['1/2 pound dried navy beans, picked over...']")
-        self.mock_cursor.fetchall.return_value = [test_recipe]
-
+        self.mock_cursor.fetchall.return_value = [(13483, 'White Chicken Chili',
+        'In a large kettle soak beans in cold water to cover...',
+        "['1/2 pound dried navy beans, picked over...']")]
 
         # Test the command line interface with both --incluce and --omit option
         sys.argv = ['cl.py', '--search', '--include_ingredients',
@@ -100,12 +93,9 @@ class TestMainFunction(unittest.TestCase):
         Tests the command line interface with omitted ingredients.
         '''
         mock_connect.return_value = self.mock_conn
-        test_recipe = Recipe(13499,
-                             'Spanakopita',
-                             'Melt 1 tablespoon butter in a 12-inch heavy skillet...',
-                             "['1 stick (1/2 cup) plus 1 tablespoon unsalted butter...']")
-        self.mock_cursor.fetchall.return_value = [test_recipe]
-
+        self.mock_cursor.fetchall.return_value = [(13499, 'Spanakopita',
+        'Melt 1 tablespoon butter in a 12-inch heavy skillet...',
+        "['1 stick (1/2 cup) plus 1 tablespoon unsalted butter...']")]
 
         # Test the command line interface with --omit option
         sys.argv = ['cl.py', '--search', '--omit_ingredients', 'chicken']
