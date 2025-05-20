@@ -2,7 +2,6 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from app import app
-from ProductionCode.datasource import Recipe
 
 
 class TestFlaskRoutes(unittest.TestCase):
@@ -18,7 +17,8 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_homepage(self, mock_connect):
         '''Test the homepage route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (789, 'Cavatappi with Broccolini, Brown Butter, and Sage',
+        self.mock_cursor.fetchone.return_value = (789, 
+            'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
              'boiling water and cook until crisp-tender, 2 to 3 minutes. Using a spider '
@@ -204,15 +204,16 @@ class TestFlaskRoutes(unittest.TestCase):
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
         # Mock the form submission for the random route
         response = self.app.post('/random', data={'num_recipes': 1})
-       
+
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
-        
+
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_by_title_route(self, mock_connect):
         '''Test the random route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
+        self.mock_cursor.fetchone.return_value = (11286, 
+            'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
              'until just firm enough to scoop, about 1 hour.\n Working very quickly, scoop '
@@ -225,8 +226,10 @@ class TestFlaskRoutes(unittest.TestCase):
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")
         # Mock the form submission for the random route
-        response = self.app.post('/find_recipe_by_title', data={'recipe_title': "Chocolate and Peppermint Candy Ice Cream Sandwiches"}, follow_redirects=True)
-       
+        response = self.app.post('/find_recipe_by_title', 
+                                 data={'recipe_title': "Chocolate and Peppermint Candy Ice Cream Sandwiches"}, 
+                                 follow_redirects=True)
+
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
 
@@ -236,13 +239,13 @@ class TestFlaskRoutes(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchall.return_value = []
         response = self.app.post('/random', data={'num_recipes': -1})
-       
+
         self.assertIn(b"You entered an invalid number of recipes.",
                       response.data, "Should match")
-    
+
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_autocomplete_route(self, mock_connect):
-        # Mock the return value of get_all_recipe_titles
+        '''Test the autocomplete route.'''
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchall.return_value = [
             ("Chocolate Cake",),
@@ -317,7 +320,7 @@ class TestFlaskRoutes(unittest.TestCase):
              'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']')]
         response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli", 
                                                   'exclude_ingredients': ""})
-       
+
         self.assertIn(b"Cavatappi with Broccolini, Brown Butter, and Sage",
                       response.data, "Should match")
 
@@ -395,7 +398,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "fresh basil leaves', 'torn into bite-size pieces']")]
         response = self.app.post('/custom', data={'include_ingredients': "", 
                                                   'exclude_ingredients': "cheese,broccoli"})
-       
+
         self.assertIn(b"Salmon with Soy-Honey and Wasabi Sauces",
                       response.data, "Should match")
 
@@ -454,11 +457,11 @@ class TestFlaskRoutes(unittest.TestCase):
              "['2 1/2 cups cauliflower florets', '2 1/2 cups broccoli florets', '2 6-ounce bags "
              "baby spinach leaves', '6 tablespoons (3/4 stick) butter', '1/4 cup all purpose "
              "flour', '2/3 cup whole milk', '2/3 cup freshly grated Parmesan cheese']")]
-        
+
 
         response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli", 
                                                   'exclude_ingredients': "garlic"})
-       
+
         self.assertIn(
             b"Mac and Cheese with Chicken and Broccoli",
             response.data, "Should match")

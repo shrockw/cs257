@@ -3,10 +3,9 @@ This is the main file for the Flask web application.
 It handles the routing and serves the web pages.
 '''
 
-
-from flask import Flask, render_template, request, redirect, url_for, jsonify
 import string
-from ProductionCode.datasource import DataSource, Recipe
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from ProductionCode.datasource import DataSource
 
 
 app = Flask(__name__)
@@ -22,15 +21,22 @@ def homepage():
     willan_recipe = recipe_data.get_recipe_by_id(3606)
     anika_recipe = recipe_data.get_recipe_by_id(5895)
     allison_recipe = recipe_data.get_recipe_by_id(1260)
-    return render_template('homepage.html', featured_recipe=featured_recipe[0], 
+    return render_template('homepage.html', featured_recipe=featured_recipe[0],
                            marc_recipe=marc_recipe,
-                           willan_recipe=willan_recipe, 
+                           willan_recipe=willan_recipe,
                            anika_recipe=anika_recipe,
                            allison_recipe=allison_recipe)
 
 
 @app.route('/random', methods=['GET', 'POST'])
 def random():
+    '''This function handles the random recipe search form submission.
+    It generates a certain number of random recipe based on the number of recipes requested.
+    Arguments:
+        None
+    Returns:
+        Renders the recipe list template with the list of recipes.
+    '''
     if request.method == 'POST':
         recipe_data = DataSource()
         num = int(request.form.get('num_recipes', 1))
@@ -52,30 +58,45 @@ def custom_search():
     """Handle ingredient search form submission"""
     if request.method == 'POST':
         recipe_data = DataSource()
-        
+
         include = request.form.get('include_ingredients', '').split(',')
         exclude = request.form.get('exclude_ingredients', '').split(',')
-        
+
         include = [i.strip().lower() for i in include if i.strip()]
         exclude = [e.strip().lower() for e in exclude if e.strip()]
-        
+
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
         if recipes:
             sorted_recipes = sort_recipes_alphabetically(recipes)
-            return render_template('all_recipes.html', sorted_recipes=sorted_recipes, letters = string.ascii_uppercase, highlight = None)
-    
-        else:
-            return render_template('no_recipes_found.html')
+            return render_template('all_recipes.html', sorted_recipes=sorted_recipes, 
+                                   letters = string.ascii_uppercase, highlight = None)
+
+        return render_template('no_recipes_found.html')
     return render_template('custom.html')
 
 @app.route('/all_recipes')
 def all_recipes():
+    '''Route to display all recipes using all_recipes.html
+    Arguments:
+        None
+    Returns:
+        Renders the all recipes template with the sorted list of recipes.
+    '''
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
-    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, letters = string.ascii_uppercase, highlight = "highlight")
+    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, 
+                           letters = string.ascii_uppercase, highlight = "highlight")
 
 def sort_recipes_alphabetically(recipes):
+    '''This function sorts the recipes into buckets for each letter in the alphabet by title.
+
+    Arguments:
+        recipes: A list of Recipe objects to be sorted.
+    Returns:
+        A list of tuples containing the corresponding letter and a list of 
+        recipe IDs and titles for all recipes that start with that letter.
+    '''
     sorted_recipes = []
     for letter in string.ascii_lowercase:
         current_letter = (letter.upper(), [])
@@ -88,7 +109,7 @@ def sort_recipes_alphabetically(recipes):
 
     return sorted_recipes
 
-        
+
 @app.route('/search_by_title')
 def search_by_title(last_search=None):
     '''Route to display the search by title page from search_by_title.html
