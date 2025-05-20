@@ -239,6 +239,27 @@ class TestFlaskRoutes(unittest.TestCase):
        
         self.assertIn(b"You entered an invalid number of recipes.",
                       response.data, "Should match")
+    
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def test_autocomplete_route(self, mock_connect):
+        # Mock the return value of get_all_recipe_titles
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.fetchall.return_value = [
+            ("Chocolate Cake",),
+            ("Chocolate Chip Cookies",),
+            ("Vanilla Ice Cream",),
+            ("Peppermint Bark",),
+            ("Chocolate and Peppermint Candy Ice Cream Sandwiches",)
+        ]
+
+
+        # Query for "chocolate"
+        response = self.app.get('/autocomplete?cur_search=chocolate')
+        data = response.get_json()
+        self.assertIn("Chocolate Cake", data)
+        self.assertIn("Chocolate Chip Cookies", data)
+        self.assertIn("Chocolate and Peppermint Candy Ice Cream Sandwiches", data)
+        self.assertNotIn("Vanilla Ice Cream", data)
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_include_route(self, mock_connect):
