@@ -225,7 +225,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")
         # Mock the form submission for the random route
-        response = self.app.post('/find_recipe_by_title', data={'recipe_title': "Chocolate and Peppermint Candy Ice Cream Sandwiches"})
+        response = self.app.post('/find_recipe_by_title', data={'recipe_title': "Chocolate and Peppermint Candy Ice Cream Sandwiches"}, follow_redirects=True)
        
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
