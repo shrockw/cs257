@@ -62,7 +62,7 @@ def custom_search():
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
         if recipes:
             sorted_recipes = sort_recipes_alphabetically(recipes)
-            return render_template('all_recipes.html', sorted_recipes=sorted_recipes, letters = string.ascii_uppercase)
+            return render_template('all_recipes.html', sorted_recipes=sorted_recipes, letters = string.ascii_uppercase, highlight = None)
     
         else:
             return render_template('no_recipes_found.html')
@@ -73,7 +73,7 @@ def all_recipes():
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
-    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, letters = string.ascii_uppercase)
+    return render_template('all_recipes.html', sorted_recipes = sorted_recipes, letters = string.ascii_uppercase, highlight = "highlight")
 
 def sort_recipes_alphabetically(recipes):
     sorted_recipes = []
@@ -89,72 +89,6 @@ def sort_recipes_alphabetically(recipes):
     return sorted_recipes
 
         
-
-@app.route('/random/<int:num_recipes>')
-def random_recipes(num_recipes):
-    '''Fetches n random recipes from the dataset separated by line breaks.
-    Args:
-        num_recipes: number of recipes to return (must be between 1 and 13501)
-    Returns:
-        A string contain the recipes separated by line breaks
-    '''
-    if num_recipes < 1 or num_recipes > TOTAL_NUM_RECIPES:
-        return "Please enter a valid number between 1 and 13501."
-
-    recipe_data = DataSource()
-    recipes = recipe_data.get_random_recipes(num_recipes)
-    output = build_output_string(recipes)
-    return f"Returning {num_recipes} random recipes...<br><br> {output}"
-
-def build_output_string(recipes):
-    '''Helper function to build the output string from the list of recipes.
-    Args:
-        recipes: list of tuples containing the recipe data
-    Returns:
-        A string containing the recipe names and their descriptions
-    '''
-    output = ""
-    for recipe in recipes:
-        output += f"{recipe[1]}: {recipe[2]}<br><br>"
-    return output
-
-@app.route('/search', defaults={'include_ingredients': None, 'omit_ingredients': None})
-@app.route('/search/include/<string:include_ingredients>', defaults={'omit_ingredients': None})
-@app.route('/search/omit/<string:omit_ingredients>', defaults={'include_ingredients': None})
-@app.route('/search/include/<string:include_ingredients>/omit/<string:omit_ingredients>')
-def search_include_omit(include_ingredients, omit_ingredients):
-    '''This function searches for recipes that include and omit the specified ingredients
-    and returns the recipes that satisfy these parameters in specified format.
-    Args:
-        include_ingredients: list of ingredients to include (optional)
-        omit_ingredients: list of ingredients to omit (optional)
-    Returns:
-        A string containing the recipes that satisfy the parameters
-    '''
-    recipe_data = DataSource()
-    if include_ingredients:
-        parsed_include_ingredients = parse_ingredients(include_ingredients)
-    else:
-        parsed_include_ingredients = []
-    if omit_ingredients:
-        parsed_omit_ingredients = parse_ingredients(omit_ingredients)
-    else:
-        parsed_omit_ingredients = []
-    recipes = recipe_data.get_recipe_by_ingredients(parsed_include_ingredients,\
-                                                     parsed_omit_ingredients)
-    output = build_output_string(recipes)
-    return f"Recipes including {include_ingredients} and omitting {omit_ingredients}: \
-        <br><br> {output}"
-
-def parse_ingredients(ingredients):
-    '''This function parses the ingredients from the URL into a list of ingredients.
-    Args:
-        ingredients: string of ingredients separated by commas
-    Returns:
-        A list of ingredients
-    '''
-    return ingredients.split(",")
-
 @app.route('/search_by_title')
 def search_by_title(last_search=None):
     '''Route to display the search by title page from search_by_title.html
