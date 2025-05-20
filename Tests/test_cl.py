@@ -7,7 +7,6 @@ from unittest.mock import MagicMock, patch
 import sys
 from io import StringIO
 from cl import main
-from ProductionCode.datasource import Recipe
 
 
 class TestCommandLine(unittest.TestCase):
@@ -40,7 +39,7 @@ class TestMainFunction(unittest.TestCase):
 
         # Set return value of fetchall on the mock cursor
 
-        self.mock_cursor.fetchall.return_value = [(11286, 
+        self.mock_cursor.fetchall.return_value = [(11286,
                              'Chocolate and Peppermint Candy Ice Cream Sandwiches',
                              'Stir together ice cream...',
                              "['1 pint superpremium vanilla ice cream...']")]
