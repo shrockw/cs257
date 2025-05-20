@@ -63,24 +63,6 @@ class DataSource:
         cursor.close()
         return records
 
-    def create_recipe_by_ingredients_query(self, include_ingredients, exclude_ingredients):
-        '''Creates a SQL query to fetch recipes based on included and excluded ingredients.
-        Args:
-        include_ingredients: list of ingredients to include
-        exclude_ingredients: list of ingredients to exclude
-        Returns a SQL query string.
-        '''
-
-        query = "SELECT * FROM recipe WHERE "
-        if include_ingredients:
-            query += " AND ".join(
-                [f"ingredients ILIKE '%{ingredient}%'" for ingredient in include_ingredients])
-            if exclude_ingredients:
-                query += " AND "
-        query += " AND ".join(
-            [f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
-        return query
-
     def get_random_recipes(self, number):
         ''' This function retrieves random recipes from the database.
         Args:
