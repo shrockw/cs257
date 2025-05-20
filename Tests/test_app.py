@@ -2,6 +2,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from app import app
+from ProductionCode.datasource import Recipe
 
 
 class TestFlaskRoutes(unittest.TestCase):
@@ -16,15 +17,16 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_homepage(self):
         '''Test the homepage route.'''
         response = self.app.get('/')
-        self.assertIn(b"In the url after the /, enter the word random, then a /, " \
-        b"then a number between 1 and 13501.",
+        self.assertIn(b"This website allows users to find random recipes, or " \
+        b"to search for recipes by title or by ingredients. This way anybody " \
+        b"can find a delicious recipe to fit any situation.",
                       response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_all_recipes(self, mock_connect):
         '''Test the all recipes route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = self.mock_cursor.fetchall.return_value = [
+        self.mock_cursor.fetchall.return_value = [
             (789, 'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
@@ -107,13 +109,17 @@ class TestFlaskRoutes(unittest.TestCase):
              "['1 pint superpremium vanilla ice cream, softened slightly', '1/4 teaspoon pure "
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
+        # Mock the form submission for the random route
+        response = self.app.post('/random', data={'num_recipes': 1})
+       
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
-                      self.app.get('/random/1').data, "Should match")
+                      response.data, "Should match")
 
     def test_random_route_invalid(self):
         '''Test the random route with an invalid number.'''
-        response = self.app.get('/random/32543')
-        self.assertIn(b"Please enter a valid number between 1 and 13501.",
+        response = self.app.post('/random', data={'num_recipes': -1})
+       
+        self.assertIn(b"You entered an invalid number of recipes.",
                       response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
@@ -170,10 +176,11 @@ class TestFlaskRoutes(unittest.TestCase):
              'oil\', \'3 oz. coarsely grated Gruyère (about 1½ cups)\', \'3 oz. cream cheese, '
              'cut into pieces\', \'3/4 cup whole milk\', \'1/4 tsp. freshly grated or ground '
              'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']')]
-        response = self.app.get('/search/include/cheese,broccoli')
-        self.assertIn(
-            b"Cavatappi with Broccolini, Brown Butter, and Sage",
-            response.data, "Should match")
+        response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli", 
+                                                  'exclude_ingredients': ""})
+       
+        self.assertIn(b"Cavatappi with Broccolini, Brown Butter, and Sage",
+                      response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_omit_route(self, mock_connect):
@@ -247,10 +254,12 @@ class TestFlaskRoutes(unittest.TestCase):
              "grated Parmigiano-Reggiano (1 cup)', '2 large eggs', '6 tablespoons vegetable "
              "oil', '10 oz arugula (5 cups), leaves torn if large', '1 cup loosely packed "
              "fresh basil leaves', 'torn into bite-size pieces']")]
-        response = self.app.get('/search/omit/cheese,broccoli')
-        self.assertIn(
-            b"Salmon with Soy-Honey and Wasabi Sauces",
-            response.data, "Should match")
+        response = self.app.post('/custom', data={'include_ingredients': "", 
+                                                  'exclude_ingredients': "cheese,broccoli"})
+       
+        self.assertIn(b"Salmon with Soy-Honey and Wasabi Sauces",
+                      response.data, "Should match")
+
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_include_omit_route(self, mock_connect):
@@ -306,7 +315,11 @@ class TestFlaskRoutes(unittest.TestCase):
              "['2 1/2 cups cauliflower florets', '2 1/2 cups broccoli florets', '2 6-ounce bags "
              "baby spinach leaves', '6 tablespoons (3/4 stick) butter', '1/4 cup all purpose "
              "flour', '2/3 cup whole milk', '2/3 cup freshly grated Parmesan cheese']")]
-        response = self.app.get('/search/include/cheese,broccoli/omit/garlic')
+        
+
+        response = self.app.post('/custom', data={'include_ingredients': "cheese,broccoli", 
+                                                  'exclude_ingredients': "garlic"})
+       
         self.assertIn(
             b"Mac and Cheese with Chicken and Broccoli",
             response.data, "Should match")
@@ -314,9 +327,9 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_invalid_input(self):
         '''Test the random recipes route with invalid input.'''
         response = self.app.get('/random/abc', follow_redirects=True)
-        self.assertIn(b"Here are some ways you can use this application:",
+        self.assertIn(b"Oops! That page doesn\'t exist.",
                       response.data)
 
         response = self.app.get('/random/-1', follow_redirects=True)
-        self.assertIn(b"Here are some ways you can use this application:",
+        self.assertIn(b"Oops! That page doesn\'t exist.",
                       response.data)

@@ -35,7 +35,7 @@ def random():
         recipe_data = DataSource()
         num = int(request.form.get('num_recipes', 1))
 
-        print(num)
+        # print(num)
         if num < 1 or num > TOTAL_NUM_RECIPES:
             return render_template('recipelist.html', recipes=None)
 
@@ -211,7 +211,7 @@ def autocomplete():
     query = request.args.get('cur_search')
     recipe_data = DataSource()
     autocomplete_data = recipe_data.get_all_recipe_titles()
-    print([a for a in autocomplete_data if a == None])
+    # print([a for a in autocomplete_data if a == None])
     # print(autocomplete_data)
     if query:
         suggestions = [item for item in autocomplete_data if query.lower() in item.lower()]
