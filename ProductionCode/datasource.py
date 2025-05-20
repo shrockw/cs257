@@ -112,17 +112,7 @@ class DataSource:
         recipe = self.convert_recipe_to_object(cursor.fetchone())
         cursor.close()
         return recipe
-    
-    def get_all_recipe_titles(self):
-        '''This function retrieves all recipe titles from the database.
-        Returns a list of recipe titles.
-        '''
-        cursor = self.connection.cursor()
-        query = "SELECT title FROM recipe"
-        cursor.execute(query)
-        titles = cursor.fetchall()
-        cursor.close()
-        return [title[0] for title in titles]
+
     
     
 
