@@ -466,6 +466,44 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertIn(
             b"Mac and Cheese with Chicken and Broccoli",
             response.data, "Should match")
+        
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def test_display_recipe_route(self, mock_connect):
+        '''Test the display recipe route.'''
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.fetchone.return_value = (789,
+            'Cavatappi with Broccolini, Brown Butter, and Sage',
+             'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
+             'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
+             'boiling water and cook until crisp-tender, 2 to 3 minutes. Using a spider '
+             'or slotted spoon, transfer the Broccolini to the ice water to stop the '
+             'cooking and let cool. Keep the pot of water boiling for the pasta. Drain '
+             'the broccolini in a colander, cut the stalks in half crosswise, and set '
+             'aside.\nIn a large nonstick skillet over medium heat, heat the olive oil '
+             'until shimmering. Add the garlic and red pepper flakes and cook, stirring '
+             'frequently, for 1 minute. Add the blanched broccolini, 1/2 teaspoon salt, '
+             'and 1/4 teaspoon black pepper and sauté until tender, 3 to 5 minutes. '
+             'Transfer the broccolini to a medium bowl and set aside.\nAdd the pasta '
+             'to the boiling water and cook until al dente, about 2 minutes less than the '
+             'directions on the package. Reserve 1/2 cup of the pasta water and drain the '
+             'pasta in a colander.\nMeanwhile, wipe out the skillet, return it to '
+             'medium-low heat, and add the butter. When the butter has melted, add the sage '
+             'leaves and cook until the butter turns amber brown and the sage shrivels, 4 '
+             'to 6 minutes. Add 1/4 teaspoon salt and black pepper. Stir in the cooked pasta '
+             'until incorporated, then fold in the broccolini and 2 to 3 tablespoons of the '
+             'reserved pasta water.\nStir in the Parmesan cheese, adding more pasta water until '
+             'you achieve desired creaminess. Season with salt and pepper and serve hot.',
+             "['Kosher salt', '2 bunches Broccolini (about 1 pound), ends trimmed, split "
+             "lengthwise into halves or thirds depending on the thickness (or substitute "
+             "broccoli rabe or broccoli)', '2 tablespoons extra-virgin olive oil', '2 large cloves "
+             "garlic, minced', '1/4 teaspoon crushed red pepper flakes', 'Freshly ground black "
+             "pepper', '1 pound cavatappi pasta (or your favorite ribbed pasta)', '6 tablespoons "
+             "unsalted butter, cubed', '15 fresh sage leaves, torn', '1/2 cup freshly grated "
+             "Parmesan cheese']")
+        
+        response = self.app.get('/display_recipe/789')
+        self.assertIn(b"Cavatappi with Broccolini, Brown Butter, and Sage",
+                      response.data, "Should match")
 
     def test_invalid_input(self):
         '''Test the random recipes route with invalid input.'''

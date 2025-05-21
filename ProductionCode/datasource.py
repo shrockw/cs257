@@ -134,6 +134,7 @@ class DataSource:
     def get_instructions_and_ingredients(self, recipe_id):
         '''This function retrieves the instructions and ingredients of a recipe 
         based on the recipe ID.'''
+        print("WE ARE HERE")
         cursor = self.connection.cursor()
         query = "SELECT instructions, ingredients FROM recipe WHERE id = %s"
         cursor.execute(query, (recipe_id,))
