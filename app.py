@@ -4,6 +4,7 @@ It handles the routing and serves the web pages.
 '''
 
 import string
+import re
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from ProductionCode.datasource import DataSource
 
@@ -15,6 +16,7 @@ TOTAL_NUM_RECIPES = 13493
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
+    #TODO: WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
     marc_recipe = recipe_data.get_recipe_by_id(9877)
@@ -37,11 +39,11 @@ def random():
     Returns:
         Renders the recipe list template with the list of recipes.
     '''
+
     if request.method == 'POST':
         recipe_data = DataSource()
         num = int(request.form.get('num_recipes', 1))
 
-        # print(num)
         if num < 1 or num > TOTAL_NUM_RECIPES:
             return render_template('recipelist.html', recipes=None)
 
@@ -82,6 +84,9 @@ def all_recipes():
     Returns:
         Renders the all recipes template with the sorted list of recipes.
     '''
+
+    # FOR THINGS THAT JUST GET LINKS DISPLAYED WE CAN WRITE A FUNCTION TO JUST GET ID AND TITLE
+    # WE CAN ALSO RETURN THE ORDERED LIST TO MAKE IT EASIER TO SORT
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
@@ -97,18 +102,22 @@ def sort_recipes_alphabetically(recipes):
         A list of tuples containing the corresponding letter and a list of 
         recipe IDs and titles for all recipes that start with that letter.
     '''
-    sorted_recipes = []
-    for letter in string.ascii_lowercase:
-        current_letter = (letter.upper(), [])
-        for recipe in recipes:
-            title = recipe.get_title()
-            if title.lower().startswith(letter):
-                current_letter[1].append((recipe.get_id(), title))
+    sorted_recipes = {}
+    for letter in string.ascii_uppercase:
+        current_letter = []
+        sorted_recipes[letter] = current_letter
+    
+    for recipe in recipes:
+        title = recipe.get_title()
+        first_letter = first_alphabetical_character(title)
+        sorted_recipes[first_letter.upper()].append((recipe.get_id(), title))
 
-        sorted_recipes.append(current_letter)
 
     return sorted_recipes
 
+def first_alphabetical_character(string):
+    match = re.search(r'[a-zA-Z]', string)
+    return match.group(0) if match else None
 
 @app.route('/search_by_title')
 def search_by_title(last_search=None):
@@ -166,8 +175,6 @@ def autocomplete():
     query = request.args.get('cur_search')
     recipe_data = DataSource()
     autocomplete_data = recipe_data.get_all_recipe_titles()
-    # print([a for a in autocomplete_data if a == None])
-    # print(autocomplete_data)
     if query:
         suggestions = [item for item in autocomplete_data if query.lower() in item.lower()]
         return jsonify(suggestions)

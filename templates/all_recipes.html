@@ -34,9 +34,9 @@
     {% if sorted_recipes %}
     <div class="recipes_div">
     <ul>
-        {% for letter in sorted_recipes %}
-        <h3 id="{{ letter[0] }}">{{ letter[0] }}</h3>
-            {% for recipe in letter[1] %}
+        {% for letter, recipes in sorted_recipes.items() %}
+        <h3 id="{{ letter }}">{{ letter }}</h3>
+            {% for recipe in recipes %}
                 <li>
                     <a href="{{ url_for('display_recipe', recipe_id=recipe[0]) }}">
                         {{ recipe[1] }}

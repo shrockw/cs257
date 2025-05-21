@@ -28,8 +28,9 @@ class DataSource:
     def get_all_recipes(self):
         '''Returns all recipes from the database'''
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM recipe")
+        cursor.execute("SELECT id, title FROM recipe ORDER BY title")
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+        cursor.close()
 
         return records
 
@@ -37,7 +38,7 @@ class DataSource:
         '''Fetches recipes that include certain ingredients and exclude others'''
         cursor = self.connection.cursor()
 
-        query = "SELECT * FROM recipe WHERE "
+        query = "SELECT id, title FROM recipe WHERE "
         conditions = []
         params = []
 
@@ -56,6 +57,8 @@ class DataSource:
             query += " AND ".join(conditions)
         else:
             return []
+        
+        query += " ORDER BY title;"
 
 
         cursor.execute(query, params)
@@ -69,7 +72,7 @@ class DataSource:
         number: number of random recipes to retrieve
         Returns a list of tuples containing the data.
         '''
-        query = "SELECT * FROM recipe ORDER BY RANDOM() LIMIT %s"
+        query = "SELECT id, title FROM recipe ORDER BY RANDOM() LIMIT %s"
         cursor = self.connection.cursor()
         cursor.execute(query, (number,))
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
@@ -95,10 +98,14 @@ class DataSource:
         recipe: tuple containing the recipe data
         Returns a Recipe object.
         '''
-        if recipe:
+        if len(recipe) == 2:
+            recipe_id, title = recipe
+            return Recipe(recipe_id, title)
+        elif len(recipe) == 4:
             recipe_id, title, instructions, ingredients = recipe
             return Recipe(recipe_id, title, instructions, ingredients)
-        return None
+        else:
+            raise ValueError("Invalid recipe data format")
 
     def get_recipe_by_id(self, recipe_id):
         '''This function retrieves the recipe data based on the recipe ID.
@@ -123,6 +130,14 @@ class DataSource:
         titles = cursor.fetchall()
         cursor.close()
         return [title[0] for title in titles]
+    
+    def get_instructions_and_ingredients(self, recipe_id):
+        cursor = self.connection.cursor()
+        query = "SELECT instructions, ingredients FROM recipe WHERE id = %s"
+        cursor.execute(query, (recipe_id,))
+        instructions, ingredients = cursor.fetchone()
+        cursor.close()
+        return instructions, ingredients
 
 
 
@@ -130,12 +145,18 @@ class Recipe():
     '''This class represents a recipe object. It contains methods to get the title, 
     ingredients, and instructions of the recipe.'''
 
-    def __init__(self, recipe_id, recipe_title, recipe_instructions, recipe_ingredients):
+    def __init__(self, recipe_id, recipe_title, recipe_instructions=None, recipe_ingredients=None):
         '''Constructor that initializes the recipe object with the given recipe data.'''
         self.recipe_id = recipe_id
         self.title = recipe_title
-        self.ingredients = ast.literal_eval(recipe_ingredients)
-        self.instructions = recipe_instructions.split("\n")
+        if recipe_instructions is not None:
+            self.instructions = recipe_instructions.split("\n")
+        else: 
+            self.instructions = recipe_instructions
+        if recipe_ingredients is not None:
+            self.ingredients = ast.literal_eval(recipe_ingredients)
+        else:
+            self.ingredients = recipe_ingredients
 
     def get_id(self):
         '''Returns the ID of the recipe.'''
@@ -144,11 +165,23 @@ class Recipe():
     def get_title(self):
         '''Returns the title of the recipe.'''
         return self.title
-
+    
     def get_instructions(self):
         '''Returns the instructions of the recipe.'''
+        if self.instructions is None:
+            self.find_instructions_and_ingredients()
         return self.instructions
-
+    
     def get_ingredients(self):
         '''Returns the ingredients of the recipe.'''
+        if self.ingredients is None:
+            self.find_instructions_and_ingredients()
         return self.ingredients
+
+    def find_instructions_and_ingredients(self):
+        '''Returns the instructions of the recipe.'''
+        recipe_data = DataSource()
+        additional_recipe_info = recipe_data.get_instructions_and_ingredients(self.recipe_id)
+        self.instructions = additional_recipe_info[0].split("\n")
+        self.ingredients = ast.literal_eval(additional_recipe_info[1])
+    
