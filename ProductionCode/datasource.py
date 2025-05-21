@@ -98,6 +98,8 @@ class DataSource:
         recipe: tuple containing the recipe data
         Returns a Recipe object.
         '''
+        print(recipe)
+        print(len(recipe))
         if len(recipe) == 2:
             recipe_id, title = recipe
             return Recipe(recipe_id, title)
@@ -152,11 +154,11 @@ class Recipe():
         '''Constructor that initializes the recipe object with the given recipe data.'''
         self.recipe_id = recipe_id
         self.title = recipe_title
-        if recipe_instructions != None:
+        if recipe_instructions is not None:
             self.instructions = recipe_instructions.split("\n")
         else:
             self.instructions = recipe_instructions
-        if recipe_ingredients != None:
+        if recipe_ingredients is not None:
             self.ingredients = ast.literal_eval(recipe_ingredients)
         else:
             self.ingredients = recipe_ingredients
@@ -171,19 +173,8 @@ class Recipe():
 
     def get_instructions(self):
         '''Returns the instructions of the recipe.'''
-        if self.instructions == None:
-            self.find_instructions_and_ingredients()
         return self.instructions
 
     def get_ingredients(self):
         '''Returns the ingredients of the recipe.'''
-        if self.ingredients == None:
-            self.find_instructions_and_ingredients()
         return self.ingredients
-
-    def find_instructions_and_ingredients(self):
-        '''Returns the instructions of the recipe.'''
-        recipe_data = DataSource()
-        additional_recipe_info = recipe_data.get_instructions_and_ingredients(self.recipe_id)
-        self.instructions = additional_recipe_info[0].split("\n")
-        self.ingredients = ast.literal_eval(additional_recipe_info[1])
