@@ -152,11 +152,11 @@ class Recipe():
         '''Constructor that initializes the recipe object with the given recipe data.'''
         self.recipe_id = recipe_id
         self.title = recipe_title
-        if recipe_instructions is not None:
+        if recipe_instructions != None:
             self.instructions = recipe_instructions.split("\n")
         else:
             self.instructions = recipe_instructions
-        if recipe_ingredients is not None:
+        if recipe_ingredients != None:
             self.ingredients = ast.literal_eval(recipe_ingredients)
         else:
             self.ingredients = recipe_ingredients
@@ -171,13 +171,13 @@ class Recipe():
 
     def get_instructions(self):
         '''Returns the instructions of the recipe.'''
-        if self.instructions is None:
+        if self.instructions == None:
             self.find_instructions_and_ingredients()
         return self.instructions
 
     def get_ingredients(self):
         '''Returns the ingredients of the recipe.'''
-        if self.ingredients is None:
+        if self.ingredients == None:
             self.find_instructions_and_ingredients()
         return self.ingredients
 
