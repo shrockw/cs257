@@ -57,7 +57,7 @@ class DataSource:
             query += " AND ".join(conditions)
         else:
             return []
-        
+
         query += " ORDER BY title;"
 
 
@@ -101,11 +101,11 @@ class DataSource:
         if len(recipe) == 2:
             recipe_id, title = recipe
             return Recipe(recipe_id, title)
-        elif len(recipe) == 4:
+        if len(recipe) == 4:
             recipe_id, title, instructions, ingredients = recipe
             return Recipe(recipe_id, title, instructions, ingredients)
-        else:
-            raise ValueError("Invalid recipe data format")
+        
+        raise ValueError("Invalid recipe data format")
 
     def get_recipe_by_id(self, recipe_id):
         '''This function retrieves the recipe data based on the recipe ID.
@@ -130,8 +130,10 @@ class DataSource:
         titles = cursor.fetchall()
         cursor.close()
         return [title[0] for title in titles]
-    
+
     def get_instructions_and_ingredients(self, recipe_id):
+        '''This function retrieves the instructions and ingredients of a recipe 
+        based on the recipe ID.'''
         cursor = self.connection.cursor()
         query = "SELECT instructions, ingredients FROM recipe WHERE id = %s"
         cursor.execute(query, (recipe_id,))
@@ -151,7 +153,7 @@ class Recipe():
         self.title = recipe_title
         if recipe_instructions is not None:
             self.instructions = recipe_instructions.split("\n")
-        else: 
+        else:
             self.instructions = recipe_instructions
         if recipe_ingredients is not None:
             self.ingredients = ast.literal_eval(recipe_ingredients)
@@ -165,13 +167,13 @@ class Recipe():
     def get_title(self):
         '''Returns the title of the recipe.'''
         return self.title
-    
+
     def get_instructions(self):
         '''Returns the instructions of the recipe.'''
         if self.instructions is None:
             self.find_instructions_and_ingredients()
         return self.instructions
-    
+
     def get_ingredients(self):
         '''Returns the ingredients of the recipe.'''
         if self.ingredients is None:
@@ -184,4 +186,3 @@ class Recipe():
         additional_recipe_info = recipe_data.get_instructions_and_ingredients(self.recipe_id)
         self.instructions = additional_recipe_info[0].split("\n")
         self.ingredients = ast.literal_eval(additional_recipe_info[1])
-    
