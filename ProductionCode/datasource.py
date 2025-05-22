@@ -98,15 +98,14 @@ class DataSource:
         recipe: tuple containing the recipe data
         Returns a Recipe object.
         '''
-        print(recipe)
-        print(len(recipe))
+
         if len(recipe) == 2:
             recipe_id, title = recipe
             return Recipe(recipe_id, title)
         if len(recipe) == 4:
             recipe_id, title, instructions, ingredients = recipe
             return Recipe(recipe_id, title, instructions, ingredients)
-        
+
         raise ValueError("Invalid recipe data format")
 
     def get_recipe_by_id(self, recipe_id):
@@ -133,16 +132,6 @@ class DataSource:
         cursor.close()
         return [title[0] for title in titles]
 
-    def get_instructions_and_ingredients(self, recipe_id):
-        '''This function retrieves the instructions and ingredients of a recipe 
-        based on the recipe ID.'''
-        print("WE ARE HERE")
-        cursor = self.connection.cursor()
-        query = "SELECT instructions, ingredients FROM recipe WHERE id = %s"
-        cursor.execute(query, (recipe_id,))
-        instructions, ingredients = cursor.fetchone()
-        cursor.close()
-        return instructions, ingredients
 
 
 

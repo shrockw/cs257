@@ -466,7 +466,7 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertIn(
             b"Mac and Cheese with Chicken and Broccoli",
             response.data, "Should match")
-        
+
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_display_recipe_route(self, mock_connect):
         '''Test the display recipe route.'''
@@ -500,7 +500,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "pepper', '1 pound cavatappi pasta (or your favorite ribbed pasta)', '6 tablespoons "
              "unsalted butter, cubed', '15 fresh sage leaves, torn', '1/2 cup freshly grated "
              "Parmesan cheese']")
-        
+
         response = self.app.get('/display_recipe/789')
         self.assertIn(b"Cavatappi with Broccolini, Brown Butter, and Sage",
                       response.data, "Should match")
