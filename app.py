@@ -16,7 +16,7 @@ TOTAL_NUM_RECIPES = 13493
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
-    #TODO: WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
+    #WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
     marc_recipe = recipe_data.get_recipe_by_id(9877)
@@ -106,7 +106,7 @@ def sort_recipes_alphabetically(recipes):
     for letter in string.ascii_uppercase:
         current_letter = []
         sorted_recipes[letter] = current_letter
-    
+
     for recipe in recipes:
         title = recipe.get_title()
         first_letter = first_alphabetical_character(title)
@@ -115,8 +115,9 @@ def sort_recipes_alphabetically(recipes):
 
     return sorted_recipes
 
-def first_alphabetical_character(string):
-    match = re.search(r'[a-zA-Z]', string)
+def first_alphabetical_character(recipe_title):
+    '''This function returns the first alphabetical character in a string.'''
+    match = re.search(r'[a-zA-Z]', recipe_title)
     return match.group(0) if match else None
 
 @app.route('/search_by_title')
