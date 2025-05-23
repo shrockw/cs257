@@ -29,31 +29,75 @@ def homepage():
                            anika_recipe=anika_recipe,
                            allison_recipe=allison_recipe)
 
+@app.route('/random')
+def random(last_search=None):
+    '''This function returns the random recipe search page.'''
+    return render_template('random.html', last_search=last_search)
 
-@app.route('/random', methods=['GET', 'POST'])
-def random():
+@app.route('/handle_random_form', methods=['POST'])
+def handle_random_form():
     '''This function handles the random recipe search form submission.
     It generates a certain number of random recipe based on the number of recipes requested.
     Arguments:
         None
     Returns:
-        Renders the recipe list template with the list of recipes.
+        Redirects to the random route with the last search.
     '''
+    num = request.form.get('num_recipes')
+    if is_valid_number(num):
+        num = int(num)
 
-    if request.method == 'POST':
         recipe_data = DataSource()
-        num = int(request.form.get('num_recipes', 1))
-
-        if num < 1 or num > TOTAL_NUM_RECIPES:
-            return render_template('recipelist.html', recipes=None)
-
         recipes = recipe_data.get_random_recipes(num)
 
-        # Directly pass recipes to the template
-        simplified_recipes = [(r.get_id(), r.get_title()) for r in recipes]  # (id, title)
-        return render_template('recipelist.html', recipes=simplified_recipes)
+        simplified_recipes = [get_id_and_title(recipe) for recipe in recipes]
 
-    return render_template('random.html')
+        return render_template('recipelist.html', recipes=simplified_recipes)
+    
+    return random(num)
+
+def get_id_and_title(recipe):
+    '''This function returns the ID and title of a recipe.'''
+    recipe_info = (recipe.get_id(), recipe.get_title())
+    return recipe_info
+
+def is_valid_number(num):
+    '''This function checks if the number is valid.'''
+    if num.isdigit():
+        num = int(num)
+        if num < 1 or num > TOTAL_NUM_RECIPES:
+            return False
+        else:
+            return True
+    else:
+        return False
+
+# TURN THIS INTO TWO FUNCTIONS (Functions Should Do One Thing)
+# @app.route('/random', methods=['GET', 'POST'])
+# def random():
+#     '''This function handles the random recipe search form submission.
+#     It generates a certain number of random recipe based on the number of recipes requested.
+#     Arguments:
+#         None
+#     Returns:
+#         Renders the recipe list template with the list of recipes.
+#     '''
+
+#     if request.method == 'POST':
+#         recipe_data = DataSource()
+#         num = int(request.form.get('num_recipes', 1))
+
+#         # CHANGE THIS TO A FUNCTION (encapsulate conditionals)
+#         if num < 1 or num > TOTAL_NUM_RECIPES:
+#             return render_template('recipelist.html', recipes=None)
+
+#         recipes = recipe_data.get_random_recipes(num)
+
+#         # Directly pass recipes to the template
+#         simplified_recipes = [(r.get_id(), r.get_title()) for r in recipes]  # (id, title)
+#         return render_template('recipelist.html', recipes=simplified_recipes)
+
+#     return render_template('random.html')
 
 @app.route('/custom', methods=['GET', 'POST'])
 def custom_search():
@@ -61,6 +105,7 @@ def custom_search():
     if request.method == 'POST':
         recipe_data = DataSource()
 
+        # MAKE A FUNCTION FOR THIS (long method)
         include = request.form.get('include_ingredients', '').split(',')
         exclude = request.form.get('exclude_ingredients', '').split(',')
 
@@ -85,8 +130,6 @@ def all_recipes():
         Renders the all recipes template with the sorted list of recipes.
     '''
 
-    # FOR THINGS THAT JUST GET LINKS DISPLAYED WE CAN WRITE A FUNCTION TO JUST GET ID AND TITLE
-    # WE CAN ALSO RETURN THE ORDERED LIST TO MAKE IT EASIER TO SORT
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
@@ -112,7 +155,6 @@ def sort_recipes_alphabetically(recipes):
         first_letter = first_alphabetical_character(title)
         sorted_recipes[first_letter.upper()].append((recipe.get_id(), title))
 
-
     return sorted_recipes
 
 def first_alphabetical_character(recipe_title):
@@ -131,6 +173,7 @@ def search_by_title(last_search=None):
     '''
     return render_template('search_by_title.html', last_search=last_search)
 
+# RENAME TO SOMETHING LIKE "HANDLE_TITLE_FORM"
 @app.route('/find_recipe_by_title', methods=['POST'])
 def find_recipe_by_title():
     '''Route to handle the search by title form submission.

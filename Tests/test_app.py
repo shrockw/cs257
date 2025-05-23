@@ -203,7 +203,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
         # Mock the form submission for the random route
-        response = self.app.post('/random', data={'num_recipes': 1})
+        response = self.app.post('/handle_random_form', data={'num_recipes': 1})
 
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
@@ -239,9 +239,9 @@ class TestFlaskRoutes(unittest.TestCase):
         '''Test the random route with an invalid number.'''
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchall.return_value = []
-        response = self.app.post('/random', data={'num_recipes': -1})
+        response = self.app.post('/handle_random_form', data={'num_recipes': -1})
 
-        self.assertIn(b"You entered an invalid number of recipes.",
+        self.assertIn(b"You entered an invalid number of recipes",
                       response.data, "Should match")
 
     @patch('ProductionCode.datasource.psycopg2.connect')
