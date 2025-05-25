@@ -3,7 +3,7 @@ body {
     margin-right: 5%;
 }
 
-h1, h2 {
+h1, h2, h3 {
     font-family: Verdana, Geneva, sans-serif; 
  }
  
@@ -266,4 +266,10 @@ div.recipes_div h3 {
 }
 .error-container a.button:hover {
     background-color: darkgreen;
+}
+
+a{
+    font-family: Verdana, Geneva, sans-serif;
+    color: green;
+ 
 }

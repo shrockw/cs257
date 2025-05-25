@@ -23,7 +23,7 @@
 <p>Enter a number of recipes and click the button below to find a random flavor!</p>
 <form action="/handle_random_form" method="POST">
     <label for="num_recipes">How many recipes?</label>
-    <input type="text" id="ingredients" name="num_recipes" placeholder="Enter a number" required>
+    <input type="text" id="num_recipes" name="num_recipes" placeholder="Enter a number" required>
     {% if last_search %}
         <p id="search_error_message">You entered an invalid number of recipes: "{{ last_search }}". Please enter a number between 1 and 13493.</p>
     {% endif %}

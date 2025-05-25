@@ -235,4 +235,4 @@ def python_bug(e):
     return f"A bug! {str(e)}"
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port = 5100)
