@@ -19,7 +19,7 @@ def homepage():
     #WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
-    marc_recipe = recipe_data.get_recipe_by_id(9877)
+    marc_recipe = recipe_data.get_recipe_by_id(13442)
     willan_recipe = recipe_data.get_recipe_by_id(3606)
     anika_recipe = recipe_data.get_recipe_by_id(5895)
     allison_recipe = recipe_data.get_recipe_by_id(1260)
@@ -28,6 +28,11 @@ def homepage():
                            willan_recipe=willan_recipe,
                            anika_recipe=anika_recipe,
                            allison_recipe=allison_recipe)
+
+@app.route('/big_toast')
+def big_toast():
+    '''This function returns the big toast page.'''
+    return render_template('big_toast.html')
 
 @app.route('/random')
 def random(last_search=None):
@@ -53,7 +58,7 @@ def handle_random_form():
         simplified_recipes = [get_id_and_title(recipe) for recipe in recipes]
 
         return render_template('recipelist.html', recipes=simplified_recipes)
-    
+
     return random(num)
 
 def get_id_and_title(recipe):
@@ -67,10 +72,8 @@ def is_valid_number(num):
         num = int(num)
         if num < 1 or num > TOTAL_NUM_RECIPES:
             return False
-        else:
-            return True
-    else:
-        return False
+        return True
+    return False
 
 # TURN THIS INTO TWO FUNCTIONS (Functions Should Do One Thing)
 # @app.route('/random', methods=['GET', 'POST'])
@@ -220,6 +223,7 @@ def autocomplete():
     recipe_data = DataSource()
     autocomplete_data = recipe_data.get_all_recipe_titles()
     if query:
+        # Make better variable names
         suggestions = [item for item in autocomplete_data if query.lower() in item.lower()]
         return jsonify(suggestions)
     return jsonify([])
@@ -235,4 +239,4 @@ def python_bug(e):
     return f"A bug! {str(e)}"
 
 if __name__ == '__main__':
-    app.run(port = 5100)
+    app.run(port = 5101)
