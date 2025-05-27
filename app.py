@@ -58,7 +58,7 @@ def handle_random_form():
         simplified_recipes = [get_id_and_title(recipe) for recipe in recipes]
 
         return render_template('recipelist.html', recipes=simplified_recipes)
-    
+
     return random(num)
 
 def get_id_and_title(recipe):
@@ -72,10 +72,8 @@ def is_valid_number(num):
         num = int(num)
         if num < 1 or num > TOTAL_NUM_RECIPES:
             return False
-        else:
-            return True
-    else:
-        return False
+        return True
+    return False
 
 # TURN THIS INTO TWO FUNCTIONS (Functions Should Do One Thing)
 # @app.route('/random', methods=['GET', 'POST'])
