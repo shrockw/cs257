@@ -33,38 +33,66 @@ class DataSource:
         cursor.close()
 
         return records
-
+    
     def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
         '''Fetches recipes that include certain ingredients and exclude others'''
         cursor = self.connection.cursor()
 
-        query = "SELECT id, title FROM recipe WHERE "
-        conditions = []
-        params = []
+        query = self.generate_ingredients_query(include_ingredients, exclude_ingredients)
 
+        if query:
+            cursor.execute(query)
+            records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+            cursor.close()
+            return records
+        return []
+
+    def generate_ingredients_query(self, include_ingredients, exclude_ingredients):
+        '''Generates the WHERE clause for the ingredients query'''
+        query_list = []
 
         if include_ingredients:
-            for ingredient in include_ingredients:
-                conditions.append("ingredients ILIKE %s")
-                params.append(f"%{ingredient}%")
+            query_list.extend([f"ingredients ILIKE '%{ingredient}%'" for ingredient in include_ingredients])
 
         if exclude_ingredients:
-            for ingredient in exclude_ingredients:
-                conditions.append("ingredients NOT ILIKE %s")
-                params.append(f"%{ingredient}%")
+            query_list.extend([f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
 
-        if conditions:
-            query += " AND ".join(conditions)
-        else:
-            return []
+        if query_list:
+            final_query = "SELECT id, title FROM recipe WHERE " + " AND ".join(query_list) + " ORDER BY title;"
+            return final_query
+        return None
 
-        query += " ORDER BY title;"
+    # def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
+    #     '''Fetches recipes that include certain ingredients and exclude others'''
+    #     cursor = self.connection.cursor()
+
+    #     query = "SELECT id, title FROM recipe WHERE "
+    #     conditions = []
+    #     params = []
 
 
-        cursor.execute(query, params)
-        records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
-        cursor.close()
-        return records
+    #     if include_ingredients:
+    #         for ingredient in include_ingredients:
+    #             conditions.append("ingredients ILIKE %s")
+    #             params.append(f"%{ingredient}%")
+
+    #     if exclude_ingredients:
+    #         for ingredient in exclude_ingredients:
+    #             conditions.append("ingredients NOT ILIKE %s")
+    #             params.append(f"%{ingredient}%")
+
+    #     if conditions:
+    #         query += " AND ".join(conditions)
+    #     else:
+    #         return []
+
+    #     query += " ORDER BY title;"
+
+
+    #     cursor.execute(query, params)
+    #     records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+    #     cursor.close()
+    #     return records
 
     def get_random_recipes(self, number):
         ''' This function retrieves random recipes from the database.
