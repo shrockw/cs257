@@ -33,7 +33,7 @@ class DataSource:
         cursor.close()
 
         return records
-    
+
     def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
         '''Fetches recipes that include certain ingredients and exclude others'''
         cursor = self.connection.cursor()
@@ -52,14 +52,15 @@ class DataSource:
         query_list = []
 
         if include_ingredients:
-            query_list.extend([f"ingredients ILIKE '%{ingredient}%'" for ingredient in include_ingredients])
+            query_list.extend([f"ingredients ILIKE '%{ingredient}%'" 
+                               for ingredient in include_ingredients])
 
         if exclude_ingredients:
-            query_list.extend([f"ingredients NOT ILIKE '%{ingredient}%'" for ingredient in exclude_ingredients])
+            query_list.extend([f"ingredients NOT ILIKE '%{ingredient}%'" 
+                               for ingredient in exclude_ingredients])
 
         if query_list:
-            final_query = "SELECT id, title FROM recipe WHERE " + " AND ".join(query_list) + " ORDER BY title;"
-            return final_query
+            return "SELECT id, title FROM recipe WHERE " + " AND ".join(query_list) + " ORDER BY title;"
         return None
 
     # def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
