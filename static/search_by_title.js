@@ -1,3 +1,4 @@
+// This was written with the help of Gemeni
 
 document.addEventListener('DOMContentLoaded', function() {
     const inputField = document.getElementById('recipe_search');

@@ -61,16 +61,26 @@ h1 {
     text-align: center;
 }
 
+h1 {
+    position: relative; /* This makes the header a reference point for absolutely positioned children */
+    background-color: green; /* Set your desired background color */
+    /* Other header styles like padding, height, etc. */
+}
+
+.logo {
+    position: absolute; /* Take the image out of the normal document flow */
+    top: 12px; /* Adjust as needed to position the image from the top of the header */
+    right: 75px; /* Adjust as needed to position the image from the left of the header */
+    /* You might also use right or bottom instead of left/top */
+    z-index: 1; /* Ensures the image is above the background color */
+}
+
 nav ul {
     border: 2px solid green;
     list-style-type: none;
     overflow: hidden;
 }
 
-/* Navigation bar list items should render starting at the left margin. */
-nav li {
-    float: left;
-}
 
 /* Navigation bar items should link to elements on the page, or to other pages.
      This is the "a" tag. So this says "apply this style to links within the nav bar".

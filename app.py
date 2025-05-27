@@ -19,7 +19,7 @@ def homepage():
     #WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
-    marc_recipe = recipe_data.get_recipe_by_id(9877)
+    marc_recipe = recipe_data.get_recipe_by_id(13442)
     willan_recipe = recipe_data.get_recipe_by_id(3606)
     anika_recipe = recipe_data.get_recipe_by_id(5895)
     allison_recipe = recipe_data.get_recipe_by_id(1260)
@@ -28,6 +28,11 @@ def homepage():
                            willan_recipe=willan_recipe,
                            anika_recipe=anika_recipe,
                            allison_recipe=allison_recipe)
+
+@app.route('/big_toast')
+def big_toast():
+    '''This function returns the big toast page.'''
+    return render_template('big_toast.html')
 
 @app.route('/random')
 def random(last_search=None):
@@ -220,6 +225,7 @@ def autocomplete():
     recipe_data = DataSource()
     autocomplete_data = recipe_data.get_all_recipe_titles()
     if query:
+        # Make better variable names
         suggestions = [item for item in autocomplete_data if query.lower() in item.lower()]
         return jsonify(suggestions)
     return jsonify([])
@@ -235,4 +241,4 @@ def python_bug(e):
     return f"A bug! {str(e)}"
 
 if __name__ == '__main__':
-    app.run(port = 5100)
+    app.run(port = 5101)
