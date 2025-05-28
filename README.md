@@ -63,4 +63,10 @@ are looking for
 - Our refactored code is in datasource.py lines 37-63 which includes the creation of a helper function and making some of the logic more concise.
 - To refactor our code we created a helper function to generate the SQL query based on the ingredients that the user wants to include and not include. This means that the get_recipe_by_ingredients function just has to call the helper function which dynamically builds a SQL query and then get_recipe_by_ingredients executes the query and returns the recipes that match. 
 
+## Improvement 4:
+- The code design pattern that we improved was adding a Singleton class and separating all our classes into different files. The new Singleton class will look at DataSource everey time a new data source class is created and if one already exists then it will use the old one and update its values, but if one does not exist then it will create a new one and add it to the stored list of all DataSource classes. The separation of all our classes into new files makes the code more neat and maintains a good level of abstracition. 
+- The Singleton class will appear in datasource_meta.py and will be used in datasource.py. To refactor our code we made a parent class in this new file with a call method before the constructor that checks if there is a datasource object with the same id and if there is then it returns that and if not then it makes a new one. 
+- One new file that contains a class that was not in its own file before is recipe.py which contains the recipe class that stores recipe data. This will be used by app.py, cl.py, and the other files that use the recipe objects. This code is not refactored, but is just better organized.
+
+
 **Front End Design Improvements**
