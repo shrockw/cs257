@@ -4,7 +4,12 @@
     <title>Ingredient Search</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+    <header>
+        <a href="/big_toast">
+            <img src="/static/search_toast.png" alt="Flavor Finder Logo" class="logo">
+        </a>
     <h1>Flavor Finder</h1>
     <nav>
         <ul>
@@ -15,6 +20,7 @@
             <li><a href="\all_recipes">All Recipes</a></li>
         </ul>
     </nav>
+    </header>
     <form id="search-form" method="POST" action="{{ url_for('custom_search') }}">
         <!-- Hidden inputs will be populated by JavaScript -->
         <input type="hidden" name="include_ingredients" id="include-hidden" value="">
