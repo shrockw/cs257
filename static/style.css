@@ -1,20 +1,80 @@
+/* Can use this to standardize some of the colors */
+:root {
+    --primary-color: #e89b01;
+    --primary-light: rgba(249, 162, 0, 0.519);
+    --secondary-color: #c06503;
+    --accent-color: #f7b742;
+    --text-color: #333;
+    --light-bg: rgba(252, 248, 180, 0.255);
+    --success-color: #28a745;
+    --success-dark: #218838;
+    --error-color: #dc3545;
+    --font-stack: 'Verdana', 'Geneva', sans-serif;
+    --border-radius: 6px;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
 body {
     margin-left: 5%;
     margin-right: 5%;
+    background-color: rgba(252, 248, 180, 0.255);
 }
 
-h1, h2, h3 {
-    font-family: Verdana, Geneva, sans-serif; 
- }
- 
- p {
-     font-family: Verdana, Geneva, sans-serif;
-     /* This next line gives us some extra spacing within a paragraph*/
-     line-height: 1.4;
- }
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-stack);
+    margin-top: 0;
+}
+
+h1 {
+    padding: 1.5em 0;
+    background-color: var(--primary-light);
+    color: var(--secondary-color);
+    text-align: center;
+    position: relative;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+h2 {
+    display: inline-block;
+    padding-bottom: 0.3em;
+    margin-bottom: 1.5em;
+    position: relative;
+    color: var(--secondary-color);
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+h3 {
+    text-align: center;
+    color: rgb(156, 95, 38);
+}
+
+p {
+    margin-bottom: 1.5em;
+    line-height: 1.6;
+}
 
  a {
-    color: green;
+    color: rgb(205, 137, 2);
+    text-decoration: none;
+    font-family: Verdana, Geneva, sans-serif;
+
+ }
+
+ a:hover{
+    text-decoration: underline;
+    color: rgb(192, 101, 3);
  }
  
  li {
@@ -22,59 +82,82 @@ h1, h2, h3 {
      line-height: 1.4;
  }
  
- nav li {
-     float: left;
-     font-size: 1.1em;
-     font-weight: bold;
- }
 
- div.fav_recipe {
+div.welcome h1 {
+    background-color: transparent;
+}
+
+div.welcome p {
+    text-align: center;
+}
+
+div.highlight {
+    background-color: rgba(252, 248, 180, 0.5); /* Soft yellow */
+    border: 3px solid var(--primary-color); /* Dashed border for a "handwritten" feel */
+    text-align: center;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(232, 155, 1, 0.2);
+}
+
+
+div.fav_recipe {
     display: inline-block;
     width: 23%;
     box-sizing: border-box;
-    padding: 5px;
-    border: 1px solid #ddd;
+    padding: 2px;
+    /* Remove the solid border */
+    border: 25px solid transparent;
+    border-image-source: url('cute-border.webp');
+    border-image-slice: 65;
+    border-image-repeat: round;
     margin-right: 1%;
     margin-bottom: 1%;
     vertical-align: top;
+}
+
+div.fav_recipe img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 div.fav_recipe:last-child {
     margin-right: 0;
 }
 
-
-
 div.all_fav_recipes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribute items evenly */
+    justify-content: space-between;
     align-items: flex-start;
 }
 
 
-header h1 {
+h1 {
     padding-top: 1em;
     padding-bottom: 1em;
-    height: 50px;
-    background-color: green;
-    color: white;
+    background-color: rgb(232, 155, 1);
+    color: rgb(192, 101, 3);
     text-align: center;
-    position: relative; /* This makes the header a reference point for absolutely positioned children */
-    background-color: green; /* Set your desired background color */
-    /* Other header styles like padding, height, etc. */
+}
+
+h1 {
+    position: relative;
+    background-color: rgba(249, 162, 0, 0.365);
 }
 
 .logo {
-    position: absolute; /* Take the image out of the normal document flow */
-    top: 12px; /* Adjust as needed to position the image from the top of the header */
-    right: 75px; /* Adjust as needed to position the image from the left of the header */
-    /* You might also use right or bottom instead of left/top */
-    z-index: 1; /* Ensures the image is above the background color */
+    position: absolute;
+    top: 12px;
+    right: 75px;
+    z-index: 1;
 }
 
 nav ul {
-    border: 2px solid green;
+    border: 2px solid rgb(247, 183, 66);
     list-style-type: none;
     overflow: hidden;
 }
@@ -83,25 +166,40 @@ nav ul {
 /* Navigation bar items should link to elements on the page, or to other pages.
      This is the "a" tag. So this says "apply this style to links within the nav bar".
 */
-nav li a {
-    display: block;
-    color: green;
-    text-decoration: none;
-    text-align: center;
-    padding: 14px 16px;
+/* Navigation */
+nav ul {
+    border: 2px solid var(--accent-color);
+    list-style-type: none;
+    overflow: hidden;
+    padding: 0;
+    margin: 2rem 0;
+    border-radius: var(--border-radius);
+    display: flex;
+    background-color: white;
+    box-shadow: var(--box-shadow);
 }
 
-/* TODO: For each page we want the page you are on to be highlighted in the NavBar */
+nav li {
+    flex: 1;
+    text-align: center;
+}
+
+nav li a {
+    display: block;
+    padding: 1em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
 nav li a:hover {
     color: white;
-    background-color: green;
+    background-color: var(--primary-color);
 }
 
 nav li a.highlight {
     color: white;
-    background-color: green;
+    background-color: var(--primary-color);
 }
-
 
 form {
     margin-top: 20px;
@@ -112,6 +210,7 @@ form label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+
 }
 
 form input[type="text"] {
@@ -125,7 +224,7 @@ form input[type="text"] {
 }
 
 form input[type="submit"] {
-    background-color: green;
+    background-color: rgb(81, 137, 186);
     color: white;
     padding: 10px 15px;
     border: none;
@@ -135,7 +234,7 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:hover {
-    background-color: darkgreen;
+    background-color: rgb(0, 67, 100);
 }
 
 form p {
@@ -177,18 +276,38 @@ a.button {
 div.alphabet_links {
     position: sticky;
     top: 0;
-    background-color: white; /* Provide a background color */
-    padding: 10px 0; /* Add some padding for better visual appearance */
-    border: 2px solid green;
+    background: rgb(251, 241, 208);
+    padding: 12px 0;
+    border-bottom: 3px solid rgba(232, 155, 1, 0.8);
+    border-top: 3px solid rgba(232, 155, 1, 0.8);
     text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
 }
 
 div.alphabet_links a {
+    display: inline-flex;
     font-size: 24px;
-    margin-right: 5px;
-    margin-left: 5px;
+    margin: 0 6px;
+    padding: 4px 8px;
+    color: rgb(156, 95, 38);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
     align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
 }
+
+div.alphabet_links a:hover {
+    background-color: rgba(232, 155, 1, 0.2);
+    color: #3a2e00;
+    box-shadow: 0 4px 8px rgba(232, 155, 1, 0.2);
+}
+
 
 div.recipes_div h3 {
     scroll-margin-top: 70px; /* Increased to 80px */
@@ -200,7 +319,8 @@ div.recipes_div h3 {
 .search-section {
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: #f8f9fa;
+    background: rgba(252, 248, 180, 0.5);
+;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -274,10 +394,4 @@ div.recipes_div h3 {
 }
 .error-container a.button:hover {
     background-color: darkgreen;
-}
-
-a{
-    font-family: Verdana, Geneva, sans-serif;
-    color: green;
- 
 }

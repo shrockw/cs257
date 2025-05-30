@@ -21,14 +21,9 @@
         </nav>
      </header>
 
-    <div>
-        <h2>Welcome to Flavor Finder</h2>
-        <p>This website allows users to find random recipes, or to search for recipes by title or by ingredients. This way anybody can find a delicious recipe to fit any situation.</p>
-    </div>
-
     <div class="highlight">
-        <h2>Featured Recipe!</h2>
-        <a href="/display_recipe/{{featured_recipe.get_id()}}" class = recipe-link>{{featured_recipe.get_title()}}</a>
+        <h2>Welcome to Flavor Finder!</h2>
+        <h3>This website allows users to find random recipes, or to search for recipes by title or by ingredients. This way anybody can find a delicious recipe to fit any situation.</h3>
     </div>
 
     <div>
@@ -55,6 +50,13 @@
                 <a href="/display_recipe/{{allison_recipe.get_id()}}">{{allison_recipe.get_title()}}</a>
             </div>
         </div>
+    </div>
+    <div class="highlight">
+        <h2>Featured Recipe</h2>
+        <br>
+        <img src="static/present.png" alt="Present" class="present-img" style="width: 200px; height: auto;">
+        <a href="/display_recipe/{{featured_recipe.get_id()}}" class = recipe-link>{{featured_recipe.get_title()}}</a>
+        <br><br>
     </div>
     <div>
         <h2>About the Data:</h2>
