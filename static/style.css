@@ -53,15 +53,13 @@ div.all_fav_recipes {
 }
 
 
-h1 {
+header h1 {
     padding-top: 1em;
     padding-bottom: 1em;
+    height: 50px;
     background-color: green;
     color: white;
     text-align: center;
-}
-
-h1 {
     position: relative; /* This makes the header a reference point for absolutely positioned children */
     background-color: green; /* Set your desired background color */
     /* Other header styles like padding, height, etc. */
