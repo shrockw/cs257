@@ -110,7 +110,7 @@ div.fav_recipe {
     padding: 2px;
     /* Remove the solid border */
     border: 25px solid transparent;
-    border-image-source: url('cute-border.webp');
+    border-image-source: url('border.webp');
     border-image-slice: 65;
     border-image-repeat: round;
     margin-right: 1%;
