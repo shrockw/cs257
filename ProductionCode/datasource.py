@@ -4,8 +4,10 @@ import sys
 import ast
 import psycopg2
 import ProductionCode.psql_config as config
+from ProductionCode.recipe import Recipe
+from ProductionCode.datasource_meta import DataSourceMeta
 
-class DataSource:
+class DataSource(metaclass=DataSourceMeta):
     '''This class handles the connection to the PostgreSQL database 
     and provides methods to query recipes.'''
 
@@ -18,8 +20,10 @@ class DataSource:
         Returns the connection object.'''
 
         try:
-            connection = psycopg2.connect(database=config.DATABASE, user=config.USER,
-                password=config.PASSWORD, host="localhost")
+            connection = psycopg2.connect(database=config.DATABASE,
+                                          user=config.USER,
+                                          password=config.PASSWORD,
+                                          host="localhost")
         except psycopg2.Error as e:
             print("Connection error: ", e)
             sys.exit(1)
@@ -49,18 +53,18 @@ class DataSource:
 
     def generate_ingredients_query(self, include_ingredients, exclude_ingredients):
         '''Generates the WHERE clause for the ingredients query'''
-        query_list = []
+        query_separated = []
 
         if include_ingredients:
-            query_list.extend([f"ingredients ILIKE '%{ingredient}%'"
+            query_separated.extend([f"ingredients ILIKE '%{ingredient}%'"
                                for ingredient in include_ingredients])
 
         if exclude_ingredients:
-            query_list.extend([f"ingredients NOT ILIKE '%{ingredient}%'"
+            query_separated.extend([f"ingredients NOT ILIKE '%{ingredient}%'"
                                for ingredient in exclude_ingredients])
 
-        if query_list:
-            return f"SELECT id, title FROM recipe WHERE {" AND ".join(query_list)} ORDER BY title;"
+        if query_separated:
+            return "SELECT id, title FROM recipe WHERE " + " AND ".join(query_separated) + "ORDER BY title;"
         return None
 
     # def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
@@ -160,39 +164,3 @@ class DataSource:
         titles = cursor.fetchall()
         cursor.close()
         return [title[0] for title in titles]
-
-
-
-
-class Recipe():
-    '''This class represents a recipe object. It contains methods to get the title, 
-    ingredients, and instructions of the recipe.'''
-
-    def __init__(self, recipe_id, recipe_title, recipe_instructions=None, recipe_ingredients=None):
-        '''Constructor that initializes the recipe object with the given recipe data.'''
-        self.recipe_id = recipe_id
-        self.title = recipe_title
-        if recipe_instructions is not None:
-            self.instructions = recipe_instructions.split("\n")
-        else:
-            self.instructions = recipe_instructions
-        if recipe_ingredients is not None:
-            self.ingredients = ast.literal_eval(recipe_ingredients)
-        else:
-            self.ingredients = recipe_ingredients
-
-    def get_id(self):
-        '''Returns the ID of the recipe.'''
-        return self.recipe_id
-
-    def get_title(self):
-        '''Returns the title of the recipe.'''
-        return self.title
-
-    def get_instructions(self):
-        '''Returns the instructions of the recipe.'''
-        return self.instructions
-
-    def get_ingredients(self):
-        '''Returns the ingredients of the recipe.'''
-        return self.ingredients

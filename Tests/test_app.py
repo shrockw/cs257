@@ -2,7 +2,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from app import app
+from ProductionCode.datasource import DataSource
 
+# WE SHOULD ALSO HAVE TESTS THAT ACTUALLY TEST DATASOURCE
 
 class TestFlaskRoutes(unittest.TestCase):
     '''Test case for Flask application routes.'''
@@ -185,12 +187,11 @@ class TestFlaskRoutes(unittest.TestCase):
         response = self.app.get('/all_recipes')
         self.assertIn(b"Charred Steak and Broccolini", response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_random_route(self, mock_connect):
+    @patch('ProductionCode.datasource.DataSource.get_random_recipes')
+    def test_random_route(self, mock_method):
         '''Test the random route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
-            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
+        # THIS SHOULD BE A RECIPE OBJECT 
+        mock_method.return_value = [(11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
              'until just firm enough to scoop, about 1 hour.\n Working very quickly, scoop '
