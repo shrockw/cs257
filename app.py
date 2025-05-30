@@ -49,10 +49,10 @@ def handle_random_form():
         Redirects to the random route with the last search.
     '''
     num = request.form.get('num_recipes')
+    recipe_data = DataSource()
     if is_valid_number(num):
         num = int(num)
 
-        recipe_data = DataSource()
         recipes = recipe_data.get_random_recipes(num)
 
         simplified_recipes = [get_id_and_title(recipe) for recipe in recipes]

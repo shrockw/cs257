@@ -14,6 +14,7 @@ class DataSource(metaclass=DataSourceMeta):
     def __init__(self):
         '''Constructor that initiates connection to database'''
         self.connection = self.connect()
+        self.cursor = self.connection.cursor()
 
     def connect(self):
         '''Initiates connection to database using information in the psqlConfig.py file.
