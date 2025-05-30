@@ -7,39 +7,28 @@ from unittest.mock import MagicMock, patch
 import sys
 from io import StringIO
 from cl import main
+from ProductionCode.datasource import DataSource
 
-
-class TestCommandLine(unittest.TestCase):
-    '''
-    Tests the command line interface.
-    '''
-    def setUp(self):
-        '''
-        Sets up the test environment by mocking the get_data function.
-        '''
-        self.mock_conn = MagicMock()
-        self.mock_cursor = self.mock_conn.cursor.return_value
 
 
 class TestMainFunction(unittest.TestCase):
     '''
     Tests the main interface.
     '''
-    def setUp(self):
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def setUp(self, mock_connect):
         '''
         Sets up the test environment by mocking the get_data function.
         '''
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
-
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_main_random(self, mock_connect):
-        '''Tests the main function for getting random recipes'''
         mock_connect.return_value = self.mock_conn
+        self.ds = DataSource()
 
-        # Set return value of fetchall on the mock cursor
+    def test_main_random(self):
+        '''Tests the main function for getting random recipes'''
 
-        self.mock_cursor.fetchall.return_value = [(11286,
+        self.ds.cursor.fetchall.return_value = [(11286,
                              'Chocolate and Peppermint Candy Ice Cream Sandwiches',
                              'Stir together ice cream...',
                              "['1 pint superpremium vanilla ice cream...']")]
@@ -52,13 +41,11 @@ class TestMainFunction(unittest.TestCase):
         output = sys.stdout.getvalue().strip()
         self.assertIn('Chocolate and Peppermint Candy Ice Cream Sandwiches', output)
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_command_line_search(self, mock_connect):
+    def test_command_line_search(self):
         '''
         Tests the command line interface.
         '''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(13401, 'Thai-Style Chicken and Rice Soup',
+        self.ds.cursor.fetchall.return_value = [(13401, 'Thai-Style Chicken and Rice Soup',
         'Combine stock, water, curry paste, garlic, ginger, ...',
         "['8 cups chicken stock or low-sodium chicken broth (64 fl oz)...']")]
 
@@ -72,8 +59,7 @@ class TestMainFunction(unittest.TestCase):
         output = sys.stdout.getvalue().strip()
         self.assertIn('Thai-Style Chicken and Rice Soup', output, "Should be the same")
 
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(13483, 'White Chicken Chili',
+        self.ds.cursor.fetchall.return_value = [(13483, 'White Chicken Chili',
         'In a large kettle soak beans in cold water to cover...',
         "['1/2 pound dried navy beans, picked over...']")]
 
@@ -87,13 +73,11 @@ class TestMainFunction(unittest.TestCase):
         output = sys.stdout.getvalue().strip()
         self.assertIn('White Chicken Chili', output, "Should be the same")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_command_line_omit(self, mock_connect):
+    def test_command_line_omit(self):
         '''
         Tests the command line interface with omitted ingredients.
         '''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [(13499, 'Spanakopita',
+        self.ds.cursor.fetchall.return_value = [(13499, 'Spanakopita',
         'Melt 1 tablespoon butter in a 12-inch heavy skillet...',
         "['1 stick (1/2 cup) plus 1 tablespoon unsalted butter...']")]
 

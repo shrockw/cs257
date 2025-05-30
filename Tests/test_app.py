@@ -9,17 +9,18 @@ from ProductionCode.datasource import DataSource
 class TestFlaskRoutes(unittest.TestCase):
     '''Test case for Flask application routes.'''
 
-    def setUp(self):
+    @patch('ProductionCode.datasource.psycopg2.connect')
+    def setUp(self, mock_connect):
         self.app = app.test_client()
         # create a mock connection and cursor
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
-
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_homepage(self, mock_connect):
-        '''Test the homepage route.'''
         mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (789,
+        self.ds = DataSource()
+
+    def test_homepage(self):
+        '''Test the homepage route.'''
+        self.ds.cursor.fetchone.return_value = (789,
             'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
@@ -48,7 +49,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "pepper', '1 pound cavatappi pasta (or your favorite ribbed pasta)', '6 tablespoons "
              "unsalted butter, cubed', '15 fresh sage leaves, torn', '1/2 cup freshly grated "
              "Parmesan cheese']")
-        self.mock_cursor.fetchall.return_value = [
+        self.ds.cursor.fetchall.return_value = [
             (789, 'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
@@ -117,11 +118,9 @@ class TestFlaskRoutes(unittest.TestCase):
         b"can find a delicious recipe to fit any situation.",
                       response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_all_recipes(self, mock_connect):
+    def test_all_recipes(self):
         '''Test the all recipes route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
+        self.ds.cursor.fetchall.return_value = [
             (789, 'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
@@ -187,11 +186,10 @@ class TestFlaskRoutes(unittest.TestCase):
         response = self.app.get('/all_recipes')
         self.assertIn(b"Charred Steak and Broccolini", response.data, "Should match")
 
-    @patch('ProductionCode.datasource.DataSource.get_random_recipes')
-    def test_random_route(self, mock_method):
+    def test_random_route(self):
         '''Test the random route.'''
-        # THIS SHOULD BE A RECIPE OBJECT 
-        mock_method.return_value = [(11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
+        self.ds.cursor.fetchall.return_value = [
+            (11286, 'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
              'until just firm enough to scoop, about 1 hour.\n Working very quickly, scoop '
@@ -204,16 +202,14 @@ class TestFlaskRoutes(unittest.TestCase):
              "peppermint extract', '1 cup finely crushed peppermint hard candies (1/4 lb)', "
              "'16 chocolate wafers such as Nabisco Famous', 'a 1/4-cup ice cream scoop']")]
         # Mock the form submission for the random route
-        response = self.app.post('/handle_random_form', data={'num_recipes': 1})
+        response = self.app.post('/handle_random_form', data={'num_recipes': '1'})
 
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_search_by_title_route(self, mock_connect):
+    def test_search_by_title_route(self):
         '''Test the random route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (11286,
+        self.ds.cursor.fetchone.return_value = (11286,
             'Chocolate and Peppermint Candy Ice Cream Sandwiches',
              'Stir together ice cream (reserve pint container), extract, and 1/2 cup crushed '
              'candy in a bowl until combined.\nTransfer mixture to pint container and freeze '
@@ -235,21 +231,17 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_random_route_invalid(self, mock_connect):
+    def test_random_route_invalid(self):
         '''Test the random route with an invalid number.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = []
+        self.ds.cursor.fetchall.return_value = []
         response = self.app.post('/handle_random_form', data={'num_recipes': -1})
 
         self.assertIn(b"You entered an invalid number of recipes",
                       response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_autocomplete_route(self, mock_connect):
+    def test_autocomplete_route(self):
         '''Test the autocomplete route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
+        self.ds.cursor.fetchall.return_value = [
             ("Chocolate Cake",),
             ("Chocolate Chip Cookies",),
             ("Vanilla Ice Cream",),
@@ -266,11 +258,9 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertIn("Chocolate and Peppermint Candy Ice Cream Sandwiches", data)
         self.assertNotIn("Vanilla Ice Cream", data)
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_search_include_route(self, mock_connect):
+    def test_search_include_route(self):
         '''Test the search include route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
+        self.ds.cursor.fetchall.return_value = [
             (789, 'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
@@ -326,11 +316,9 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertIn(b"Cavatappi with Broccolini, Brown Butter, and Sage",
                       response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_search_omit_route(self, mock_connect):
+    def test_search_omit_route(self):
         '''Test the search omit route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
+        self.ds.cursor.fetchall.return_value = [
             (13465,
              'Spaghetti with Anchovies, Olives, and Toasted Bread Crumbs',
              'Fill a 6-quart pasta pot three fourths full with salted water and bring to '
@@ -405,11 +393,9 @@ class TestFlaskRoutes(unittest.TestCase):
                       response.data, "Should match")
 
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_search_include_omit_route(self, mock_connect):
+    def test_search_include_omit_route(self):
         '''Test the search include and omit route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchall.return_value = [
+        self.ds.cursor.fetchall.return_value = [
             (11329, 'Broccoli-Mascarpone Soup',
              'Heat oil in large pot over medium heat. Add shallots; sauté 3 minutes. Add '
              'broccoli; sauté 1 minute. Add broth; bring to boil. Reduce heat to medium-low. '
@@ -468,11 +454,9 @@ class TestFlaskRoutes(unittest.TestCase):
             b"Mac and Cheese with Chicken and Broccoli",
             response.data, "Should match")
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_display_recipe_route(self, mock_connect):
+    def test_display_recipe_route(self):
         '''Test the display recipe route.'''
-        mock_connect.return_value = self.mock_conn
-        self.mock_cursor.fetchone.return_value = (789,
+        self.ds.cursor.fetchone.return_value = (789,
             'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
