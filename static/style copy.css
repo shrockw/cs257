@@ -1,4 +1,4 @@
-/* === Root Variables === */
+/* Can use this to standardize some of the colors */
 :root {
     --primary-color: #e89b01;
     --primary-light: rgba(249, 162, 0, 0.519);
@@ -12,63 +12,29 @@
     --font-stack: 'Verdana', 'Geneva', sans-serif;
     --border-radius: 6px;
     --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
-/* === Base Styles === */
 body {
-    margin: 0 5%;
-    background-color: var(--light-bg);
-    font-family: var(--font-stack);
-    color: var(--text-color);
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: rgba(252, 248, 180, 0.255);
 }
 
-p, li, a {
-    font-family: var(--font-stack);
-    line-height: 1.6;
-}
-
-a {
-    color: rgb(205, 137, 2);
-    text-decoration: underline;
-}
-
-a:hover {
-    color: var(--secondary-color);
-}
-
-a.button {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-size: 1em;
-    font-weight: bold;
-}
-
-a.button:hover {
-    background-color: var(--secondary-color);
-}
-
-/* === Typography === */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-stack);
     margin-top: 0;
 }
 
 h1 {
-    padding: 1em 0;
+    padding: 1.5em 0;
     background-color: var(--primary-light);
     color: var(--secondary-color);
     text-align: center;
+    position: relative;
     border-radius: var(--border-radius);
     margin-bottom: 2rem;
-    position: relative;
-}
-
-div.welcome h1 {
-    background-color: transparent;
 }
 
 h2 {
@@ -94,26 +60,40 @@ h3 {
     color: rgb(156, 95, 38);
 }
 
-h3.recipe_header {
-    text-align: left;
+p {
+    margin-bottom: 1.5em;
+    line-height: 1.6;
+    font-family: var(--font-stack);
 }
 
-div.recipes_div h3 {
-    scroll-margin-top: 70px;
-    position: relative;
-    font-size: 24px;
-    text-align: left;
-    margin-top: 15px;
+ a {
+    color: rgb(205, 137, 2);
+    text-decoration: underline;
+    font-family: var(--font-stack);
+
+ }
+
+ a:hover{
+    color: rgb(192, 101, 3);
+ }
+ 
+ li {
+     font-family: var(--font-stack);
+     line-height: 1.4;
+ }
+ 
+
+div.welcome h1 {
+    background-color: transparent;
 }
 
-/* === Welcome & Highlights === */
 div.welcome p {
     text-align: center;
 }
 
 div.highlight {
-    background-color: rgba(252, 248, 180, 0.5);
-    border: 3px solid var(--primary-color);
+    background-color: rgba(252, 248, 180, 0.5); /* Soft yellow */
+    border: 3px solid var(--primary-color); /* Dashed border for a "handwritten" feel */
     text-align: center;
     border-radius: 12px;
     padding: 1.5rem;
@@ -122,26 +102,15 @@ div.highlight {
     box-shadow: 0 4px 12px rgba(232, 155, 1, 0.2);
 }
 
-/* === Favorites Layout === */
-div.all_fav_recipes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-}
 
 div.fav_recipe {
     display: inline-block;
     width: 23%;
     box-sizing: border-box;
-    padding: 2px;
+    padding: 2px;    
     margin-right: 1%;
     margin-bottom: 1%;
     vertical-align: top;
-}
-
-div.fav_recipe:last-child {
-    margin-right: 0;
 }
 
 div.fav_recipe img {
@@ -150,7 +119,49 @@ div.fav_recipe img {
     display: block;
 }
 
-/* === Navigation === */
+div.fav_recipe:last-child {
+    margin-right: 0;
+}
+
+div.all_fav_recipes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+h1 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: rgb(232, 155, 1);
+    color: rgb(192, 101, 3);
+    text-align: center;
+}
+
+h1 {
+    position: relative;
+    background-color: rgba(249, 162, 0, 0.365);
+}
+
+.logo {
+    position: absolute;
+    top: 12px;
+    right: 75px;
+    z-index: 1;
+}
+
+nav ul {
+    border: 2px solid rgb(247, 183, 66);
+    list-style-type: none;
+    overflow: hidden;
+}
+
+
+/* Navigation bar items should link to elements on the page, or to other pages.
+     This is the "a" tag. So this says "apply this style to links within the nav bar".
+*/
+/* Navigation */
 nav ul {
     border: 2px solid var(--accent-color);
     list-style-type: none;
@@ -175,20 +186,16 @@ nav li a {
     color: var(--primary-color);
 }
 
-nav li a:hover,
+nav li a:hover {
+    color: white;
+    background-color: var(--primary-color);
+}
+
 nav li a.highlight {
     color: white;
     background-color: var(--primary-color);
 }
 
-/* === Logo === */
-.logo {
-    position: absolute;
-    right: 75px;
-    z-index: 1;
-}
-
-/* === Forms === */
 form {
     margin-top: 20px;
     font-family: var(--font-stack);
@@ -198,6 +205,7 @@ form label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+
 }
 
 form input[type="text"] {
@@ -226,8 +234,8 @@ form input[type="submit"]:hover {
 
 form p {
     color: red;
-    margin-top: 0;
     line-height: 1;
+    margin-top: 0px;
 }
 
 form ul {
@@ -238,22 +246,35 @@ form ul {
 form p.suggestion-item {
     color: var(--primary-color);
     text-decoration: underline;
-    margin: 5px 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
     cursor: pointer;
 }
 
-img.present-img {
-    width: 75px;
-}
-
-
-/* === Alphabet Links === */
+a.button {
+    display: inline-block;
+    font-family: var(--font-stack); /* Match the rest of your site */
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  a.button:hover {
+    background-color: var(--secondary-color);
+  }
+  
 div.alphabet_links {
     position: sticky;
     top: 0;
     background: rgb(251, 241, 208);
     padding: 12px 0;
-    border: 3px solid rgba(232, 155, 1, 0.8);
+    border-bottom: 3px solid rgba(232, 155, 1, 0.8);
+    border-top: 3px solid rgba(232, 155, 1, 0.8);
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
@@ -262,16 +283,16 @@ div.alphabet_links {
 
 div.alphabet_links a {
     display: inline-flex;
-    font-size: 20px;
+    font-size: 18px;
     margin: 0 6px;
-    padding: 2px 4px;
+    padding: 4px 8px;
     color: rgb(156, 95, 38);
     text-decoration: none;
     font-weight: 600;
-    border-radius: var(--border-radius);
+    border-radius: 6px;
     align-items: center;
     justify-content: center;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
 }
 
 div.alphabet_links a:hover {
@@ -280,13 +301,24 @@ div.alphabet_links a:hover {
     box-shadow: 0 4px 8px rgba(232, 155, 1, 0.2);
 }
 
-/* === Search Section === */
+
+div.recipes_div h3 {
+    scroll-margin-top: 60px; /* Increased to 80px */
+    position: relative;
+    font-size: 24px;
+    text-align: left;
+    margin-top: 15px;
+}
+
+
+/* === Custom Search === */
 .search-section {
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: var(--light-bg);
+    background: rgba(252, 248, 180, 0.5);
+;
     border-radius: 8px;
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .ingredient-input {
@@ -334,24 +366,28 @@ div.alphabet_links a:hover {
     font-weight: bold;
 }
 
-/* === Error Page === */
 .error-container {
     text-align: center;
     margin-top: 100px;
     font-family: var(--font-stack);
 }
-
 .error-container h1 {
     font-size: 4em;
     color: darkred;
 }
-
 .error-container p {
     font-size: 1.2em;
     margin: 20px;
 }
-
 .error-container a.button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
     padding: 12px 24px;
+    text-decoration: none;
     border-radius: 5px;
+    font-weight: bold;
+}
+.error-container a.button:hover {
+    background-color: var(--secondary-color);
 }
