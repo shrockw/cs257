@@ -239,4 +239,4 @@ def python_bug(e):
     return f"A bug! {str(e)}"
 
 if __name__ == '__main__':
-    app.run(port = 5104)
+    app.run(host="0.0.0.0", debug=False, port = 5157)
