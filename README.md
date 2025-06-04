@@ -70,3 +70,5 @@ are looking for
 
 
 **Front End Design Improvements**
+
+## Improvement 1: (Make it more clear to hit enter after each ingredient)
