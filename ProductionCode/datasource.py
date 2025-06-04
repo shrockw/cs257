@@ -133,12 +133,15 @@ class DataSource(metaclass=DataSourceMeta):
         Returns a Recipe object.
         '''
 
-        if len(recipe) == 2:
-            recipe_id, title = recipe
-            return Recipe(recipe_id, title)
-        if len(recipe) == 4:
-            recipe_id, title, instructions, ingredients = recipe
-            return Recipe(recipe_id, title, instructions, ingredients)
+        if recipe: 
+            if len(recipe) == 2:
+                recipe_id, title = recipe
+                return Recipe(recipe_id, title)
+            if len(recipe) == 4:
+                recipe_id, title, instructions, ingredients = recipe
+                return Recipe(recipe_id, title, instructions, ingredients)
+        else:
+            return None
 
         raise ValueError("Invalid recipe data format")
 
