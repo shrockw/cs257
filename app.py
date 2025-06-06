@@ -117,7 +117,7 @@ def custom_search():
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
         if recipes:
             sorted_recipes = sort_recipes_alphabetically(recipes)
-            return render_template('custom_recipe_results.html', 
+            return render_template('custom_recipes_results.html', 
                                  sorted_recipes=sorted_recipes,
                                  letters=string.ascii_uppercase, 
                                  highlight=None,
