@@ -20,8 +20,31 @@
 
     <div>
         <h2>No Recipes Found That Match Your Search Criteria</h2>
+        
+        {% if included_ingredients or excluded_ingredients %}
+        <div class="search-criteria">
+            {% if included_ingredients %}
+            <h3>Included Ingredients:</h3> 
+                <ul class="ingredient-list">
+                    {% for ingredient in included_ingredients %}
+                    <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            {% endif %}
+            {% if excluded_ingredients %}
+            <ul class="ingredient-list">
+                    {% for ingredient in excluded_ingredients %}
+                    <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         <br>
+        {% endif %}
+        
         <p>Don't forget to press enter after each ingredient!</p>
         <a href="\custom" class="button">Try Again</a>
     </div>
 </body>
+</html>
