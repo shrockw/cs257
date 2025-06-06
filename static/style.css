@@ -325,6 +325,12 @@ div.recipes_div h3 {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.search-criteria h3 {
+    text-align: left !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
 .ingredient-input {
     width: 35%;
     padding: 0.75rem;

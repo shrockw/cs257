@@ -108,7 +108,6 @@ def custom_search():
     if request.method == 'POST':
         recipe_data = DataSource()
 
-        # MAKE A FUNCTION FOR THIS (long method)
         include = request.form.get('include_ingredients', '').split(',')
         exclude = request.form.get('exclude_ingredients', '').split(',')
 
@@ -118,10 +117,16 @@ def custom_search():
         recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
         if recipes:
             sorted_recipes = sort_recipes_alphabetically(recipes)
-            return render_template('all_recipes.html', sorted_recipes=sorted_recipes,
-                                   letters = string.ascii_uppercase, highlight = None)
+            return render_template('custom_recipe_results.html', 
+                                 sorted_recipes=sorted_recipes,
+                                 letters=string.ascii_uppercase, 
+                                 highlight=None,
+                                 included_ingredients=include,
+                                 excluded_ingredients=exclude)
 
-        return render_template('no_recipes_found.html')
+        return render_template('no_recipes_found.html',
+                             included_ingredients=include,
+                             excluded_ingredients=exclude)
     return render_template('custom.html')
 
 @app.route('/all_recipes')
