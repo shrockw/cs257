@@ -289,6 +289,12 @@ div.alphabet_links a:hover {
     box-shadow: var(--box-shadow);
 }
 
+.search-criteria h3 {
+    text-align: left !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
 .ingredient-input {
     width: 35%;
     padding: 0.75rem;
