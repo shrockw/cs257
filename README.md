@@ -72,3 +72,7 @@ are looking for
 **Front End Design Improvements**
 
 ## Improvement 1: (Make it more clear to hit enter after each ingredient)
+- When conducting usability testing, some users struggled to figure out how to use the search by ingredients functionality (in custom.html). Some users would not press enter after typing in the ingredient and then submit the search which would output the no_recipes_found.html page. To fix this, we included in the search bar text a clearer prompt for the user to "press Enter after each ingredient", guiding the user better on how to properly use the functionality.
+
+## Improvement 2:
+- The original recipe not found page (no_recipes_found.html) provided a generic error message when no recipes matched the users custom search critera, and the all_recipes.html results page only showed what recipes matched the criteria; however, it didn't remind users what ingredients they actually searched for. This was a usability issue because users couldn't verify what ingredients they had included or excluded. This increased cognitive load because users had to remember what they had searched, and couldn't check if they had spelled something wrong for example. Thus, both the no_recipes_found.html and the all_recipes.html were changed to display the included and excluded ingredients if any.
