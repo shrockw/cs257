@@ -30,11 +30,30 @@
      </div>
      <br><br>
 
+     <div class="search-criteria">
+            {% if included_ingredients %}
+            <h3>Included Ingredients:</h3> 
+                <ul class="ingredient-list">
+                    {% for ingredient in included_ingredients %}
+                    <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            {% endif %}
+            {% if excluded_ingredients %}
+            <ul class="ingredient-list">
+                    {% for ingredient in excluded_ingredients %}
+                    <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
 
         <h2>Here are the recipes:</h2>
 
 
-
+     
     {% if sorted_recipes %}
     <div class="recipes_div">
     <ul>
