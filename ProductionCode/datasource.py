@@ -1,7 +1,6 @@
 '''This module contains the DataSource class that handles database connections and queries.'''
 
 import sys
-import ast
 import psycopg2
 import ProductionCode.psql_config as config
 from ProductionCode.recipe import Recipe
@@ -65,40 +64,13 @@ class DataSource(metaclass=DataSourceMeta):
                                for ingredient in exclude_ingredients])
 
         if query_separated:
-            return "SELECT id, title FROM recipe WHERE " + " AND ".join(query_separated) + "ORDER BY title;"
+            final_query = "SELECT id, title FROM recipe WHERE " 
+            final_query += " AND ".join(query_separated)
+            final_query += " ORDER BY title;"
+            return final_query
         return None
 
-    # def get_recipe_by_ingredients(self, include_ingredients, exclude_ingredients):
-    #     '''Fetches recipes that include certain ingredients and exclude others'''
-    #     cursor = self.connection.cursor()
 
-    #     query = "SELECT id, title FROM recipe WHERE "
-    #     conditions = []
-    #     params = []
-
-
-    #     if include_ingredients:
-    #         for ingredient in include_ingredients:
-    #             conditions.append("ingredients ILIKE %s")
-    #             params.append(f"%{ingredient}%")
-
-    #     if exclude_ingredients:
-    #         for ingredient in exclude_ingredients:
-    #             conditions.append("ingredients NOT ILIKE %s")
-    #             params.append(f"%{ingredient}%")
-
-    #     if conditions:
-    #         query += " AND ".join(conditions)
-    #     else:
-    #         return []
-
-    #     query += " ORDER BY title;"
-
-
-    #     cursor.execute(query, params)
-    #     records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
-    #     cursor.close()
-    #     return records
 
     def get_random_recipes(self, number):
         ''' This function retrieves random recipes from the database.
@@ -147,8 +119,7 @@ class DataSource(metaclass=DataSourceMeta):
             if len(recipe) == 4:
                 recipe_id, title, instructions, ingredients = recipe
                 return Recipe(recipe_id, title, instructions, ingredients)
-        else:
-            return None
+        return None
 
         raise ValueError("Invalid recipe data format")
 

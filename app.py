@@ -90,9 +90,9 @@ def handle_ingredient_search():
     recipes = recipe_data.get_recipe_by_ingredients(include_ingredients, exclude_ingredients)
     if recipes:
         sorted_recipes = sort_recipes_alphabetically(recipes)
-        return render_template('custom_recipes_results.html', 
+        return render_template('custom_recipes_results.html',
                                 sorted_recipes=sorted_recipes,
-                                letters=string.ascii_uppercase, 
+                                letters=string.ascii_uppercase,
                                 highlight=None,
                                 included_ingredients=include_ingredients,
                                 excluded_ingredients=exclude_ingredients)
@@ -103,7 +103,12 @@ def handle_ingredient_search():
 
 def parse_ingredients(ingredients):
     '''This function parses the ingredients from a string into a list.'''
-    return [ingredient.strip().lower() for ingredient in ingredients.split(',') if ingredient.strip()]
+    parsed_ingredients = []
+    if ingredients.strip():
+        for ingredient in ingredients.split(','):
+            parsed_ingredients.append(ingredient.strip().lower())
+
+    return parsed_ingredients
 
 @app.route('/all_recipes')
 def all_recipes():
@@ -117,9 +122,9 @@ def all_recipes():
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
-    return render_template('all_recipes.html', 
+    return render_template('all_recipes.html',
                            sorted_recipes = sorted_recipes,
-                           letters = string.ascii_uppercase, 
+                           letters = string.ascii_uppercase,
                            highlight = "highlight")
 
 def sort_recipes_alphabetically(recipes):
@@ -174,16 +179,18 @@ def find_recipe_by_title():
 
     if not recipes:
         return search_by_title(last_search=searched_title)
-    
+
     if only_one_recipe(recipes):
         return redirect(url_for('display_recipe', recipe_id=recipes[0].get_id()))
-    
+
     return render_template('all_recipes.html', sorted_recipes=sort_recipes_alphabetically(recipes),
                                letters=string.ascii_uppercase, highlight=None)
 
 def only_one_recipe(recipes):
+    '''This function checks if there is only one recipe in the list.'''
     if len(recipes) == 1:
         return True
+    return False
 
 
 @app.route('/display_recipe/<recipe_id>')
