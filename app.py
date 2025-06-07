@@ -88,8 +88,6 @@ def handle_ingredient_search():
     exclude_ingredients = parse_ingredients(request.form.get('exclude_ingredients', ''))
 
     recipes = recipe_data.get_recipe_by_ingredients(include_ingredients, exclude_ingredients)
-    print(include_ingredients)
-    print(exclude_ingredients)
     if recipes:
         sorted_recipes = sort_recipes_alphabetically(recipes)
         return render_template('custom_recipes_results.html', 
