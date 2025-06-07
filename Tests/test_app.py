@@ -231,9 +231,10 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertIn(b"Chocolate and Peppermint Candy Ice Cream Sandwiches",
                       response.data, "Should match")
 
-    def search_by_title_no_match(self):
-        '''Test the search by title route with no match.'''
-        self.ds.cursor.fetchone.return_value = [
+    def test_search_by_title_no_match(self):
+        '''Test the search by title route with no perfect match.'''
+        self.ds.cursor.fetchone.return_value = None
+        self.ds.cursor.fetchall.return_value = [
             (789, 'Cavatappi with Broccolini, Brown Butter, and Sage',
              'Bring a large pot of water to a boil. Fill a large bowl with water and ice '
              'and set aside.\nAdd 1 tablespoon kosher salt and the broccolini to the '
