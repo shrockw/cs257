@@ -11,7 +11,7 @@
             <ul>
                 <li><a href="\">Home</a></li>
                 <li><a href="\search_by_title">Search by Recipe Title</a></li>
-                <li><a href="\custom">Search by Ingredients</a></li>
+                <li><a href="\ingredient_search">Search by Ingredients</a></li>
                 <li><a href="\random">Random Recipes</a></li>
                 <li><a href="\all_recipes">All Recipes</a></li>
             </ul>
@@ -33,6 +33,7 @@
             </p>
             {% endif %}
             {% if excluded_ingredients %}
+            <h3>Excluded Ingredients:</h3> 
             <ul class="ingredient-list">
                     {% for ingredient in excluded_ingredients %}
                     <li>{{ ingredient }}</li>
@@ -44,7 +45,7 @@
         {% endif %}
         
         <p>Don't forget to press enter after each ingredient!</p>
-        <a href="\custom" class="button">Search by Ingredients</a>
+        <a href="\ingredient_search" class="button">Search by Ingredients</a>
     </div>
 </body>
 </html>

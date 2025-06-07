@@ -15,13 +15,13 @@
             <ul>
                 <li><a href="\">Home</a></li>
                 <li><a href="\search_by_title">Search by Recipe Title</a></li>
-                <li><a class="highlight" href="\custom">Search by Ingredients</a></li>
+                <li><a class="highlight" href="\ingredient_search">Search by Ingredients</a></li>
                 <li><a href="\random">Random Recipes</a></li>
                 <li><a href="\all_recipes">All Recipes</a></li>
             </ul>
         </nav>
     </header>
-    <form id="search-form" method="POST" action="{{ url_for('custom_search') }}">
+    <form id="search-form" method="POST" action="{{ url_for('handle_ingredient_search') }}">
         <!-- Hidden inputs will be populated by JavaScript -->
         <input type="hidden" name="include_ingredients" id="include-hidden" value="">
         <input type="hidden" name="exclude_ingredients" id="exclude-hidden" value="">

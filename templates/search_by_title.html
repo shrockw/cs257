@@ -14,7 +14,7 @@
             <ul>
                 <li><a href="\">Home</a></li>
                 <li><a class="highlight" href="\search_by_title">Search by Recipe Title</a></li>
-                <li><a href="\custom">Search by Ingredients</a></li>
+                <li><a href="\ingredient_search">Search by Ingredients</a></li>
                 <li><a href="\random">Random Recipes</a></li>
                 <li><a href="\all_recipes">All Recipes</a></li>
             </ul>
@@ -27,7 +27,7 @@
     </div>
 
     <div>
-        <form method="POST" action="/find_recipe_by_title">
+        <form method="POST" action="/handle_title_form">
             <label for="recipe_title">Recipe Title:</label>
             <input id="recipe_search" type="text" name="recipe_title" placeholder="Enter recipe title" autocomplete="off">
             {% if last_search %}
