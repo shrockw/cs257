@@ -116,9 +116,9 @@ class DataSource(metaclass=DataSourceMeta):
         cursor = self.connection.cursor()
         query = "SELECT * FROM recipe WHERE title ILIKE %s"
         cursor.execute(query, (f"%{title}%",))
-        records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+        recipes = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
         cursor.close()
-        return records
+        return recipes
 
 
     def convert_recipe_to_object(self, recipe):
