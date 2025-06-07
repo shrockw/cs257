@@ -95,10 +95,10 @@ class DataSource(metaclass=DataSourceMeta):
         exact_match = self.get_exact_match(title)
         if exact_match:
             return [exact_match]
-        
+
         close_matches = self.get_recipes_containing_title(title)
         return close_matches
-    
+
     def get_exact_match(self, title):
         '''This function retrieves the recipe data based on the exact title match.'''
 
@@ -109,7 +109,7 @@ class DataSource(metaclass=DataSourceMeta):
         recipe = self.convert_recipe_to_object(result)
         cursor.close()
         return recipe
-    
+
     def get_recipes_containing_title(self, title):
         '''This function retrieves recipes that contain the given title.'''
 
