@@ -50,7 +50,7 @@ are looking for
 
 ## Improvement 1: 
 - The Code Smell was that functions should only do 1 thing but our random() function was handling both rendering the html page for the user to enter how many random recipes they want and handling getting the results of the form. 
-- Our refactored code is in app.py lines 37-73 which includes the creation of helper functions as well to shorten some of the functions in our code. 
+- Our refactored code is in app.py lines 37-73 which includes the creation of helper functions as well to shorten some of the functions in our code.
 - To refactor our code we created two functions, random() and handle_random_form(). The random function only deals with rendering the html for the webpage while the handle_random_form only deals with getting the number entered by the user and finding the random recipes. This way each function has a singular focus which is either rendering html or dealing with form submission.
 
 ## Improvement 2: 
