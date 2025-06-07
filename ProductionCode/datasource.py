@@ -64,7 +64,7 @@ class DataSource(metaclass=DataSourceMeta):
                                for ingredient in exclude_ingredients])
 
         if query_separated:
-            final_query = "SELECT id, title FROM recipe WHERE " 
+            final_query = "SELECT id, title FROM recipe WHERE "
             final_query += " AND ".join(query_separated)
             final_query += " ORDER BY title;"
             return final_query
@@ -98,12 +98,12 @@ class DataSource(metaclass=DataSourceMeta):
             recipe = self.convert_recipe_to_object(cursor.fetchone())
             cursor.close()
             return [recipe]
-        else:
-            query = "SELECT * FROM recipe WHERE title ILIKE %s"
-            cursor.execute(query, (f"%{title}%",))
-            records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
-            cursor.close()
-            return records
+
+        query = "SELECT * FROM recipe WHERE title ILIKE %s"
+        cursor.execute(query, (f"%{title}%",))
+        records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+        cursor.close()
+        return records
 
     def convert_recipe_to_object(self, recipe):
         '''This function converts the recipe data into a Recipe object.
@@ -112,7 +112,7 @@ class DataSource(metaclass=DataSourceMeta):
         Returns a Recipe object.
         '''
 
-        if recipe: 
+        if recipe:
             if len(recipe) == 2:
                 recipe_id, title = recipe
                 return Recipe(recipe_id, title)
@@ -120,8 +120,6 @@ class DataSource(metaclass=DataSourceMeta):
                 recipe_id, title, instructions, ingredients = recipe
                 return Recipe(recipe_id, title, instructions, ingredients)
         return None
-
-        raise ValueError("Invalid recipe data format")
 
     def get_recipe_by_id(self, recipe_id):
         '''This function retrieves the recipe data based on the recipe ID.

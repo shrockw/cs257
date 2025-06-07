@@ -384,7 +384,7 @@ class TestFlaskRoutes(unittest.TestCase):
              'oil\', \'3 oz. coarsely grated Gruyère (about 1½ cups)\', \'3 oz. cream cheese, '
              'cut into pieces\', \'3/4 cup whole milk\', \'1/4 tsp. freshly grated or ground '
              'nutmeg\', \'Large pinch of cayenne pepper\', \'Flaky sea salt\']')]
-        response = self.app.post('/handle_ingredient_search', 
+        response = self.app.post('/handle_ingredient_search',
                                  data={'include_ingredients': "cheese,broccoli",
                                         'exclude_ingredients': ""})
 
@@ -522,7 +522,7 @@ class TestFlaskRoutes(unittest.TestCase):
              "flour', '2/3 cup whole milk', '2/3 cup freshly grated Parmesan cheese']")]
 
 
-        response = self.app.post('/handle_ingredient_search', 
+        response = self.app.post('/handle_ingredient_search',
                                  data={'include_ingredients': "cheese,broccoli",
                                         'exclude_ingredients': "garlic"})
 
