@@ -16,7 +16,6 @@ TOTAL_NUM_RECIPES = 13493
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
-    #WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
     marc_recipe = recipe_data.get_recipe_by_id(13442)
@@ -193,10 +192,15 @@ def find_recipe_by_title():
     '''
     searched_title = request.form.get('recipe_title')
     recipe_data = DataSource()
-    recipe = recipe_data.get_recipe_by_title(searched_title)
-    if recipe:
-        return redirect(url_for('display_recipe', recipe_id=recipe.get_id()))
-    return search_by_title(last_search=searched_title)
+    recipes = recipe_data.get_recipe_by_title(searched_title)
+    if len(recipes) == 1:
+        return redirect(url_for('display_recipe', recipe_id=recipes[0].get_id()))
+    elif len(recipes) > 1:
+        # If multiple recipes found, redirect to all_recipes with the search results
+        return render_template('all_recipes.html', sorted_recipes=sort_recipes_alphabetically(recipes),
+                               letters=string.ascii_uppercase, highlight=None)
+    else:
+        return search_by_title(last_search=searched_title)
 
 @app.route('/display_recipe/<recipe_id>')
 def display_recipe(recipe_id):

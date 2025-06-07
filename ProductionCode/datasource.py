@@ -122,9 +122,17 @@ class DataSource(metaclass=DataSourceMeta):
         cursor = self.connection.cursor()
         query = "SELECT * FROM recipe WHERE title = %s"
         cursor.execute(query, (title,))
-        recipe = self.convert_recipe_to_object(cursor.fetchone())
-        cursor.close()
-        return recipe if recipe else None
+        if cursor.fetchone():
+            recipe = self.convert_recipe_to_object(cursor.fetchone())
+            cursor.close()
+            return [recipe]
+        else:
+            # Find all recipes that contain the string in the title
+            query = "SELECT * FROM recipe WHERE title ILIKE %s"
+            cursor.execute(query, (f"%{title}%",))
+            records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
+            cursor.close()
+            return records
 
     def convert_recipe_to_object(self, recipe):
         '''This function converts the recipe data into a Recipe object.

@@ -79,10 +79,9 @@
     </ul>
     </div>
     {% else %}
-    <p>No recipes match your search criteria.</p>
+    <p class="error_message">No recipes match your search criteria. Click below to search again.</p>
+    <a href="{{ url_for('custom_search') }}" class="button">Search by Ingredients</a>
     {% endif %}
-
-    <a href="{{ url_for('custom_search') }}" class="button">New Ingredient Search</a>
      
 </body>
 </html>

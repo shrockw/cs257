@@ -54,7 +54,6 @@
 
 
      
-    {% if sorted_recipes %}
     <div class="recipes_div">
     <ul>
         {% for letter, recipes in sorted_recipes.items() %}
@@ -69,11 +68,8 @@
         {% endfor %}
     </ul>
     </div>
-    {% else %}
-    <p>No recipes to show. Try generating some first.</p>
-    {% endif %}
 
-    <a href="{{ url_for('random') }}" class="button">Generate More</a>
+
 
 </body>
 </html>

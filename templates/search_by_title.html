@@ -31,7 +31,7 @@
             <label for="recipe_title">Recipe Title:</label>
             <input id="recipe_search" type="text" name="recipe_title" placeholder="Enter recipe title" autocomplete="off">
             {% if last_search %}
-                <p id="search_error_message">Unfortunately "{{ last_search }}" does not exist in our database. Please try again.</p>
+                <p class="search_error_message">Unfortunately "{{ last_search }}" does not exist in our database. Please try again.</p>
             {% endif %}
             <ul id="suggestions"></ul>
             <input type="submit" name="submit" value="Search">
