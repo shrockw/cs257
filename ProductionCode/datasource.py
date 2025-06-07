@@ -91,19 +91,35 @@ class DataSource(metaclass=DataSourceMeta):
         title: title of the recipe
         Returns the recipe ID.
         '''
+
+        exact_match = self.get_exact_match(title)
+        if exact_match:
+            return [exact_match]
+        
+        close_matches = self.get_recipes_containing_title(title)
+        return close_matches
+    
+    def get_exact_match(self, title):
+        '''This function retrieves the recipe data based on the exact title match.'''
+
         cursor = self.connection.cursor()
         query = "SELECT * FROM recipe WHERE title = %s"
         cursor.execute(query, (title,))
-        if cursor.fetchone():
-            recipe = self.convert_recipe_to_object(cursor.fetchone())
-            cursor.close()
-            return [recipe]
+        result = cursor.fetchone()
+        recipe = self.convert_recipe_to_object(result)
+        cursor.close()
+        return recipe
+    
+    def get_recipes_containing_title(self, title):
+        '''This function retrieves recipes that contain the given title.'''
 
+        cursor = self.connection.cursor()
         query = "SELECT * FROM recipe WHERE title ILIKE %s"
         cursor.execute(query, (f"%{title}%",))
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
         cursor.close()
         return records
+
 
     def convert_recipe_to_object(self, recipe):
         '''This function converts the recipe data into a Recipe object.
