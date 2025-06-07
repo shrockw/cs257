@@ -16,7 +16,6 @@ TOTAL_NUM_RECIPES = 13493
 @app.route('/')
 def homepage():
     '''This function returns the homepage.'''
-    #WE WILL LEARN HOW TO DO THIS NOT IN EVERY FUNCTION
     recipe_data = DataSource()
     featured_recipe = recipe_data.get_random_recipes(1)
     marc_recipe = recipe_data.get_recipe_by_id(13442)
@@ -50,13 +49,11 @@ def handle_random_form():
     '''
     num = request.form.get('num_recipes')
     recipe_data = DataSource()
+
     if is_valid_number(num):
         num = int(num)
-
         recipes = recipe_data.get_random_recipes(num)
-
         simplified_recipes = [get_id_and_title(recipe) for recipe in recipes]
-
         return render_template('recipelist.html', recipes=simplified_recipes)
 
     return random(num)
@@ -75,59 +72,43 @@ def is_valid_number(num):
         return True
     return False
 
-# TURN THIS INTO TWO FUNCTIONS (Functions Should Do One Thing)
-# @app.route('/random', methods=['GET', 'POST'])
-# def random():
-#     '''This function handles the random recipe search form submission.
-#     It generates a certain number of random recipe based on the number of recipes requested.
-#     Arguments:
-#         None
-#     Returns:
-#         Renders the recipe list template with the list of recipes.
-#     '''
 
-#     if request.method == 'POST':
-#         recipe_data = DataSource()
-#         num = int(request.form.get('num_recipes', 1))
+@app.route('/ingredient_search', methods=['GET', 'POST'])
+def ingredient_search():
+    '''Route to display the ingredient search page from ingredient_search.html'''
+    return render_template('ingredient_search.html')
 
-#         # CHANGE THIS TO A FUNCTION (encapsulate conditionals)
-#         if num < 1 or num > TOTAL_NUM_RECIPES:
-#             return render_template('recipelist.html', recipes=None)
-
-#         recipes = recipe_data.get_random_recipes(num)
-
-#         # Directly pass recipes to the template
-#         simplified_recipes = [(r.get_id(), r.get_title()) for r in recipes]  # (id, title)
-#         return render_template('recipelist.html', recipes=simplified_recipes)
-
-#     return render_template('random.html')
-
-@app.route('/custom', methods=['GET', 'POST'])
-def custom_search():
+@app.route('/handle_ingredient_search', methods=['POST'])
+def handle_ingredient_search():
     """Handle ingredient search form submission"""
-    if request.method == 'POST':
-        recipe_data = DataSource()
 
-        include = request.form.get('include_ingredients', '').split(',')
-        exclude = request.form.get('exclude_ingredients', '').split(',')
+    recipe_data = DataSource()
 
-        include = [i.strip().lower() for i in include if i.strip()]
-        exclude = [e.strip().lower() for e in exclude if e.strip()]
+    include_ingredients = parse_ingredients(request.form.get('include_ingredients', ''))
+    exclude_ingredients = parse_ingredients(request.form.get('exclude_ingredients', ''))
 
-        recipes = recipe_data.get_recipe_by_ingredients(include, exclude)
-        if recipes:
-            sorted_recipes = sort_recipes_alphabetically(recipes)
-            return render_template('all_recipes.html', 
-                                 sorted_recipes=sorted_recipes,
-                                 letters=string.ascii_uppercase, 
-                                 highlight=None,
-                                 included_ingredients=include,
-                                 excluded_ingredients=exclude)
+    recipes = recipe_data.get_recipe_by_ingredients(include_ingredients, exclude_ingredients)
+    if recipes:
+        sorted_recipes = sort_recipes_alphabetically(recipes)
+        return render_template('custom_recipes_results.html',
+                                sorted_recipes=sorted_recipes,
+                                letters=string.ascii_uppercase,
+                                highlight=None,
+                                included_ingredients=include_ingredients,
+                                excluded_ingredients=exclude_ingredients)
 
-        return render_template('no_recipes_found.html',
-                             included_ingredients=include,
-                             excluded_ingredients=exclude)
-    return render_template('custom.html')
+    return render_template('no_recipes_found.html',
+                            included_ingredients=include_ingredients,
+                            excluded_ingredients=exclude_ingredients)
+
+def parse_ingredients(ingredients):
+    '''This function parses the ingredients from a string into a list.'''
+    parsed_ingredients = []
+    if ingredients.strip():
+        for ingredient in ingredients.split(','):
+            parsed_ingredients.append(ingredient.strip().lower())
+
+    return parsed_ingredients
 
 @app.route('/all_recipes')
 def all_recipes():
@@ -141,8 +122,10 @@ def all_recipes():
     recipe_data = DataSource()
     recipes = recipe_data.get_all_recipes()
     sorted_recipes = sort_recipes_alphabetically(recipes)
-    return render_template('all_recipes.html', sorted_recipes = sorted_recipes,
-                           letters = string.ascii_uppercase, highlight = "highlight")
+    return render_template('all_recipes.html',
+                           sorted_recipes = sorted_recipes,
+                           letters = string.ascii_uppercase,
+                           highlight = "highlight")
 
 def sort_recipes_alphabetically(recipes):
     '''This function sorts the recipes into buckets for each letter in the alphabet by title.
@@ -181,8 +164,7 @@ def search_by_title(last_search=None):
     '''
     return render_template('search_by_title.html', last_search=last_search)
 
-# RENAME TO SOMETHING LIKE "HANDLE_TITLE_FORM"
-@app.route('/find_recipe_by_title', methods=['POST'])
+@app.route('/handle_title_form', methods=['POST'])
 def find_recipe_by_title():
     '''Route to handle the search by title form submission.
     Arguments:
@@ -193,10 +175,23 @@ def find_recipe_by_title():
     '''
     searched_title = request.form.get('recipe_title')
     recipe_data = DataSource()
-    recipe = recipe_data.get_recipe_by_title(searched_title)
-    if recipe:
-        return redirect(url_for('display_recipe', recipe_id=recipe.get_id()))
-    return search_by_title(last_search=searched_title)
+    recipes = recipe_data.get_recipe_by_title(searched_title)
+
+    if not recipes:
+        return search_by_title(last_search=searched_title)
+
+    if only_one_recipe(recipes):
+        return redirect(url_for('display_recipe', recipe_id=recipes[0].get_id()))
+
+    return render_template('all_recipes.html', sorted_recipes=sort_recipes_alphabetically(recipes),
+                               letters=string.ascii_uppercase, highlight=None)
+
+def only_one_recipe(recipes):
+    '''This function checks if there is only one recipe in the list.'''
+    if len(recipes) == 1:
+        return True
+    return False
+
 
 @app.route('/display_recipe/<recipe_id>')
 def display_recipe(recipe_id):
@@ -228,8 +223,7 @@ def autocomplete():
     recipe_data = DataSource()
     autocomplete_data = recipe_data.get_all_recipe_titles()
     if query:
-        # Make better variable names
-        suggestions = [item for item in autocomplete_data if query.lower() in item.lower()]
+        suggestions = [recipe for recipe in autocomplete_data if query.lower() in recipe.lower()]
         return jsonify(suggestions)
     return jsonify([])
 

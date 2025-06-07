@@ -8,7 +8,7 @@
     --light-bg: rgba(252, 248, 180, 0.255);
     --success-color: #28a745;
     --success-dark: #218838;
-    --error-color: #dc3545;
+    --error-color: red;
     --font-stack: 'Verdana', 'Geneva', sans-serif;
     --border-radius: 6px;
     --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -338,6 +338,10 @@ div.alphabet_links a:hover {
     cursor: pointer;
     color: inherit;
     font-weight: bold;
+}
+
+.error_message {
+    color: var(--error-color);
 }
 
 /* === Error Page === */

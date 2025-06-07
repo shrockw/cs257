@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="\">Home</a></li>
                 <li><a href="\search_by_title">Search by Recipe Title</a></li>
-                <li><a href="\custom">Search by Ingredients</a></li>
+                <li><a href="\ingredient_search">Search by Ingredients</a></li>
                 <li><a href="\random">Random Recipes</a></li>
                 <li><a class="{{highlight}}" href="\all_recipes">All Recipes</a></li>
             </ul>
@@ -41,6 +41,7 @@
             </p>
             {% endif %}
             {% if excluded_ingredients %}
+            <h3>Excluded Ingredients:</h3>
             <ul class="ingredient-list">
                     {% for ingredient in excluded_ingredients %}
                     <li>{{ ingredient }}</li>
@@ -54,7 +55,6 @@
 
 
      
-    {% if sorted_recipes %}
     <div class="recipes_div">
     <ul>
         {% for letter, recipes in sorted_recipes.items() %}
@@ -69,11 +69,8 @@
         {% endfor %}
     </ul>
     </div>
-    {% else %}
-    <p>No recipes to show. Try generating some first.</p>
-    {% endif %}
 
-    <a href="{{ url_for('random') }}" class="button">Generate More</a>
+
 
 </body>
 </html>
