@@ -50,17 +50,17 @@ are looking for
 
 ## Improvement 1: 
 - The Code Smell was that functions should only do 1 thing but our random() function was handling both rendering the html page for the user to enter how many random recipes they want and handling getting the results of the form. 
-- Our refactored code is in app.py lines 37-76 which includes the creation of helper functions as well to shorten some of the functions in our code. 
+- Our refactored code is in app.py lines 37-73 which includes the creation of helper functions as well to shorten some of the functions in our code. 
 - To refactor our code we created two functions, random() and handle_random_form(). The random function only deals with rendering the html for the webpage while the handle_random_form only deals with getting the number entered by the user and finding the random recipes. This way each function has a singular focus which is either rendering html or dealing with form submission.
 
 ## Improvement 2: 
 - The Code Smell was that we should encapsulate conditionals and we originally had an if statement that was: if num < 1 or num > TOTAL_NUM_RECIPES. We also earlier were checking to make sure that num is an int. So all of this code in the conditional could make it harder to read and understand our code.
-- Our refactored code is in app.py lines 52 and 69-76 which is where we put in the encapsulated conditional as well as the new function that is used in place of the conditional.
+- Our refactored code is in app.py lines 53 and 66-73 which is where we put in the encapsulated conditional as well as the new function that is used in place of the conditional.
 - To refactor our code we created a function called is_valid_number(num) which returns True if num is actually a number and is between 1 and the number of recipes in our dataset. Then, in our code we replaced the conditional with our function and then only cast the value to an int if we had first confirmed that it was a valid number. 
 
 ## Improvement 3: 
 - The Code Smell was a long method since our original get_recipe_by_ingredients function was almost 30 lines long and also sort of a code smell that functions should only do one thing but our function was building a complex SQL string and also executing the query. 
-- Our refactored code is in datasource.py lines 37-63 which includes the creation of a helper function and making some of the logic more concise.
+- Our refactored code is in datasource.py lines 41-71 which includes the creation of a helper function and making some of the logic more concise.
 - To refactor our code we created a helper function to generate the SQL query based on the ingredients that the user wants to include and not include. This means that the get_recipe_by_ingredients function just has to call the helper function which dynamically builds a SQL query and then get_recipe_by_ingredients executes the query and returns the recipes that match. 
 
 ## Improvement 4:
