@@ -127,7 +127,6 @@ class DataSource(metaclass=DataSourceMeta):
             cursor.close()
             return [recipe]
         else:
-            # Find all recipes that contain the string in the title
             query = "SELECT * FROM recipe WHERE title ILIKE %s"
             cursor.execute(query, (f"%{title}%",))
             records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
