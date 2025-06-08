@@ -64,7 +64,7 @@ class DataSource(metaclass=DataSourceMeta):
                                for ingredient in exclude_ingredients])
 
         if query_separated:
-            final_query = "SELECT id, title FROM recipe WHERE "
+            final_query = "SELECT * FROM recipe WHERE "
             final_query += " AND ".join(query_separated)
             final_query += " ORDER BY title;"
             return final_query
@@ -78,7 +78,7 @@ class DataSource(metaclass=DataSourceMeta):
         number: number of random recipes to retrieve
         Returns a list of tuples containing the data.
         '''
-        query = "SELECT id, title FROM recipe ORDER BY RANDOM() LIMIT %s"
+        query = "SELECT * FROM recipe ORDER BY RANDOM() LIMIT %s"
         cursor = self.connection.cursor()
         cursor.execute(query, (number,))
         records = [self.convert_recipe_to_object(record) for record in cursor.fetchall()]
