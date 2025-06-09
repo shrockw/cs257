@@ -21,7 +21,7 @@ Usage: python cl.py --help or -h
 Alias: --help or --h  
 Example: python cl.py --help  
 
-**Flask Usage Statements:**
+**Old Flask Usage Statements:**
 
 _Search for a recipe using include/omit filters_  
 Usage: URL/search/include/\<str:include_ingredients>/omit/\<str:omit_ingredients>  
@@ -32,6 +32,15 @@ Usage: URL/random/\<int:number>
 Example: URL/random/3  
 
 The main form of navigation is a nav bar that you can use to go to the different pages where the user can interact with different inputs to search by title, ingredient, randomly or look at all of the recipes
+
+**Updated Flask Usage Statements:**    
+
+_Homepage_: Access the main page at /.  
+_Random Recipes_: Go to /random to search for a specific number of random recipes.  
+_Ingredient Search_: Visit /ingredient_search to find recipes by ingredients.  
+_All Recipes_: See all recipes at /all_recipes.  
+_Search by Title_: Use /search_by_title to look up recipes by their names.  
+_Individual Recipe_: View a recipe's details by navigating to /display_recipe/<recipe_id>, replacing <recipe_id> with the actual recipe's ID.  
 
 ## Scanability
 - There is a large title the is consistent for each page and then a smaller header for each page
