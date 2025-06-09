@@ -24,7 +24,7 @@ Example: python cl.py --help
 **Flask Usage Statements:**
 
 _Search for a recipe using include/omit filters_  
-Usage: URL/search/\<str:include_ingredients>  
+Usage: URL/search/include/\<str:include_ingredients>/omit/\<str:omit_ingredients>  
 Example: /search/include/ingredient1,ingredient2/omit/ingredient3  
 
 _Get a random recipe by specifying how many to return_  
